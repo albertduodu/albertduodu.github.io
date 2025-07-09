@@ -13,7 +13,7 @@ Education
 ======
 * PhD in Economics, Lund University, 2019 - Ongoing
   *  Visiting PhD Student, University of Warwick, February 2023 to July 2023
-* Msc in Economic, Lund University, 2017 - 2019
+* Msc in Economic, Lund University, 2017 - 201
 * Bsc in Economics, University of Ghana, 2009 - 2014
 
 
