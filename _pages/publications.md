@@ -32,9 +32,9 @@ We examine how local import competition — measured across different spatial di
 
 **Work in Progress**
 
-[**Economy-Wide Impact of Carbon Taxes on Import:  Evidence from Sweden**]()<sm  style="font-size: 0.8em;"><i> (Draft soon)</i></sm>
+[**Economy-Wide Impact of Carbon Taxes on Import:  Evidence from Sweden**]()<sm  style="font-size: 0.8em;"><i> </i></sm>
 
-[**Carbon Border Adjustments and the Geography of Global Supply Chains**]()<sm  style="font-size: 0.8em;"><i> (Draft soon)</i></sm>
+[**Carbon Border Adjustments and the Geography of Global Supply Chains**]()<sm  style="font-size: 0.8em;"><i></i></sm>
 
 [**Environmental Neglect or Cost Reduction? Impact of Carbon Offshoring on Firms’ Pollution Abatement**]()<sm  style="font-size: 0.8em;"><i> Joint with Zouheir El‑Sahli</i></sm>
 
