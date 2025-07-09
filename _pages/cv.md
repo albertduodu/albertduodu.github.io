@@ -7,7 +7,7 @@ redirect_from:
   - /resume
 ---
 
-You can find the complete version of my CV <a href="Albert_D_CV.pdf" style="text-decoration: none" target="_blank">here</a>.
+You can find the complete version of my CV <a href="file:///Users/al7780du/Documents/GitHub/albertduodu.github.io/files/Albert_D_CV.pdf" style="text-decoration: none" target="_blank">here</a>.
 
 Education
 ======
