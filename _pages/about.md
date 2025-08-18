@@ -17,8 +17,8 @@ I’m a <strong style="color: brown;">Postdoctoral Researcher</strong> at <a hre
 
 
 
+My research sits at the intersection of <strong style="color: brown;">international trade</strong> ,<strong style="color: brown;"> environmental economics </strong> , and <strong style="color: brown;"> development </strong>, focusing on how climate policies, trade shocks, and energy transitions reshape firms, supply chains, and societies. My job market paper on carbon offshoring provides new evidence on how global trade interacts with emission reductions, informing debates on carbon leakage and border adjustment policies.
 
-My primary research interests revolve around <strong style="color: brown;">International Trade</strong> and <strong style="color: brown;">Environmental Economics</strong>, with a particular focus on applied microeconometrics and spatial analysis. In my research, I explore the drivers of green manufacturing transitioning and the implications of asymmetric implementation and enforcement of environmental policies on firms and consumers.
 
 
 
