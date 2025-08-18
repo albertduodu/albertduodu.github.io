@@ -27,4 +27,4 @@ You can contact me at albert 'dot' duodu ‘at’ aalto.fi or albert 'dot' duodu
 
 
 [**Research Interest**]()   
-International Trade, Environmental Economics, Applied Microeconomics
+International Trade, Environmental Economics, Development, Applied Microeconomics
