@@ -17,8 +17,7 @@ I’m a <strong style="color: brown;">Postdoctoral Researcher</strong> at <a hre
 
 
 
-My research sits at the intersection of <strong style="color: brown;">international trade</strong> ,<strong style="color: brown;"> environmental economics </strong> , and <strong style="color: brown;"> development </strong>, with a strong focus on how climate policies and global trade dynamics shape firm behavior, supply chains, and long-run sustainability. I am especially interested in questions that link trade and the environment, exploring how carbon taxes, carbon border adjustments, energy price shocks, and import competition affect firms' production decisions, competitiveness, and emissions outcomes.
-
+My research sits at the intersection of <strong style="color: brown;">international trade</strong> ,<strong style="color: brown;"> environmental economics </strong> , and <strong style="color: brown;"> development </strong>, with a strong focus on how climate policies and global trade dynamics shape firm behavior, supply chains, and long-run sustainability. I am especially interested in questions that link trade and the environment, exploring how carbon taxes, carbon border adjustments, energy price shocks, and import competition affect firms' production decisions, labour demand, and emissions outcomes.
 
 
 
