@@ -12,7 +12,7 @@ redirect_from:
 
 Hi! Welcome. 
 
-I’m a <strong style="color: brown;">Postdoctoral Researcher</strong> at <a href="https://www.aalto.fi/en/department-of-economics/albert-duodu" style="text-decoration: none" target="_blank">Aalto University</a> and  <a href="https://www.helsinkigse.fi/members/albert-duodu" style="text-decoration: none" target="_blank"> Helsinki Graduate School of Economics</a>. I obtained my <strong style="color: brown;">PhD in Economics</strong> from <a href="https://portal.research.lu.se/en/persons/albert-duodu" style="text-decoration: none" target="_blank">Lund University</a> in 2024.
+I’m a <strong style="color: brown;">Postdoctoral Researcher</strong> at <a href="https://www.aalto.fi/en/department-of-economics/albert-duodu" style="text-decoration: none" target="_blank">Aalto University</a> and  <a href="https://www.helsinkigse.fi/groups/environmental-economics" style="text-decoration: none" target="_blank"> Helsinki Graduate School of Economics</a>. I obtained my <strong style="color: brown;">PhD in Economics</strong> from <a href="https://portal.research.lu.se/en/persons/albert-duodu" style="text-decoration: none" target="_blank">Lund University</a> in 2024.
 
 
 
