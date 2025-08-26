@@ -1,11 +1,11 @@
- h1 {
+h1 {
  font-family: 'Arial', sans-serif;
- color: rgb(226, 0, 32);
+ color: rgb(178, 0, 25);
  font-weight: 700;
  padding: 0px;
  vertical-align: bottom;
  margin:0px;
- }
+}
  
  h1.caption {
  font-family: 'Arial', sans-serif;
