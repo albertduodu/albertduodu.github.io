@@ -7,99 +7,96 @@ h1 {
  margin:0px;
 }
  
- h1.caption {
+h1.caption {
  font-family: 'Arial', sans-serif;
  font-size: 24pt;
-
- color: rgb(226, 0, 32);
+ color: rgb(178, 0, 25);
  font-weight: 700;
  padding: 0px;
  vertical-align: bottom;
  margin:0px;
- }
+}
  
- h1.footer {
+h1.footer {
  font-family: 'Arial', sans-serif;
  font-size: 12pt;
  line-height:12pt;
  font-weight: 700;
  padding-top: 20pt;
  padding-bottom: 8pt;
- }
+}
  
- h1.footer2 {
+h1.footer2 {
  font-family: 'Arial', sans-serif;
  font-size: 10pt;
  line-height:10pt;
  font-weight: 700;
  padding-top: 3pt;
- }
+}
  
- tr.spacer {
+tr.spacer {
  height:30px;
- }
+}
  
- td {
+td {
  padding-bottom: 2pt;
  margin:0px;
- }
+}
  
- td.header {
+td.header {
  vertical-align: bottom;
  padding: 0px;
  margin:0px;
- }
+}
  
- td.picture {
+td.picture {
  vertical-align: bottom;
  padding-right: 20pt;
+}
 
- }
-
- a.teachinglink {
+a.teachinglink {
  color: rgb(150,150,150);
- }
+}
 
- a.biglink {
+a.biglink {
  font-family: 'Arial', sans-serif;
- color: rgb(226, 0, 32);
+ color: rgb(178, 0, 25);
  padding: 0px;
  margin:0px;
  font-size: 12pt;
  line-height:20pt;
  font-weight: 700;
  text-decoration:none;
- }
+}
 
- a.paperlink {
- color: rgb(226, 0, 32);
- }
+a.paperlink {
+ color: rgb(178, 0, 25);
+}
 
- a.backlink {
- color: rgb(226, 0, 32);
- }
+a.backlink {
+ color: rgb(178, 0, 25);
+}
 
- body {
+body {
  font-family: 'Arial-MT', 'Arial', sans-serif;
  font-size: 10pt;
  font-weight: 100;
- }
+}
  
- p {
+p {
  font-family: 'Arial-MT', 'Arial', sans-serif;
  font-size: 10pt;
  font-weight: 100;
- }
+}
 
- p.small {
+p.small {
  font-family: 'Arial-MT', 'Arial', sans-serif;
  font-size: 10pt;
  font-weight: 100;
- }
+}
  
- li {
-  font-family: 'Arial-MT', 'Arial', sans-serif;
+li {
+ font-family: 'Arial-MT', 'Arial', sans-serif;
  font-size: 10pt;
  font-weight: 100;
- }
- 
+}
