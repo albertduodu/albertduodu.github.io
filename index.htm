@@ -6,7 +6,7 @@
 <title>Albert Duodu — Economist</title>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ─── TOKENS ────────────────────────────────────── */
+/* ─── TOKENS ─────────────────────── */
 :root {
   --bg:        #faf9f6;
   --surface:   #f3f1ec;
@@ -15,9 +15,10 @@
   --ink:       #1c1a17;
   --ink-soft:  #4a4540;
   --ink-muted: #8c867e;
-  --accent:    #1a3a2a;       /* deep forest green */
-  --accent-2:  #2d5c42;
-  --accent-lt: #e8f0eb;
+  --panel:     #1e1c19;      /* warm near-black — no colour cast */
+  --panel-mid: #2a2721;      /* slightly lighter for nav hovers */
+  --sage:      #3d5c48;      /* muted sage — used only for accents/pills */
+  --sage-lt:   #e8f0eb;
   --gold:      #9a7c3a;
   --gold-lt:   #f5efe0;
   --serif:     'EB Garamond', Georgia, serif;
@@ -25,223 +26,222 @@
   --mono:      'Fira Mono', monospace;
 }
 
-/* ─── RESET & BASE ──────────────────────────────── */
+/* ─── RESET ──────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
-
-body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--ink);
-  line-height: 1.7;
-  min-height: 100vh;
-}
-
+body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; min-height: 100vh; }
 a { color: inherit; text-decoration: none; }
 
-/* ─── GRAIN OVERLAY ─────────────────────────────── */
+/* ─── GRAIN ──────────────────────── */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 999;
-  opacity: 0.025;
+  opacity: 0.022;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
-/* ─── LAYOUT SHELL ──────────────────────────────── */
+/* ─── LAYOUT ─────────────────────── */
 .shell {
   display: grid;
   grid-template-columns: 280px 1fr;
   min-height: 100vh;
 }
 
-/* ─── SIDEBAR ───────────────────────────────────── */
+/* ─── SIDEBAR ────────────────────── */
 aside {
   position: sticky;
   top: 0;
   height: 100vh;
   overflow-y: auto;
-  background: var(--accent);
-  color: #e8ede9;
-  padding: 48px 32px 40px;
+  overflow-x: hidden;
+  background: var(--panel);
+  color: #e8e4de;
   display: flex;
   flex-direction: column;
-  gap: 0;
-  border-right: 1px solid rgba(0,0,0,0.12);
+  border-right: 1px solid rgba(0,0,0,0.25);
 }
+aside::-webkit-scrollbar { width: 3px; }
+aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
 
-/* Subtle grid lines on sidebar */
-aside::before {
+/* ── PHOTO — full bleed, gradient fade ── */
+.photo-hero {
+  position: relative;
+  width: 100%;
+  flex-shrink: 0;
+}
+.photo-hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* no cropping — show the full portrait naturally */
+}
+/* gradient: photo fades into the panel colour */
+.photo-hero::after {
   content: '';
   position: absolute;
-  inset: 0;
+  bottom: 0; left: 0; right: 0;
+  height: 55%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(30,28,25,0.55) 50%,
+    rgba(30,28,25,1) 100%
+  );
   pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 32px 32px;
 }
-
-.sidebar-inner { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; }
-
-/* Institution logos */
-.logos {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 36px;
+/* name floats over the bottom of the photo */
+.photo-hero-name {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 24px 28px 20px;
+  z-index: 2;
 }
-.logo-wrap {
-  width: 44px; height: 44px;
-  border-radius: 6px;
-  overflow: hidden;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
-}
-.logo-wrap:hover { background: rgba(255,255,255,0.18); }
-.logo-wrap img { width: 36px; height: 36px; object-fit: contain; }
-
-/* Name & title */
-.name-block { margin-bottom: 28px; }
-.name-block h1 {
+.photo-hero-name h1 {
   font-family: var(--serif);
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 500;
-  color: #f0f4f1;
-  line-height: 1.15;
+  color: #f5f0ea;
+  line-height: 1.1;
   letter-spacing: -0.2px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
-.name-block .role {
-  font-size: 12px;
-  color: rgba(232,237,233,0.6);
-  letter-spacing: 1.5px;
+.photo-hero-name .role {
+  font-size: 11px;
+  color: rgba(232,228,222,0.55);
+  letter-spacing: 1.8px;
   text-transform: uppercase;
   font-weight: 500;
   line-height: 1.5;
 }
 
-/* Photo */
-.photo-wrap {
-  width: 100%;
-  aspect-ratio: 3/4;
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.12);
-  margin-bottom: 32px;
-  position: relative;
-}
-.photo-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
-  filter: grayscale(8%) contrast(1.04);
-  transition: filter 0.4s;
-}
-.photo-wrap:hover img { filter: grayscale(0%) contrast(1.0); }
-
-/* Nav links */
-.sidebar-nav {
+/* ── SIDEBAR BODY (below photo) ── */
+.sidebar-body {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin-bottom: 32px;
+  padding: 20px 24px 32px;
+  background: var(--panel);
 }
-.sidebar-nav a {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-  border-radius: 4px;
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(232,237,233,0.75);
-  transition: all 0.18s;
-  letter-spacing: 0.2px;
-}
-.sidebar-nav a:hover {
-  background: rgba(255,255,255,0.08);
-  color: #f0f4f1;
-}
-.sidebar-nav a .nav-arrow {
-  font-size: 16px;
-  opacity: 0.5;
-  transition: transform 0.18s, opacity 0.18s;
-}
-.sidebar-nav a:hover .nav-arrow { transform: translateX(3px); opacity: 0.9; }
 
-/* Contact block */
-.contact-block {
-  margin-top: auto;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-}
-.contact-block .address {
-  font-size: 12px;
-  color: rgba(232,237,233,0.5);
-  line-height: 1.7;
-  margin-bottom: 14px;
-  font-family: var(--mono);
-}
-.contact-block .email {
-  font-size: 12px;
-  color: rgba(232,237,233,0.65);
-  font-family: var(--mono);
-  margin-bottom: 18px;
-}
-.contact-block .email span { color: rgba(232,237,233,0.4); }
-
-/* Social icons */
-.socials {
+/* logos */
+.logos {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding-top: 4px;
 }
-.social-btn {
-  width: 32px; height: 32px;
-  border-radius: 4px;
+.logo-wrap {
+  width: 40px; height: 40px;
+  border-radius: 5px;
+  overflow: hidden;
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.18s;
-  color: rgba(232,237,233,0.6);
+  transition: background 0.2s;
+}
+.logo-wrap:hover { background: rgba(255,255,255,0.14); }
+.logo-wrap img { width: 32px; height: 32px; object-fit: contain; }
+
+/* nav */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-bottom: 28px;
+}
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: 3px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(232,228,222,0.6);
+  transition: all 0.15s;
+  letter-spacing: 0.2px;
+}
+.sidebar-nav a:hover {
+  background: rgba(255,255,255,0.06);
+  color: #f5f0ea;
+}
+.sidebar-nav a .arr {
   font-size: 14px;
+  opacity: 0.4;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.sidebar-nav a:hover .arr { transform: translateX(3px); opacity: 0.8; }
+
+/* contact */
+.contact-block {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.contact-block .address {
+  font-size: 11px;
+  color: rgba(232,228,222,0.38);
+  line-height: 1.75;
+  margin-bottom: 12px;
+  font-family: var(--mono);
+}
+.contact-block .email {
+  font-size: 11px;
+  color: rgba(232,228,222,0.55);
+  font-family: var(--mono);
+  margin-bottom: 16px;
+}
+.contact-block .email span { color: rgba(232,228,222,0.3); }
+
+/* socials */
+.socials { display: flex; gap: 8px; }
+.social-btn {
+  width: 30px; height: 30px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
 }
 .social-btn:hover {
-  background: rgba(255,255,255,0.14);
-  color: #f0f4f1;
-  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.11);
+  border-color: rgba(255,255,255,0.18);
   transform: translateY(-1px);
 }
-.social-btn img { width: 16px; height: 16px; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.6; transition: opacity 0.18s; }
-.social-btn:hover img { opacity: 1; }
+.social-btn img {
+  width: 14px; height: 14px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.5;
+  transition: opacity 0.15s;
+}
+.social-btn:hover img { opacity: 0.85; }
 
-/* ─── MAIN CONTENT ──────────────────────────────── */
+/* ─── MAIN ───────────────────────── */
 main {
   padding: 64px 72px 96px;
   max-width: 860px;
 }
 
-/* ─── BIO SECTION ───────────────────────────────── */
+/* ─── BIO ────────────────────────── */
 .bio-section {
   padding-bottom: 56px;
   margin-bottom: 64px;
   border-bottom: 1px solid var(--border);
 }
-
 .section-kicker {
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--accent-2);
+  color: var(--sage);
   margin-bottom: 20px;
   display: flex;
   align-items: center;
@@ -254,17 +254,14 @@ main {
   background: var(--border);
   max-width: 48px;
 }
-
 .bio-text {
   font-family: var(--serif);
   font-size: 19px;
-  line-height: 1.75;
+  line-height: 1.78;
   color: var(--ink-soft);
   max-width: 680px;
 }
 .bio-text strong { color: var(--ink); font-weight: 500; }
-
-/* Research areas pills */
 .research-areas {
   display: flex;
   flex-wrap: wrap;
@@ -276,16 +273,35 @@ main {
   font-weight: 500;
   padding: 5px 13px;
   border-radius: 2px;
-  background: var(--accent-lt);
-  color: var(--accent);
+  background: var(--sage-lt);
+  color: var(--sage);
   border: 1px solid #c8d9cd;
   letter-spacing: 0.3px;
 }
+.cv-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--panel);
+  color: #e8e4de;
+  padding: 11px 22px;
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.18s;
+  margin-top: 32px;
+  border: 1px solid rgba(30,28,25,0.8);
+}
+.cv-btn:hover {
+  background: var(--panel-mid);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(30,28,25,0.18);
+}
 
-/* ─── SECTION HEADERS ───────────────────────────── */
+/* ─── SECTION HEADERS ────────────── */
 .content-section { margin-bottom: 72px; }
 .content-section:last-child { margin-bottom: 0; }
-
 .section-title {
   font-family: var(--serif);
   font-size: 22px;
@@ -308,9 +324,8 @@ main {
   margin-left: auto;
 }
 
-/* ─── PAPER CARDS ───────────────────────────────── */
+/* ─── PAPER CARDS ────────────────── */
 .papers { display: flex; flex-direction: column; gap: 1px; }
-
 .paper-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -333,11 +348,7 @@ main {
   box-shadow: 0 2px 16px rgba(28,26,23,0.06);
   transform: translateX(2px);
 }
-.paper-card:hover::before {
-  background: var(--accent);
-  width: 4px;
-}
-
+.paper-card:hover::before { background: var(--sage); width: 4px; }
 .paper-title {
   font-family: var(--serif);
   font-size: 18px;
@@ -347,10 +358,8 @@ main {
   margin-bottom: 6px;
   transition: color 0.15s;
 }
-.paper-card:hover .paper-title { color: var(--accent); }
+.paper-card:hover .paper-title { color: var(--sage); }
 .paper-title a { color: inherit; }
-.paper-title a:hover { color: var(--accent-2); }
-
 .paper-meta {
   display: flex;
   align-items: center;
@@ -375,17 +384,16 @@ main {
   font-style: italic;
 }
 .paper-coauth::before { content: 'with '; }
-
 .paper-abstract {
   font-size: 13.5px;
   color: var(--ink-soft);
   line-height: 1.75;
   position: relative;
   overflow: hidden;
-  max-height: 3.5em;  /* ~2 lines */
+  max-height: 3.5em;
   transition: max-height 0.4s ease;
 }
-.paper-abstract.expanded { max-height: 500px; }
+.paper-abstract.expanded { max-height: 600px; }
 .paper-abstract::after {
   content: '';
   position: absolute;
@@ -396,14 +404,13 @@ main {
 }
 .paper-abstract.expanded::after { opacity: 0; }
 .paper-card:hover .paper-abstract::after { background: linear-gradient(transparent, #fff); }
-
 .abstract-toggle {
   margin-top: 10px;
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: var(--accent-2);
+  color: var(--sage);
   cursor: pointer;
   border: none;
   background: none;
@@ -413,11 +420,9 @@ main {
   gap: 5px;
   transition: color 0.15s;
 }
-.abstract-toggle:hover { color: var(--accent); }
+.abstract-toggle:hover { color: var(--panel); }
 .toggle-icon { transition: transform 0.25s; display: inline-block; }
 .abstract-toggle.open .toggle-icon { transform: rotate(180deg); }
-
-/* WIP badge (no link papers) */
 .paper-card.wip .paper-title { color: var(--ink-muted); }
 .wip-badge {
   font-family: var(--mono);
@@ -431,9 +436,8 @@ main {
   border-radius: 2px;
 }
 
-/* ─── TEACHING ───────────────────────────────────── */
+/* ─── TEACHING ───────────────────── */
 .teaching-list { display: flex; flex-direction: column; gap: 1px; }
-
 .teaching-item {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -445,26 +449,11 @@ main {
   transition: background 0.15s;
 }
 .teaching-item:hover { background: #fff; }
-
-.teaching-item.past { opacity: 0.55; }
-.teaching-item.past:hover { opacity: 0.7; }
-
-.t-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ink);
-  margin-bottom: 2px;
-}
-.teaching-item.past .t-name {
-  text-decoration: line-through;
-  text-decoration-color: var(--border-dk);
-}
-.t-inst {
-  font-size: 12px;
-  color: var(--ink-muted);
-  font-family: var(--mono);
-}
-
+.teaching-item.past { opacity: 0.5; }
+.teaching-item.past:hover { opacity: 0.65; }
+.t-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+.teaching-item.past .t-name { text-decoration: line-through; text-decoration-color: var(--border-dk); }
+.t-inst { font-size: 12px; color: var(--ink-muted); font-family: var(--mono); }
 .t-tag {
   font-family: var(--mono);
   font-size: 10px;
@@ -474,62 +463,27 @@ main {
   border-radius: 2px;
   white-space: nowrap;
 }
-.t-tag.current {
-  background: var(--accent-lt);
-  color: var(--accent);
-  border: 1px solid #c8d9cd;
-}
-.t-tag.past-tag {
-  background: var(--surface);
-  color: var(--ink-muted);
-  border: 1px solid var(--border-dk);
-}
-
+.t-tag.current { background: var(--sage-lt); color: var(--sage); border: 1px solid #c8d9cd; }
+.t-tag.past-tag { background: var(--surface); color: var(--ink-muted); border: 1px solid var(--border-dk); }
 .syllabus-link {
   font-family: var(--mono);
   font-size: 10px;
-  color: var(--accent-2);
+  color: var(--sage);
   letter-spacing: 1px;
   text-transform: uppercase;
-  border: 1px solid var(--accent-lt);
+  border: 1px solid var(--sage-lt);
   padding: 3px 9px;
   border-radius: 2px;
   transition: all 0.15s;
   display: inline-block;
   margin-left: 8px;
 }
-.syllabus-link:hover {
-  background: var(--accent-lt);
-  border-color: #c8d9cd;
-}
+.syllabus-link:hover { background: var(--sage-lt); border-color: #c8d9cd; }
 
-/* ─── CV BUTTON ─────────────────────────────────── */
-.cv-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--accent);
-  color: #e8ede9;
-  padding: 12px 24px;
-  border-radius: 3px;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  transition: all 0.18s;
-  margin-top: 32px;
-  border: 1px solid var(--accent);
-}
-.cv-btn:hover {
-  background: var(--accent-2);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(26,58,42,0.25);
-}
-.cv-btn svg { flex-shrink: 0; }
-
-/* ─── SCROLL ANIMATIONS ─────────────────────────── */
+/* ─── ANIMATIONS ─────────────────── */
 .fade-up {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(18px);
   animation: fadeUp 0.6s ease forwards;
   animation-play-state: paused;
 }
@@ -537,39 +491,24 @@ main {
 .d1 { animation-delay: 0.05s; }
 .d2 { animation-delay: 0.12s; }
 .d3 { animation-delay: 0.19s; }
-.d4 { animation-delay: 0.26s; }
-.d5 { animation-delay: 0.33s; }
 
-/* ─── RESPONSIVE ────────────────────────────────── */
+/* ─── RESPONSIVE ─────────────────── */
 @media (max-width: 900px) {
   .shell { grid-template-columns: 1fr; }
-
   aside {
     position: relative;
     height: auto;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 32px 24px;
-    gap: 24px;
   }
-  .sidebar-inner { flex-direction: row; flex-wrap: wrap; width: 100%; gap: 24px; }
-  .photo-wrap { width: 120px; height: 160px; flex-shrink: 0; margin-bottom: 0; }
-  .name-block { flex: 1; margin-bottom: 0; }
-  .sidebar-nav { flex-direction: row; flex-wrap: wrap; margin-bottom: 0; }
-  .contact-block { width: 100%; margin-top: 0; padding-top: 16px; }
+  .photo-hero img { max-height: 70vw; object-fit: cover; object-position: top center; }
+  .sidebar-body { padding: 16px 20px 24px; }
   main { padding: 40px 24px 64px; }
-}
-
-@media (max-width: 560px) {
-  main { padding: 32px 16px 48px; }
   .bio-text { font-size: 17px; }
-  .paper-card { padding: 18px 20px; }
 }
-
-/* ─── SCROLLBAR ─────────────────────────────────── */
-aside::-webkit-scrollbar { width: 4px; }
-aside::-webkit-scrollbar-track { background: transparent; }
-aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+@media (max-width: 560px) {
+  main { padding: 28px 16px 48px; }
+  .paper-card { padding: 18px 18px; }
+  .photo-hero img { max-height: 80vw; }
+}
 </style>
 </head>
 <body>
@@ -578,7 +517,18 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radi
 
   <!-- ─── SIDEBAR ─── -->
   <aside>
-    <div class="sidebar-inner">
+
+    <!-- Photo — full bleed top, fades into panel -->
+    <div class="photo-hero">
+      <img src="Albert_pic.png" alt="Albert Duodu">
+      <div class="photo-hero-name">
+        <h1>Albert Duodu</h1>
+        <div class="role">Postdoctoral Researcher<br>Aalto · Helsinki GSE</div>
+      </div>
+    </div>
+
+    <!-- Everything below the photo -->
+    <div class="sidebar-body">
 
       <!-- Institution logos -->
       <div class="logos">
@@ -590,24 +540,13 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radi
         </a>
       </div>
 
-      <!-- Photo -->
-      <div class="photo-wrap">
-        <img src="Albert_pic.png" alt="Albert Duodu">
-      </div>
-
-      <!-- Name & role -->
-      <div class="name-block">
-        <h1>Albert Duodu</h1>
-        <div class="role">Postdoctoral Researcher<br>Aalto · Helsinki GSE</div>
-      </div>
-
       <!-- Navigation -->
       <nav class="sidebar-nav">
-        <a href="#about"><span class="nav-arrow">›</span> About</a>
-        <a href="CV_Duodu_Albert.pdf"><span class="nav-arrow">›</span> Curriculum Vitae</a>
-        <a href="#trade-env"><span class="nav-arrow">›</span> Trade &amp; Environment</a>
-        <a href="#development"><span class="nav-arrow">›</span> Development</a>
-        <a href="#teaching"><span class="nav-arrow">›</span> Teaching</a>
+        <a href="#about"><span class="arr">›</span> About</a>
+        <a href="CV_Duodu_Albert.pdf"><span class="arr">›</span> Curriculum Vitae</a>
+        <a href="#trade-env"><span class="arr">›</span> Trade &amp; Environment</a>
+        <a href="#development"><span class="arr">›</span> Development</a>
+        <a href="#teaching"><span class="arr">›</span> Teaching</a>
       </nav>
 
       <!-- Contact -->
@@ -650,7 +589,6 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radi
       <p class="bio-text" style="margin-top: 18px;">
         My research focuses on <strong>international trade</strong>, <strong>environmental economics</strong>, and <strong>development</strong>. I study how global trade dynamics and climate policies affect firm behavior, supply chains, and long-run sustainability — including the effects of offshoring, import competition, carbon taxes, border adjustments, and energy price shocks on production decisions, labor demand, and emissions. I also contribute to development economics, with work on electricity access, blackouts, household adaptation, and institutional trust in Africa.
       </p>
-
       <div class="research-areas">
         <span class="area-pill">International Trade</span>
         <span class="area-pill">Environmental Economics</span>
@@ -660,30 +598,23 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radi
         <span class="area-pill">Climate &amp; Supply Chains</span>
         <span class="area-pill">Africa</span>
       </div>
-
       <a href="CV_Duodu_Albert.pdf" class="cv-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Download CV
       </a>
     </section>
 
-    <!-- TRADE & ENVIRONMENT PAPERS -->
+    <!-- TRADE & ENVIRONMENT -->
     <section class="content-section fade-up d1" id="trade-env">
       <div class="section-title">
         Working Papers — Trade &amp; Environment
         <span class="title-tag">3 papers</span>
       </div>
-
       <div class="papers">
 
-        <!-- Paper 1 -->
         <div class="paper-card">
-          <div class="paper-title">
-            <a href="Albert_JMP.pdf">Carbon Offshoring and Manufacturing Cleanup</a>
-          </div>
-          <div class="paper-meta">
-            <span class="paper-status">Under Review</span>
-          </div>
+          <div class="paper-title"><a href="Albert_JMP.pdf">Carbon Offshoring and Manufacturing Cleanup</a></div>
+          <div class="paper-meta"><span class="paper-status">Under Review</span></div>
           <div class="paper-abstract" id="abs1">
             Production in manufacturing firms in high income countries is generally becoming cleaner. Some of this trend has been shown to be due to adoption of new technologies, but carbon offshoring — i.e. when dirty production at home is replaced with imports of carbon-intensive products from abroad — may be an additional factor. If so, this is concerning, since it risks undermining climate policies by simply moving emissions to countries with laxer regulations. Leveraging rich Swedish firm-product level data between 2005–2014, and employing a combination of shift-share instrumental variables and a difference-in-difference estimation approach, I find a compelling paradox: a 10% increase in the import of emission-intensive goods can result in firms' production processes becoming 5% cleaner but increases transport emissions by 2%. This suggests that carbon offshoring does not only shift emissions elsewhere but also generates new ones via transportation. Additionally, I show that the type of offshoring, such as foreign direct investment (FDI), has a much larger emissions-reducing effect than offshoring in the form of imports of inputs not produced in-firm.
           </div>
@@ -692,11 +623,8 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radi
           </button>
         </div>
 
-        <!-- Paper 2 -->
         <div class="paper-card">
-          <div class="paper-title">
-            <a href="IC_emissions.pdf">Greener Under Pressure? The Local Geography of Import Competition and Emissions in Swedish Manufacturing</a>
-          </div>
+          <div class="paper-title"><a href="IC_emissions.pdf">Greener Under Pressure? The Local Geography of Import Competition and Emissions in Swedish Manufacturing</a></div>
           <div class="paper-meta">
             <span class="paper-status">Under Review</span>
             <span class="paper-coauth">Zoheir El-Sahli</span>
@@ -709,13 +637,9 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radi
           </button>
         </div>
 
-        <!-- Paper 3 -->
         <div class="paper-card">
-          <div class="paper-title">
-            <a href="Albert_energy_price_shocks.pdf">Environment and the Economy: Firm-Level Responses to Energy Price Shocks</a>
-          </div>
-          <div class="paper-meta">
-          </div>
+          <div class="paper-title"><a href="Albert_energy_price_shocks.pdf">Environment and the Economy: Firm-Level Responses to Energy Price Shocks</a></div>
+          <div class="paper-meta"></div>
           <div class="paper-abstract" id="abs3">
             Although raising the carbon price is an effective tool for decreasing reliance on carbon-intensive production sources, it has also raised substantial concerns among policymakers that higher energy costs will render manufacturing firms less competitive and potentially lead to increased consumer prices. Using detailed firm-level data from 2006 to 2014 and a novel combination of shift-share instruments and dynamic difference-in-differences estimation, I identify the causal impact of energy prices on energy consumption, CO₂ emissions, productivity, employment, and cost pass-through. I find that a 10% increase in energy prices leads to an 8.6% reduction in energy use and a 5.9% decline in emissions, highlighting the effectiveness of energy taxation in promoting environmental goals. However, higher prices also reduce firm-level productivity by 2% and employment by 3%, especially among high-skilled workers. I also find evidence of partial cost pass-through to consumers, with a 10% marginal cost increase resulting in a 2% rise in output prices. Overall, the results provide new micro-level evidence that the economic incidence of energy pricing is heterogeneous, and the trade-off between environmental and economic goals is far from straightforward.
           </div>
@@ -724,11 +648,8 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radi
           </button>
         </div>
 
-        <!-- Paper 4 — WIP -->
         <div class="paper-card wip">
-          <div class="paper-title">
-            Who Bears the Carbon Border? Optimal Differentiation and Spatial Reallocation under the EU CBAM
-          </div>
+          <div class="paper-title">Who Bears the Carbon Border? Optimal Differentiation and Spatial Reallocation under the EU CBAM</div>
           <div class="paper-meta">
             <span class="wip-badge">In Progress</span>
             <span class="paper-coauth">Matti Liski</span>
@@ -738,20 +659,17 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radi
       </div>
     </section>
 
-    <!-- DEVELOPMENT PAPERS -->
+    <!-- DEVELOPMENT -->
     <section class="content-section fade-up d2" id="development">
       <div class="section-title">
         Working Papers — Development Economics
         <span class="title-tag">4 papers</span>
       </div>
-
       <div class="papers">
 
         <div class="paper-card wip">
           <div class="paper-title">Light Out, Tax Gone? The Fiscal and Institutional Consequences of Electricity Shortages</div>
-          <div class="paper-meta">
-            <span class="wip-badge">In Progress</span>
-          </div>
+          <div class="paper-meta"><span class="wip-badge">In Progress</span></div>
         </div>
 
         <div class="paper-card wip">
@@ -772,9 +690,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radi
 
         <div class="paper-card wip">
           <div class="paper-title">Blackouts, Consumption Smoothing, and Adaptation Mechanisms in African Households</div>
-          <div class="paper-meta">
-            <span class="wip-badge">In Progress</span>
-          </div>
+          <div class="paper-meta"><span class="wip-badge">In Progress</span></div>
         </div>
 
       </div>
@@ -786,57 +702,38 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radi
         Teaching
         <span class="title-tag">6 courses</span>
       </div>
-
       <div class="teaching-list">
 
         <div class="teaching-item">
           <div>
-            <div class="t-name">
-              Economics of Global Challenges
-              <a href="syllabus.pdf" class="syllabus-link">Syllabus ↗</a>
-            </div>
+            <div class="t-name">Economics of Global Challenges <a href="syllabus.pdf" class="syllabus-link">Syllabus ↗</a></div>
             <div class="t-inst">Aalto University · Spring 2025</div>
           </div>
           <span class="t-tag current">Current</span>
         </div>
 
         <div class="teaching-item past">
-          <div>
-            <div class="t-name">Advanced Trade Theory</div>
-            <div class="t-inst">Lund University · 2021 / 2024</div>
-          </div>
+          <div><div class="t-name">Advanced Trade Theory</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
           <span class="t-tag past-tag">Past</span>
         </div>
 
         <div class="teaching-item past">
-          <div>
-            <div class="t-name">International Trade Theory</div>
-            <div class="t-inst">Lund University · 2021 / 2024</div>
-          </div>
+          <div><div class="t-name">International Trade Theory</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
           <span class="t-tag past-tag">Past</span>
         </div>
 
         <div class="teaching-item past">
-          <div>
-            <div class="t-name">International Economics</div>
-            <div class="t-inst">Lund University · 2021 / 2024</div>
-          </div>
+          <div><div class="t-name">International Economics</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
           <span class="t-tag past-tag">Past</span>
         </div>
 
         <div class="teaching-item past">
-          <div>
-            <div class="t-name">Econometrics</div>
-            <div class="t-inst">University of Ghana · 2015 / 2017</div>
-          </div>
+          <div><div class="t-name">Econometrics</div><div class="t-inst">University of Ghana · 2015 / 2017</div></div>
           <span class="t-tag past-tag">Past</span>
         </div>
 
         <div class="teaching-item past">
-          <div>
-            <div class="t-name">International Economics</div>
-            <div class="t-inst">University of Ghana · 2015 / 2017</div>
-          </div>
+          <div><div class="t-name">International Economics</div><div class="t-inst">University of Ghana · 2015 / 2017</div></div>
           <span class="t-tag past-tag">Past</span>
         </div>
 
@@ -847,7 +744,6 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radi
 </div>
 
 <script>
-// Toggle abstract expand/collapse
 function toggleAbstract(id, btn) {
   const el = document.getElementById(id);
   const isOpen = el.classList.toggle('expanded');
@@ -855,33 +751,20 @@ function toggleAbstract(id, btn) {
   btn.querySelector('.toggle-icon').textContent = isOpen ? '▴' : '▾';
 }
 
-// Intersection observer — fade-up animations
 const io = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.animationPlayState = 'running';
-      io.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.08 });
+  entries.forEach(e => { if (e.isIntersecting) { e.target.style.animationPlayState = 'running'; io.unobserve(e.target); } });
+}, { threshold: 0.06 });
+document.querySelectorAll('.fade-up').forEach(el => { el.style.animationPlayState = 'paused'; io.observe(el); });
 
-document.querySelectorAll('.fade-up').forEach(el => {
-  el.style.animationPlayState = 'paused';
-  io.observe(el);
-});
-
-// Active nav highlight on scroll
-const sections = document.querySelectorAll('section[id], .bio-section');
+const secs = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.sidebar-nav a');
 window.addEventListener('scroll', () => {
   let cur = '';
-  sections.forEach(s => {
-    if (window.scrollY >= s.offsetTop - 140) cur = s.id;
-  });
+  secs.forEach(s => { if (window.scrollY >= s.offsetTop - 140) cur = s.id; });
   navLinks.forEach(a => {
-    const href = a.getAttribute('href');
-    a.style.background = href === '#' + cur ? 'rgba(255,255,255,0.1)' : '';
-    a.style.color = href === '#' + cur ? '#f0f4f1' : '';
+    const active = a.getAttribute('href') === '#' + cur;
+    a.style.background = active ? 'rgba(255,255,255,0.07)' : '';
+    a.style.color = active ? '#f5f0ea' : '';
   });
 }, { passive: true });
 </script>
