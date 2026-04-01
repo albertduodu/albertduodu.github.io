@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Albert Duodu — Economist</title>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ─── TOKENS ─────────────────────── */
 :root {
@@ -15,14 +15,13 @@
   --ink:       #1c1a17;
   --ink-soft:  #4a4540;
   --ink-muted: #8c867e;
-  --panel:     #1e1c19;      /* warm near-black — no colour cast */
-  --panel-mid: #2a2721;      /* slightly lighter for nav hovers */
-  --sage:      #3d5c48;      /* muted sage — used only for accents/pills */
+  --panel:     #1e1c19;
+  --panel-mid: #2a2721;
+  --sage:      #3d5c48;
   --sage-lt:   #e8f0eb;
-  --gold:      #9a7c3a;
-  --gold-lt:   #f5efe0;
+  --sage-mid:  #8faf9a;
   --serif:     'EB Garamond', Georgia, serif;
-  --sans:      'Instrument Sans', system-ui, sans-serif;
+  --sans:      'DM Sans', system-ui, sans-serif;
   --mono:      'Fira Mono', monospace;
 }
 
@@ -76,9 +75,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   width: 100%;
   height: auto;
   display: block;
-  /* no cropping — show the full portrait naturally */
 }
-/* gradient: photo fades into the panel colour */
 .photo-hero::after {
   content: '';
   position: absolute;
@@ -92,7 +89,6 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   );
   pointer-events: none;
 }
-/* name floats over the bottom of the photo */
 .photo-hero-name {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -145,6 +141,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   transition: background 0.2s;
 }
 .logo-wrap:hover { background: rgba(255,255,255,0.14); }
+.logo-wrap:focus-visible { outline: 2px solid rgba(143,175,154,0.7); outline-offset: 2px; }
 .logo-wrap img { width: 32px; height: 32px; object-fit: contain; }
 
 /* nav */
@@ -170,6 +167,11 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   background: rgba(255,255,255,0.06);
   color: #f5f0ea;
 }
+.sidebar-nav a:focus-visible {
+  outline: 2px solid rgba(143,175,154,0.7);
+  outline-offset: 1px;
+  color: #f5f0ea;
+}
 .sidebar-nav a .arr {
   font-size: 14px;
   opacity: 0.4;
@@ -177,18 +179,11 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
 }
 .sidebar-nav a:hover .arr { transform: translateX(3px); opacity: 0.8; }
 
-/* contact */
+/* contact — address removed from sidebar, email + socials only */
 .contact-block {
   margin-top: auto;
   padding-top: 20px;
   border-top: 1px solid rgba(255,255,255,0.08);
-}
-.contact-block .address {
-  font-size: 11px;
-  color: rgba(232,228,222,0.38);
-  line-height: 1.75;
-  margin-bottom: 12px;
-  font-family: var(--mono);
 }
 .contact-block .email {
   font-size: 11px;
@@ -214,6 +209,10 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   background: rgba(255,255,255,0.11);
   border-color: rgba(255,255,255,0.18);
   transform: translateY(-1px);
+}
+.social-btn:focus-visible {
+  outline: 2px solid rgba(143,175,154,0.7);
+  outline-offset: 2px;
 }
 .social-btn img {
   width: 14px; height: 14px;
@@ -254,6 +253,18 @@ main {
   background: var(--border);
   max-width: 48px;
 }
+
+/* positioning tagline — editorial anchor above bio */
+.bio-positioning {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 18px;
+}
+
 .bio-text {
   font-family: var(--serif);
   font-size: 19px;
@@ -298,6 +309,10 @@ main {
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(30,28,25,0.18);
 }
+.cv-btn:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 3px;
+}
 
 /* ─── SECTION HEADERS ────────────── */
 .content-section { margin-bottom: 72px; }
@@ -334,12 +349,13 @@ main {
   position: relative;
   overflow: hidden;
 }
+/* always-visible left border — darkens on hover */
 .paper-card::before {
   content: '';
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 3px;
-  background: var(--border-dk);
+  background: var(--sage-mid);
   transition: background 0.2s, width 0.2s;
 }
 .paper-card:hover {
@@ -360,6 +376,7 @@ main {
 }
 .paper-card:hover .paper-title { color: var(--sage); }
 .paper-title a { color: inherit; }
+.paper-title a:focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; border-radius: 1px; }
 .paper-meta {
   display: flex;
   align-items: center;
@@ -367,14 +384,15 @@ main {
   flex-wrap: wrap;
   margin-bottom: 12px;
 }
+/* under review badge — uses sage instead of gold */
 .paper-status {
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--gold);
-  background: var(--gold-lt);
-  border: 1px solid #e8dcc0;
+  color: var(--sage);
+  background: var(--sage-lt);
+  border: 1px solid #c8d9cd;
   padding: 2px 8px;
   border-radius: 2px;
 }
@@ -419,8 +437,10 @@ main {
   align-items: center;
   gap: 5px;
   transition: color 0.15s;
+  min-height: 44px;
 }
 .abstract-toggle:hover { color: var(--panel); }
+.abstract-toggle:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; border-radius: 1px; }
 .toggle-icon { transition: transform 0.25s; display: inline-block; }
 .abstract-toggle.open .toggle-icon { transform: rotate(180deg); }
 .paper-card.wip .paper-title { color: var(--ink-muted); }
@@ -479,6 +499,7 @@ main {
   margin-left: 8px;
 }
 .syllabus-link:hover { background: var(--sage-lt); border-color: #c8d9cd; }
+.syllabus-link:focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
 
 /* ─── ANIMATIONS ─────────────────── */
 .fade-up {
@@ -491,6 +512,20 @@ main {
 .d1 { animation-delay: 0.05s; }
 .d2 { animation-delay: 0.12s; }
 .d3 { animation-delay: 0.19s; }
+
+/* honour reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .toggle-icon { transition: none; }
+  .paper-card { transition: background 0.15s; }
+  .paper-card:hover { transform: none; }
+  .social-btn:hover { transform: none; }
+  .cv-btn:hover { transform: none; }
+}
 
 /* ─── RESPONSIVE ─────────────────── */
 @media (max-width: 900px) {
@@ -508,6 +543,7 @@ main {
   main { padding: 28px 16px 48px; }
   .paper-card { padding: 18px 18px; }
   .photo-hero img { max-height: 80vw; }
+  .paper-meta { flex-direction: column; align-items: flex-start; }
 }
 </style>
 </head>
@@ -541,35 +577,29 @@ main {
       </div>
 
       <!-- Navigation -->
-      <nav class="sidebar-nav">
-        <a href="#about"><span class="arr">›</span> About</a>
-        <a href="CV_Duodu_Albert.pdf"><span class="arr">›</span> Curriculum Vitae</a>
-        <a href="#trade-env"><span class="arr">›</span> Trade &amp; Environment</a>
-        <a href="#development"><span class="arr">›</span> Development</a>
-        <a href="#teaching"><span class="arr">›</span> Teaching</a>
+      <nav class="sidebar-nav" aria-label="Site navigation">
+        <a href="#about"><span class="arr" aria-hidden="true">›</span> About</a>
+        <a href="CV_Duodu_Albert.pdf"><span class="arr" aria-hidden="true">›</span> Curriculum Vitae</a>
+        <a href="#trade-env"><span class="arr" aria-hidden="true">›</span> Trade &amp; Environment</a>
+        <a href="#development"><span class="arr" aria-hidden="true">›</span> Development</a>
+        <a href="#teaching"><span class="arr" aria-hidden="true">›</span> Teaching</a>
       </nav>
 
-      <!-- Contact -->
+      <!-- Contact — address moved out; email + socials only -->
       <div class="contact-block">
-        <div class="address">
-          Department of Economics<br>
-          Aalto University<br>
-          Ekonominaukio 1<br>
-          02150 Espoo, Finland
-        </div>
         <div class="email">albert.duodu <span>[at]</span> aalto <span>dot</span> fi</div>
         <div class="socials">
-          <a href="https://github.com/albertduodu" class="social-btn" title="GitHub">
-            <img src="github.png" alt="GitHub">
+          <a href="https://github.com/albertduodu" class="social-btn" title="GitHub" aria-label="GitHub profile">
+            <img src="github.png" alt="">
           </a>
-          <a href="https://x.com/albertd_econ?lang=en" class="social-btn" title="X / Twitter">
-            <img src="x.png" alt="X">
+          <a href="https://x.com/albertd_econ?lang=en" class="social-btn" title="X / Twitter" aria-label="X / Twitter profile">
+            <img src="x.png" alt="">
           </a>
-          <a href="https://scholar.google.com/citations?user=EQT7zdYAAAAJ&hl=en" class="social-btn" title="Google Scholar">
-            <img src="google-scholar-icon.png" alt="Google Scholar">
+          <a href="https://scholar.google.com/citations?user=EQT7zdYAAAAJ&hl=en" class="social-btn" title="Google Scholar" aria-label="Google Scholar profile">
+            <img src="google-scholar-icon.png" alt="">
           </a>
-          <a href="https://www.linkedin.com/in/albert-duodu/" class="social-btn" title="LinkedIn">
-            <img src="linkedin-logo.png" alt="LinkedIn">
+          <a href="https://www.linkedin.com/in/albert-duodu/" class="social-btn" title="LinkedIn" aria-label="LinkedIn profile">
+            <img src="linkedin-logo.png" alt="">
           </a>
         </div>
       </div>
@@ -583,6 +613,7 @@ main {
     <!-- BIO -->
     <section class="bio-section fade-up" id="about">
       <div class="section-kicker">About</div>
+      <p class="bio-positioning">Trade &middot; Environment &middot; Development</p>
       <p class="bio-text">
         I am a <strong>Postdoctoral Researcher</strong> at Aalto University and the Helsinki Graduate School of Economics. I obtained my PhD in Economics from Lund University in 2024.
       </p>
@@ -599,7 +630,7 @@ main {
         <span class="area-pill">Africa</span>
       </div>
       <a href="CV_Duodu_Albert.pdf" class="cv-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         Download CV
       </a>
     </section>
@@ -618,8 +649,8 @@ main {
           <div class="paper-abstract" id="abs1">
             Production in manufacturing firms in high income countries is generally becoming cleaner. Some of this trend has been shown to be due to adoption of new technologies, but carbon offshoring — i.e. when dirty production at home is replaced with imports of carbon-intensive products from abroad — may be an additional factor. If so, this is concerning, since it risks undermining climate policies by simply moving emissions to countries with laxer regulations. Leveraging rich Swedish firm-product level data between 2005–2014, and employing a combination of shift-share instrumental variables and a difference-in-difference estimation approach, I find a compelling paradox: a 10% increase in the import of emission-intensive goods can result in firms' production processes becoming 5% cleaner but increases transport emissions by 2%. This suggests that carbon offshoring does not only shift emissions elsewhere but also generates new ones via transportation. Additionally, I show that the type of offshoring, such as foreign direct investment (FDI), has a much larger emissions-reducing effect than offshoring in the form of imports of inputs not produced in-firm.
           </div>
-          <button class="abstract-toggle" onclick="toggleAbstract('abs1', this)">
-            <span class="toggle-icon">▾</span> Abstract
+          <button class="abstract-toggle" onclick="toggleAbstract('abs1', this)" aria-expanded="false" aria-controls="abs1">
+            <span class="toggle-icon" aria-hidden="true">▾</span> Abstract
           </button>
         </div>
 
@@ -632,8 +663,8 @@ main {
           <div class="paper-abstract" id="abs2">
             We examine how local import competition — measured across different spatial dimensions within Sweden — affects the CO₂ emission intensity of manufacturing firms. Leveraging detailed geographic data on the location of all Swedish manufacturing firms, we provide evidence that increased local import competition leads to lower emissions at the firm level, with the effect diminishing as the distance between producers and importers increases. Our findings indicate that relying on national-level measures of import competition may significantly underestimate the true environmental impact of trade shocks. We identify two primary mechanisms: (i) a pro-competitive efficiency-enhancing effect, where firms experience gains in total factor productivity, increasing value-added, lower marginal costs, and higher markups; and (ii) a product-mix effect, where firms reallocate production away from emission-intensive goods toward cleaner alternatives. Additionally, we find some evidence of firms relying on carbon offshoring as a response to import competition, as well as investment in pollution abatement, suggesting firms adopt a mix of strategies to deal with increasing import competition.
           </div>
-          <button class="abstract-toggle" onclick="toggleAbstract('abs2', this)">
-            <span class="toggle-icon">▾</span> Abstract
+          <button class="abstract-toggle" onclick="toggleAbstract('abs2', this)" aria-expanded="false" aria-controls="abs2">
+            <span class="toggle-icon" aria-hidden="true">▾</span> Abstract
           </button>
         </div>
 
@@ -643,8 +674,8 @@ main {
           <div class="paper-abstract" id="abs3">
             Although raising the carbon price is an effective tool for decreasing reliance on carbon-intensive production sources, it has also raised substantial concerns among policymakers that higher energy costs will render manufacturing firms less competitive and potentially lead to increased consumer prices. Using detailed firm-level data from 2006 to 2014 and a novel combination of shift-share instruments and dynamic difference-in-differences estimation, I identify the causal impact of energy prices on energy consumption, CO₂ emissions, productivity, employment, and cost pass-through. I find that a 10% increase in energy prices leads to an 8.6% reduction in energy use and a 5.9% decline in emissions, highlighting the effectiveness of energy taxation in promoting environmental goals. However, higher prices also reduce firm-level productivity by 2% and employment by 3%, especially among high-skilled workers. I also find evidence of partial cost pass-through to consumers, with a 10% marginal cost increase resulting in a 2% rise in output prices. Overall, the results provide new micro-level evidence that the economic incidence of energy pricing is heterogeneous, and the trade-off between environmental and economic goals is far from straightforward.
           </div>
-          <button class="abstract-toggle" onclick="toggleAbstract('abs3', this)">
-            <span class="toggle-icon">▾</span> Abstract
+          <button class="abstract-toggle" onclick="toggleAbstract('abs3', this)" aria-expanded="false" aria-controls="abs3">
+            <span class="toggle-icon" aria-hidden="true">▾</span> Abstract
           </button>
         </div>
 
@@ -748,13 +779,24 @@ function toggleAbstract(id, btn) {
   const el = document.getElementById(id);
   const isOpen = el.classList.toggle('expanded');
   btn.classList.toggle('open', isOpen);
+  btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   btn.querySelector('.toggle-icon').textContent = isOpen ? '▴' : '▾';
 }
+
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.style.animationPlayState = 'running'; io.unobserve(e.target); } });
 }, { threshold: 0.06 });
-document.querySelectorAll('.fade-up').forEach(el => { el.style.animationPlayState = 'paused'; io.observe(el); });
+document.querySelectorAll('.fade-up').forEach(el => {
+  if (prefersReduced) {
+    el.style.opacity = 1;
+    el.style.transform = 'none';
+  } else {
+    el.style.animationPlayState = 'paused';
+    io.observe(el);
+  }
+});
 
 const secs = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.sidebar-nav a');
@@ -765,6 +807,7 @@ window.addEventListener('scroll', () => {
     const active = a.getAttribute('href') === '#' + cur;
     a.style.background = active ? 'rgba(255,255,255,0.07)' : '';
     a.style.color = active ? '#f5f0ea' : '';
+    a.setAttribute('aria-current', active ? 'true' : 'false');
   });
 }, { passive: true });
 </script>
