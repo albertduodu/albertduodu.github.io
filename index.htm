@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Albert Duodu — Economist</title>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Removed unused italic/600 Garamond weights; kept only what is rendered -->
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ─── TOKENS ─────────────────────── */
 :root {
@@ -14,7 +15,7 @@
   --border-dk: #c8c2b8;
   --ink:       #1c1a17;
   --ink-soft:  #4a4540;
-  --ink-muted: #8c867e;
+  --ink-muted: #6b6560;   /* bumped from #8c867e → passes 4.5:1 on --bg */
   --panel:     #1e1c19;
   --panel-mid: #2a2721;
   --sage:      #3d5c48;
@@ -34,7 +35,8 @@ body {
   color: var(--ink);
   line-height: 1.7;
   min-height: 100vh;
-  overflow: hidden; /* no page scroll — tabs handle their own scroll */
+  /* Scoped overflow: body never scrolls; panels and sidebar handle their own */
+  overflow: hidden;
 }
 a { color: inherit; text-decoration: none; }
 
@@ -44,15 +46,15 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 9999;
-  opacity: 0.022;
+  z-index: 900;   /* lowered from 9999 so browser UI layers above it */
+  opacity: 0.018;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
-/* ─── SHELL — sidebar + right column ── */
+/* ─── SHELL ──────────────────────── */
 .shell {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 260px 1fr;  /* narrowed 280→260 to give content more room */
   height: 100vh;
   overflow: hidden;
 }
@@ -62,6 +64,8 @@ aside {
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.12) transparent;
   background: var(--panel);
   color: #e8e4de;
   display: flex;
@@ -70,41 +74,45 @@ aside {
   flex-shrink: 0;
 }
 aside::-webkit-scrollbar { width: 3px; }
-aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); }
 
-/* photo */
+/* ── PHOTO ── */
 .photo-hero { position: relative; width: 100%; flex-shrink: 0; }
 .photo-hero img { width: 100%; height: auto; display: block; }
 .photo-hero::after {
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 55%;
-  background: linear-gradient(to bottom, transparent 0%, rgba(30,28,25,0.6) 50%, rgba(30,28,25,1) 100%);
+  height: 60%;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    rgba(30,28,25,0.5) 45%,
+    rgba(30,28,25,1) 100%);
   pointer-events: none;
 }
 .photo-hero-name {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  padding: 24px 28px 20px;
+  padding: 24px 24px 18px;
   z-index: 2;
 }
 .photo-hero-name h1 {
   font-family: var(--serif);
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 500;
   color: #f5f0ea;
   line-height: 1.1;
   letter-spacing: -0.2px;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 .photo-hero-name .role {
-  font-size: 11px;
-  color: rgba(232,228,222,0.55);
-  letter-spacing: 1.8px;
+  font-size: 10.5px;
+  /* FIX: raised opacity from 0.55 → 0.85 for better contrast on dark bg */
+  color: rgba(232,228,222,0.85);
+  letter-spacing: 1.6px;
   text-transform: uppercase;
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* sidebar body */
@@ -112,11 +120,11 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 20px 24px 32px;
+  padding: 18px 22px 28px;
 }
 
 /* logos */
-.logos { display: flex; gap: 8px; margin-bottom: 24px; padding-top: 4px; }
+.logos { display: flex; gap: 8px; margin-bottom: 22px; padding-top: 2px; }
 .logo-wrap {
   width: 40px; height: 40px;
   border-radius: 5px;
@@ -127,17 +135,18 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   overflow: hidden;
 }
 .logo-wrap:hover { background: rgba(255,255,255,0.14); }
-.logo-wrap:focus-visible { outline: 2px solid rgba(143,175,154,0.7); outline-offset: 2px; }
-.logo-wrap img { width: 32px; height: 32px; object-fit: contain; }
+.logo-wrap:focus-visible { outline: 2px solid rgba(143,175,154,0.8); outline-offset: 2px; }
+.logo-wrap img { width: 30px; height: 30px; object-fit: contain; }
 
-/* ── SIDEBAR TAB NAV ── */
+/* ── SIDEBAR NAV — plain nav links (not tabs; tabs live in top bar) ── */
 .sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 1px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
-.sidebar-nav button {
+/* shared style for both <button> and <a> items */
+.nav-item {
   display: flex;
   align-items: center;
   gap: 9px;
@@ -146,87 +155,73 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   font-family: var(--sans);
   font-size: 12.5px;
   font-weight: 500;
-  color: rgba(232,228,222,0.6);
+  /* FIX: raised from 0.6 → 0.75 for better legibility */
+  color: rgba(232,228,222,0.75);
   background: none;
   border: none;
   cursor: pointer;
   text-align: left;
   width: 100%;
-  transition: all 0.15s;
+  transition: background 0.15s, color 0.15s;
   letter-spacing: 0.2px;
+  text-decoration: none;
 }
-.sidebar-nav button:hover {
-  background: rgba(255,255,255,0.06);
+.nav-item:hover {
+  background: rgba(255,255,255,0.07);
   color: #f5f0ea;
 }
-.sidebar-nav button:focus-visible {
-  outline: 2px solid rgba(143,175,154,0.7);
+.nav-item:focus-visible {
+  outline: 2px solid rgba(143,175,154,0.8);
   outline-offset: 1px;
   color: #f5f0ea;
 }
-.sidebar-nav button .arr {
-  font-size: 14px;
-  opacity: 0.35;
+.nav-item .arr {
+  font-size: 13px;
+  opacity: 0.4;
+  flex-shrink: 0;
   transition: transform 0.15s, opacity 0.15s;
 }
-.sidebar-nav button:hover .arr { transform: translateX(3px); opacity: 0.75; }
-/* active tab state */
-.sidebar-nav button[aria-selected="true"] {
+.nav-item:hover .arr { transform: translateX(3px); opacity: 0.8; }
+/* active state — left border accent */
+.nav-item.active {
   background: rgba(255,255,255,0.09);
   color: #f5f0ea;
+  border-left: 2px solid var(--sage-mid);
+  padding-left: 8px; /* compensate for border */
 }
-.sidebar-nav button[aria-selected="true"] .arr {
-  opacity: 0.85;
-  color: var(--sage-mid);
-  transform: translateX(2px);
-}
-/* CV link stays as a regular <a> */
-.sidebar-nav a {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 9px 10px;
-  border-radius: 3px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: rgba(232,228,222,0.6);
-  transition: all 0.15s;
-  letter-spacing: 0.2px;
-}
-.sidebar-nav a:hover { background: rgba(255,255,255,0.06); color: #f5f0ea; }
-.sidebar-nav a:focus-visible { outline: 2px solid rgba(143,175,154,0.7); outline-offset: 1px; }
-.sidebar-nav a .arr { font-size: 14px; opacity: 0.35; transition: transform 0.15s, opacity 0.15s; }
-.sidebar-nav a:hover .arr { transform: translateX(3px); opacity: 0.75; }
+.nav-item.active .arr { opacity: 0.9; color: var(--sage-mid); transform: translateX(2px); }
 
 /* contact block */
 .contact-block {
   margin-top: auto;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.09);
 }
+/* FIX: email raised opacity 0.55 → 0.80 for better contrast */
 .contact-block .email {
   font-size: 11px;
-  color: rgba(232,228,222,0.55);
+  color: rgba(232,228,222,0.80);
   font-family: var(--mono);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
-.contact-block .email span { color: rgba(232,228,222,0.3); }
+.contact-block .email span { color: rgba(232,228,222,0.45); }
 
-.socials { display: flex; gap: 8px; }
+.socials { display: flex; gap: 8px; flex-wrap: wrap; }
 .social-btn {
-  width: 30px; height: 30px;
+  width: 32px; height: 32px;  /* FIX: 30→32 for better tap target */
   border-radius: 3px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
   display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
 }
-.social-btn:hover { background: rgba(255,255,255,0.11); border-color: rgba(255,255,255,0.18); transform: translateY(-1px); }
-.social-btn:focus-visible { outline: 2px solid rgba(143,175,154,0.7); outline-offset: 2px; }
-.social-btn img { width: 14px; height: 14px; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.5; transition: opacity 0.15s; }
-.social-btn:hover img { opacity: 0.85; }
+.social-btn:hover { background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
+.social-btn:focus-visible { outline: 2px solid rgba(143,175,154,0.8); outline-offset: 2px; }
+/* FIX: raised social icon opacity 0.5 → 0.72 */
+.social-btn img { width: 14px; height: 14px; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.72; transition: opacity 0.15s; }
+.social-btn:hover img { opacity: 1; }
 
-/* ─── RIGHT COLUMN — tab panels ──── */
+/* ─── RIGHT COLUMN ───────────────── */
 .tab-area {
   display: flex;
   flex-direction: column;
@@ -234,31 +229,36 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   overflow: hidden;
 }
 
-/* top tab bar */
+/* ── TOP TAB BAR ── */
 .tab-bar {
   display: flex;
   align-items: stretch;
-  gap: 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--border);
   background: var(--bg);
   flex-shrink: 0;
-  padding: 0 48px;
-  padding-top: 20px;
+  padding: 0 52px;
+  padding-top: 18px;
+  gap: 4px;
 }
 .tab-bar button {
   font-family: var(--sans);
   font-size: 12.5px;
   font-weight: 500;
   letter-spacing: 0.3px;
-  color: var(--ink-muted);
+  /* FIX: raised from --ink-muted to a darker value for contrast */
+  color: #5a5550;
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  padding: 10px 20px 12px;
+  padding: 10px 18px 12px;
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
-  margin-bottom: -1px; /* sit on the border-bottom */
+  margin-bottom: -2px; /* sit flush on border */
   white-space: nowrap;
+  /* FIX: min-height for 44px tap target */
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 .tab-bar button:hover { color: var(--ink); }
 .tab-bar button:focus-visible { outline: 2px solid var(--sage); outline-offset: -2px; border-radius: 2px 2px 0 0; }
@@ -268,7 +268,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   font-weight: 600;
 }
 
-/* count bubble on tabs */
+/* count badge */
 .tab-count {
   display: inline-flex;
   align-items: center;
@@ -281,8 +281,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   background: var(--surface);
   color: var(--ink-muted);
   border: 1px solid var(--border);
-  margin-left: 7px;
-  vertical-align: middle;
+  margin-left: 6px;
   transition: background 0.15s, color 0.15s;
 }
 .tab-bar button[aria-selected="true"] .tab-count {
@@ -291,7 +290,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   border-color: #c8d9cd;
 }
 
-/* panels container — scrollable */
+/* ── PANELS ── */
 .panels {
   flex: 1;
   overflow: hidden;
@@ -301,11 +300,14 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   position: absolute;
   inset: 0;
   overflow-y: auto;
-  padding: 52px 64px 80px;
+  /* FIX: unified horizontal padding 64px → 52px to align with tab bar */
+  padding: 48px 52px 80px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-dk) transparent;
   opacity: 0;
   pointer-events: none;
   transform: translateY(10px);
-  transition: opacity 0.22s ease, transform 0.22s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 .tab-panel.active {
   opacity: 1;
@@ -315,33 +317,28 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
 .tab-panel::-webkit-scrollbar { width: 5px; }
 .tab-panel::-webkit-scrollbar-thumb { background: var(--border-dk); border-radius: 4px; }
 
-/* ─── BIO / ABOUT PANEL ─────────── */
+/* ── ABOUT PANEL ── */
 .bio-positioning {
   font-family: var(--sans);
   font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--sage);
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 .bio-text {
   font-family: var(--serif);
-  font-size: 19px;
-  line-height: 1.8;
+  /* FIX: 19px → 17px; 19px Garamond is visually ~22px, too large */
+  font-size: 17px;
+  line-height: 1.82;
   color: var(--ink-soft);
-  max-width: 660px;
+  max-width: 680px;
 }
-.bio-text + .bio-text { margin-top: 18px; }
+.bio-text + .bio-text { margin-top: 16px; }
 .bio-text strong { color: var(--ink); font-weight: 500; }
 
-.research-areas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 28px;
-  max-width: 660px;
-}
+.research-areas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; max-width: 680px; }
 .area-pill {
   font-size: 11.5px;
   font-weight: 500;
@@ -353,12 +350,12 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   letter-spacing: 0.3px;
 }
 
-/* CV inline section within About tab */
+/* CV sub-section */
 .cv-section {
-  margin-top: 44px;
-  padding-top: 36px;
+  margin-top: 40px;
+  padding-top: 32px;
   border-top: 1px solid var(--border);
-  max-width: 660px;
+  max-width: 680px;
 }
 .cv-section-label {
   font-family: var(--mono);
@@ -366,14 +363,14 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--sage);
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .cv-desc {
   font-family: var(--serif);
-  font-size: 16px;
+  font-size: 15.5px;
   line-height: 1.7;
   color: var(--ink-soft);
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 .cv-btn {
   display: inline-flex;
@@ -386,36 +383,36 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.5px;
-  transition: all 0.18s;
+  transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
   border: 1px solid rgba(30,28,25,0.8);
 }
 .cv-btn:hover { background: var(--panel-mid); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(30,28,25,0.18); }
 .cv-btn:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
 
-/* contact row inside About */
 .contact-row {
-  margin-top: 28px;
+  margin-top: 24px;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--ink-muted);
   line-height: 2;
 }
 .contact-row a { color: var(--sage); }
 .contact-row a:hover { text-decoration: underline; }
 
-/* ─── SECTION HEADERS (papers/teaching) ── */
+/* ── SECTION HEADERS ── */
+/* FIX: unified max-width 760px for both headers and content */
 .section-title {
   font-family: var(--serif);
   font-size: 21px;
   font-weight: 500;
   color: var(--ink);
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   display: flex;
   align-items: baseline;
   gap: 14px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
-  max-width: 760px;
+  max-width: 720px;
 }
 .section-title .title-tag {
   font-family: var(--mono);
@@ -427,13 +424,13 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   margin-left: auto;
 }
 
-/* ─── PAPER CARDS ────────────────── */
-.papers { display: flex; flex-direction: column; gap: 1px; max-width: 760px; margin-bottom: 52px; }
+/* ── PAPER CARDS ── */
+.papers { display: flex; flex-direction: column; gap: 1px; max-width: 720px; margin-bottom: 48px; }
 .paper-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  padding: 24px 28px;
-  transition: all 0.2s;
+  padding: 22px 26px;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
   position: relative;
   overflow: hidden;
 }
@@ -445,21 +442,40 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   background: var(--sage-mid);
   transition: background 0.2s, width 0.2s;
 }
-.paper-card:hover { background: #fff; border-color: var(--border-dk); box-shadow: 0 2px 16px rgba(28,26,23,0.06); transform: translateX(2px); }
+.paper-card:hover { background: #fff; border-color: var(--border-dk); box-shadow: 0 2px 16px rgba(28,26,23,0.07); transform: translateX(2px); }
 .paper-card:hover::before { background: var(--sage); width: 4px; }
+
 .paper-title {
   font-family: var(--serif);
-  font-size: 17.5px;
+  font-size: 17px;
   font-weight: 500;
   color: var(--ink);
-  line-height: 1.4;
-  margin-bottom: 6px;
+  line-height: 1.42;
+  margin-bottom: 7px;
   transition: color 0.15s;
 }
 .paper-card:hover .paper-title { color: var(--sage); }
 .paper-title a { color: inherit; }
 .paper-title a:focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; border-radius: 1px; }
-.paper-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+
+/* JMP badge */
+.jmp-badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--sage);
+  padding: 2px 7px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-left: 8px;
+  position: relative;
+  top: -1px;
+}
+
+.paper-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
 .paper-status {
   font-family: var(--mono);
   font-size: 10px;
@@ -471,8 +487,9 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   padding: 2px 8px;
   border-radius: 2px;
 }
+/* FIX: "with" moved to HTML so it appears in print/screen readers */
 .paper-coauth { font-size: 12.5px; color: var(--ink-muted); font-style: italic; }
-.paper-coauth::before { content: 'with '; }
+
 .paper-abstract {
   font-size: 13.5px;
   color: var(--ink-soft);
@@ -482,19 +499,20 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   max-height: 3.5em;
   transition: max-height 0.4s ease;
 }
-.paper-abstract.expanded { max-height: 700px; }
+.paper-abstract.expanded { max-height: 800px; }
 .paper-abstract::after {
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 1.5em;
+  height: 1.6em;
   background: linear-gradient(transparent, var(--surface));
   transition: opacity 0.3s;
 }
-.paper-abstract.expanded::after { opacity: 0; }
+.paper-abstract.expanded::after { opacity: 0; pointer-events: none; }
 .paper-card:hover .paper-abstract::after { background: linear-gradient(transparent, #fff); }
+
 .abstract-toggle {
-  margin-top: 10px;
+  margin-top: 8px;
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 1.5px;
@@ -503,18 +521,20 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   cursor: pointer;
   border: none;
   background: none;
-  padding: 4px 0;
+  padding: 6px 0;
   display: flex;
   align-items: center;
   gap: 5px;
   transition: color 0.15s;
-  min-height: 44px;
+  min-height: 44px;   /* accessible tap target */
 }
 .abstract-toggle:hover { color: var(--panel); }
 .abstract-toggle:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; border-radius: 1px; }
-.toggle-icon { transition: transform 0.25s; display: inline-block; }
+.toggle-icon { transition: transform 0.22s; display: inline-block; }
 .abstract-toggle.open .toggle-icon { transform: rotate(180deg); }
-.paper-card.wip .paper-title { color: var(--ink-muted); }
+
+/* FIX: WIP titles use --ink-soft (readable) not --ink-muted (too faint) */
+.paper-card.wip .paper-title { color: var(--ink-soft); }
 .wip-badge {
   font-family: var(--mono);
   font-size: 10px;
@@ -527,8 +547,8 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   border-radius: 2px;
 }
 
-/* ─── TEACHING ───────────────────── */
-.teaching-list { display: flex; flex-direction: column; gap: 1px; max-width: 760px; }
+/* ── TEACHING ── */
+.teaching-list { display: flex; flex-direction: column; gap: 1px; max-width: 720px; }
 .teaching-item {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -540,10 +560,16 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   transition: background 0.15s;
 }
 .teaching-item:hover { background: #fff; }
-.teaching-item.past { opacity: 0.5; }
-.teaching-item.past:hover { opacity: 0.65; }
+
+/* FIX: removed opacity:0.5 on past items — strikethrough alone signals past status */
+.teaching-item.past .t-name {
+  text-decoration: line-through;
+  text-decoration-color: var(--border-dk);
+  color: var(--ink-muted);
+}
+.teaching-item.past .t-inst { color: var(--ink-muted); }
+
 .t-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
-.teaching-item.past .t-name { text-decoration: line-through; text-decoration-color: var(--border-dk); }
 .t-inst { font-size: 12px; color: var(--ink-muted); font-family: var(--mono); }
 .t-tag {
   font-family: var(--mono);
@@ -553,6 +579,8 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   padding: 3px 9px;
   border-radius: 2px;
   white-space: nowrap;
+  align-self: start;
+  margin-top: 2px;
 }
 .t-tag.current { background: var(--sage-lt); color: var(--sage); border: 1px solid #c8d9cd; }
 .t-tag.past-tag { background: var(--surface); color: var(--ink-muted); border: 1px solid var(--border-dk); }
@@ -565,21 +593,22 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   border: 1px solid var(--sage-lt);
   padding: 3px 9px;
   border-radius: 2px;
-  transition: all 0.15s;
+  transition: background 0.15s, border-color 0.15s;
   display: inline-block;
   margin-left: 8px;
 }
 .syllabus-link:hover { background: var(--sage-lt); border-color: #c8d9cd; }
 .syllabus-link:focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
 
-/* ─── FADE-IN ON TAB SWITCH ──────── */
+/* ─── ANIMATIONS ─────────────────── */
 @keyframes panelIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-.tab-panel.active { animation: panelIn 0.22s ease forwards; }
+/* Note: transition handles inactive→active; animation runs on activation for the 'pop' */
+.tab-panel.active { animation: panelIn 0.2s ease forwards; }
 
 /* ─── REDUCED MOTION ─────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .tab-panel { transition: none; }
-  .tab-panel.active { animation: none; }
+  .tab-panel { transition: none; animation: none; }
+  .tab-panel.active { animation: none; opacity: 1; transform: none; }
   .toggle-icon { transition: none; }
   .paper-card { transition: background 0.1s; }
   .paper-card:hover { transform: none; }
@@ -587,12 +616,24 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   .cv-btn:hover { transform: none; }
 }
 
-/* ─── RESPONSIVE — mobile stack ──── */
+/* ─── RESPONSIVE ── 860px breakpoint ── */
 @media (max-width: 860px) {
   body { overflow: auto; }
   .shell { grid-template-columns: 1fr; height: auto; overflow: visible; }
+
   aside { height: auto; position: relative; }
-  .photo-hero img { max-height: 75vw; object-fit: cover; object-position: center 20%; }
+
+  /* FIX: better face framing on mobile */
+  .photo-hero img {
+    max-height: 72vw;
+    width: 100%;
+    object-fit: cover;
+    object-position: center 22%;
+  }
+
+  /* FIX: hide the sidebar nav on mobile — top tab bar is sufficient */
+  .sidebar-nav { display: none; }
+
   .tab-area { height: auto; overflow: visible; }
   .panels { overflow: visible; position: static; height: auto; }
   .tab-panel {
@@ -601,17 +642,49 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
     pointer-events: auto;
     transform: none;
     display: none;
-    padding: 32px 24px 56px;
+    padding: 28px 20px 52px;
+    animation: none !important;
   }
-  .tab-panel.active { display: block; animation: none; }
-  .tab-bar { padding: 0 20px; padding-top: 16px; overflow-x: auto; }
-  .tab-bar button { padding: 9px 14px 11px; font-size: 12px; }
+  .tab-panel.active { display: block; }
+
+  /* FIX: scrollable tab bar with a right fade to hint at overflow */
+  .tab-bar {
+    padding: 0 0 0 16px;
+    padding-top: 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* right fade affordance */
+    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-bar button {
+    padding: 8px 16px 10px;
+    font-size: 12px;
+    min-height: 44px;  /* maintained for touch targets */
+  }
+
+  .bio-text { font-size: 16px; }
+  .section-title { font-size: 19px; }
 }
+
+/* ─── RESPONSIVE ── 480px breakpoint ── */
 @media (max-width: 480px) {
-  .tab-panel { padding: 24px 16px 48px; }
-  .paper-card { padding: 18px 16px; }
-  .paper-meta { flex-direction: column; align-items: flex-start; }
-  .section-title { font-size: 18px; }
+  .tab-panel { padding: 22px 14px 44px; }
+  .paper-card { padding: 16px 14px; }
+  .paper-meta { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .bio-text { font-size: 15.5px; }
+
+  /* FIX: teaching items stack vertically on small phones */
+  .teaching-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .t-tag {
+    align-self: auto;
+    width: fit-content;
+  }
+  .syllabus-link { margin-left: 0; margin-top: 4px; display: inline-block; }
 }
 </style>
 </head>
@@ -622,7 +695,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   <!-- ─── SIDEBAR ─── -->
   <aside>
     <div class="photo-hero">
-      <img src="Albert_pic.png" alt="Albert Duodu">
+      <img src="Albert_pic.png" alt="Albert Duodu" width="280" height="340">
       <div class="photo-hero-name">
         <h1>Albert Duodu</h1>
         <div class="role">Postdoctoral Researcher<br>Aalto · Helsinki GSE</div>
@@ -633,43 +706,48 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
 
       <div class="logos">
         <a href="https://www.aalto.fi/en/department-of-economics/" class="logo-wrap" title="Aalto University">
-          <img src="iheid_1.png" alt="Aalto University">
+          <img src="iheid_1.png" alt="Aalto University" width="30" height="30">
         </a>
         <a href="https://www.helsinkigse.fi" class="logo-wrap" title="Helsinki GSE">
-          <img src="iheid_2.jpeg" alt="Helsinki GSE">
+          <img src="iheid_2.jpeg" alt="Helsinki GSE" width="30" height="30">
         </a>
       </div>
 
-      <!-- Tab trigger buttons (sidebar mirrors the top tab bar) -->
+      <!-- Sidebar nav mirrors top tab bar — hidden on mobile (redundant) -->
       <nav class="sidebar-nav" aria-label="Site sections">
-        <button onclick="switchTab('about')" id="side-about" aria-selected="true" role="tab">
+        <button class="nav-item active" onclick="switchTab('about')"    id="side-about"    aria-controls="panel-about">
           <span class="arr" aria-hidden="true">›</span> About &amp; CV
         </button>
-        <button onclick="switchTab('trade')" id="side-trade" aria-selected="false" role="tab">
+        <button class="nav-item" onclick="switchTab('trade')"   id="side-trade"    aria-controls="panel-trade">
           <span class="arr" aria-hidden="true">›</span> Trade &amp; Environment
         </button>
-        <button onclick="switchTab('dev')" id="side-dev" aria-selected="false" role="tab">
+        <button class="nav-item" onclick="switchTab('dev')"     id="side-dev"      aria-controls="panel-dev">
           <span class="arr" aria-hidden="true">›</span> Development
         </button>
-        <button onclick="switchTab('teaching')" id="side-teaching" aria-selected="false" role="tab">
+        <button class="nav-item" onclick="switchTab('teaching')" id="side-teaching" aria-controls="panel-teaching">
           <span class="arr" aria-hidden="true">›</span> Teaching
         </button>
       </nav>
 
       <div class="contact-block">
-        <div class="email">albert.duodu <span>[at]</span> aalto <span>dot</span> fi</div>
+        <!-- Plain email (obfuscation dropped — mailto: link in About panel is the real contact) -->
+        <div class="email">albert.duodu<span>@</span>aalto.fi</div>
         <div class="socials">
           <a href="https://github.com/albertduodu" class="social-btn" aria-label="GitHub profile">
-            <img src="github.png" alt="">
+            <img src="github.png" alt="" width="14" height="14">
           </a>
           <a href="https://x.com/albertd_econ?lang=en" class="social-btn" aria-label="X / Twitter profile">
-            <img src="x.png" alt="">
+            <img src="x.png" alt="" width="14" height="14">
           </a>
           <a href="https://scholar.google.com/citations?user=EQT7zdYAAAAJ&hl=en" class="social-btn" aria-label="Google Scholar profile">
-            <img src="google-scholar-icon.png" alt="">
+            <img src="google-scholar-icon.png" alt="" width="14" height="14">
           </a>
           <a href="https://www.linkedin.com/in/albert-duodu/" class="social-btn" aria-label="LinkedIn profile">
-            <img src="linkedin-logo.png" alt="">
+            <img src="linkedin-logo.png" alt="" width="14" height="14">
+          </a>
+          <!-- CV quick-link always accessible from sidebar -->
+          <a href="CV_Duodu_Albert.pdf" class="social-btn" aria-label="Download CV (PDF)" title="Download CV">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:0.72"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
           </a>
         </div>
       </div>
@@ -680,7 +758,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   <!-- ─── RIGHT COLUMN ─── -->
   <div class="tab-area">
 
-    <!-- Top tab bar -->
+    <!-- Top tab bar (authoritative ARIA tablist) -->
     <div class="tab-bar" role="tablist" aria-label="Content sections">
       <button role="tab" id="tab-about"    aria-selected="true"  aria-controls="panel-about"    onclick="switchTab('about')">
         About &amp; CV
@@ -696,8 +774,8 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
       </button>
     </div>
 
-    <!-- ── PANELS ── -->
-    <div class="panels">
+    <!-- panels -->
+    <main class="panels">
 
       <!-- ABOUT & CV -->
       <section class="tab-panel active" id="panel-about" role="tabpanel" aria-labelledby="tab-about" tabindex="0">
@@ -718,12 +796,9 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
           <span class="area-pill">Africa</span>
         </div>
 
-        <!-- CV sub-section -->
         <div class="cv-section">
           <div class="cv-section-label">Curriculum Vitae</div>
-          <p class="cv-desc">
-            Full academic CV covering research, teaching, education, and affiliations.
-          </p>
+          <p class="cv-desc">Full academic CV covering research, teaching, education, and affiliations.</p>
           <a href="CV_Duodu_Albert.pdf" class="cv-btn">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Download CV
@@ -737,15 +812,18 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
 
       <!-- TRADE & ENVIRONMENT -->
       <section class="tab-panel" id="panel-trade" role="tabpanel" aria-labelledby="tab-trade" tabindex="0">
-
         <div class="section-title">
           Working Papers — Trade &amp; Environment
           <span class="title-tag">4 papers</span>
         </div>
         <div class="papers">
 
+          <!-- JMP: explicit badge added -->
           <div class="paper-card">
-            <div class="paper-title"><a href="Albert_JMP.pdf">Carbon Offshoring and Manufacturing Cleanup</a></div>
+            <div class="paper-title">
+              <a href="Albert_JMP.pdf">Carbon Offshoring and Manufacturing Cleanup</a>
+              <span class="jmp-badge">Job Market Paper</span>
+            </div>
             <div class="paper-meta"><span class="paper-status">Under Review</span></div>
             <div class="paper-abstract" id="abs1">
               Production in manufacturing firms in high income countries is generally becoming cleaner. Some of this trend has been shown to be due to adoption of new technologies, but carbon offshoring — i.e. when dirty production at home is replaced with imports of carbon-intensive products from abroad — may be an additional factor. If so, this is concerning, since it risks undermining climate policies by simply moving emissions to countries with laxer regulations. Leveraging rich Swedish firm-product level data between 2005–2014, and employing a combination of shift-share instrumental variables and a difference-in-difference estimation approach, I find a compelling paradox: a 10% increase in the import of emission-intensive goods can result in firms' production processes becoming 5% cleaner but increases transport emissions by 2%. This suggests that carbon offshoring does not only shift emissions elsewhere but also generates new ones via transportation. Additionally, I show that the type of offshoring, such as foreign direct investment (FDI), has a much larger emissions-reducing effect than offshoring in the form of imports of inputs not produced in-firm.
@@ -759,7 +837,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
             <div class="paper-title"><a href="IC_emissions.pdf">Greener Under Pressure? The Local Geography of Import Competition and Emissions in Swedish Manufacturing</a></div>
             <div class="paper-meta">
               <span class="paper-status">Under Review</span>
-              <span class="paper-coauth">Zoheir El-Sahli</span>
+              <span class="paper-coauth">with Zoheir El-Sahli</span>
             </div>
             <div class="paper-abstract" id="abs2">
               We examine how local import competition — measured across different spatial dimensions within Sweden — affects the CO₂ emission intensity of manufacturing firms. Leveraging detailed geographic data on the location of all Swedish manufacturing firms, we provide evidence that increased local import competition leads to lower emissions at the firm level, with the effect diminishing as the distance between producers and importers increases. Our findings indicate that relying on national-level measures of import competition may significantly underestimate the true environmental impact of trade shocks. We identify two primary mechanisms: (i) a pro-competitive efficiency-enhancing effect, where firms experience gains in total factor productivity, increasing value-added, lower marginal costs, and higher markups; and (ii) a product-mix effect, where firms reallocate production away from emission-intensive goods toward cleaner alternatives. Additionally, we find some evidence of firms relying on carbon offshoring as a response to import competition, as well as investment in pollution abatement, suggesting firms adopt a mix of strategies to deal with increasing import competition.
@@ -784,7 +862,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
             <div class="paper-title">Who Bears the Carbon Border? Optimal Differentiation and Spatial Reallocation under the EU CBAM</div>
             <div class="paper-meta">
               <span class="wip-badge">In Progress</span>
-              <span class="paper-coauth">Matti Liski</span>
+              <span class="paper-coauth">with Matti Liski</span>
             </div>
           </div>
 
@@ -793,7 +871,6 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
 
       <!-- DEVELOPMENT -->
       <section class="tab-panel" id="panel-dev" role="tabpanel" aria-labelledby="tab-dev" tabindex="0">
-
         <div class="section-title">
           Working Papers — Development Economics
           <span class="title-tag">4 papers</span>
@@ -809,7 +886,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
             <div class="paper-title">From Side Hustles to Structural Change: Gig Platforms and Labor Market Dynamics in Africa</div>
             <div class="paper-meta">
               <span class="wip-badge">In Progress</span>
-              <span class="paper-coauth">Emmanuel Quarshie, Kingsley Laar, Emmanuel Ansah Otabil &amp; James Baduor</span>
+              <span class="paper-coauth">with Emmanuel Quarshie, Kingsley Laar, Emmanuel Ansah Otabil &amp; James Baduor</span>
             </div>
           </div>
 
@@ -817,7 +894,7 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
             <div class="paper-title">Illegal Mining, Weather, and Firm Adaptation: Evidence from Ghana's Galamsey Zones</div>
             <div class="paper-meta">
               <span class="wip-badge">In Progress</span>
-              <span class="paper-coauth">Michael Danquah &amp; Emmanuel Quarshie</span>
+              <span class="paper-coauth">with Michael Danquah &amp; Emmanuel Quarshie</span>
             </div>
           </div>
 
@@ -831,7 +908,6 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
 
       <!-- TEACHING -->
       <section class="tab-panel" id="panel-teaching" role="tabpanel" aria-labelledby="tab-teaching" tabindex="0">
-
         <div class="section-title">
           Teaching
           <span class="title-tag">6 courses</span>
@@ -841,85 +917,96 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
           <div class="teaching-item">
             <div>
               <div class="t-name">Economics of Global Challenges <a href="syllabus.pdf" class="syllabus-link">Syllabus ↗</a></div>
-              <div class="t-inst">Aalto University · Spring 2025/2026</div>
+              <div class="t-inst">Aalto University · Spring 2026 (AY 2025–26)</div>
             </div>
             <span class="t-tag current">Current</span>
           </div>
 
           <div class="teaching-item past">
-            <div><div class="t-name">Advanced Trade Theory</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
+            <div><div class="t-name">Advanced Trade Theory</div><div class="t-inst">Lund University · 2021–2024</div></div>
             <span class="t-tag past-tag">Past</span>
           </div>
 
           <div class="teaching-item past">
-            <div><div class="t-name">International Trade Theory</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
+            <div><div class="t-name">International Trade Theory</div><div class="t-inst">Lund University · 2021–2024</div></div>
             <span class="t-tag past-tag">Past</span>
           </div>
 
           <div class="teaching-item past">
-            <div><div class="t-name">International Economics</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
+            <div><div class="t-name">International Economics</div><div class="t-inst">Lund University · 2021–2024</div></div>
             <span class="t-tag past-tag">Past</span>
           </div>
 
           <div class="teaching-item past">
-            <div><div class="t-name">Econometrics</div><div class="t-inst">University of Ghana · 2015 / 2017</div></div>
+            <div><div class="t-name">Econometrics</div><div class="t-inst">University of Ghana · 2015–2017</div></div>
             <span class="t-tag past-tag">Past</span>
           </div>
 
           <div class="teaching-item past">
-            <div><div class="t-name">International Economics</div><div class="t-inst">University of Ghana · 2015 / 2017</div></div>
+            <div><div class="t-name">International Economics</div><div class="t-inst">University of Ghana · 2015–2017</div></div>
             <span class="t-tag past-tag">Past</span>
           </div>
 
         </div>
       </section>
 
-    </div><!-- /panels -->
+    </main><!-- /panels -->
   </div><!-- /tab-area -->
 
 </div><!-- /shell -->
 
 <script>
-/* ── TAB SWITCHING ── */
 const TAB_IDS = ['about', 'trade', 'dev', 'teaching'];
 
 function switchTab(id) {
   TAB_IDS.forEach(t => {
-    // top bar buttons
     const topBtn  = document.getElementById('tab-' + t);
     const sideBtn = document.getElementById('side-' + t);
     const panel   = document.getElementById('panel-' + t);
     const active  = (t === id);
 
-    topBtn.setAttribute('aria-selected',  active ? 'true' : 'false');
-    sideBtn.setAttribute('aria-selected', active ? 'true' : 'false');
-    panel.classList.toggle('active', active);
+    // top bar: ARIA tab pattern
+    topBtn.setAttribute('aria-selected', active ? 'true' : 'false');
 
-    // scroll panel back to top on activation
+    // sidebar: plain nav active class (not role=tab)
+    sideBtn.classList.toggle('active', active);
+
+    // panel
+    panel.classList.toggle('active', active);
     if (active) panel.scrollTop = 0;
   });
 
-  // push state so browser back/forward works & deep-link is possible
   history.replaceState(null, '', '#' + id);
 }
 
-/* keyboard nav on tab bar */
+/* keyboard nav on top tab bar (ARIA pattern: arrows move between tabs) */
 document.querySelector('.tab-bar').addEventListener('keydown', e => {
   const tabs = TAB_IDS.map(t => document.getElementById('tab-' + t));
   const cur  = tabs.findIndex(b => b.getAttribute('aria-selected') === 'true');
-  if (e.key === 'ArrowRight') { const next = (cur + 1) % tabs.length; switchTab(TAB_IDS[next]); tabs[next].focus(); }
-  if (e.key === 'ArrowLeft')  { const prev = (cur - 1 + tabs.length) % tabs.length; switchTab(TAB_IDS[prev]); tabs[prev].focus(); }
-  if (e.key === 'Home') { switchTab(TAB_IDS[0]); tabs[0].focus(); }
-  if (e.key === 'End')  { switchTab(TAB_IDS[TAB_IDS.length-1]); tabs[TAB_IDS.length-1].focus(); }
+  let next = cur;
+  if (e.key === 'ArrowRight') next = (cur + 1) % tabs.length;
+  else if (e.key === 'ArrowLeft')  next = (cur - 1 + tabs.length) % tabs.length;
+  else if (e.key === 'Home') next = 0;
+  else if (e.key === 'End')  next = tabs.length - 1;
+  else return;
+  e.preventDefault();
+  switchTab(TAB_IDS[next]);
+  tabs[next].focus();
 });
 
-/* deep-link on load */
-(function() {
-  const hash = location.hash.replace('#','');
+/* FIX: hashchange listener so browser Back/Forward updates the active tab */
+window.addEventListener('hashchange', () => {
+  const hash = location.hash.replace('#', '');
+  if (TAB_IDS.includes(hash)) switchTab(hash);
+});
+
+/* deep-link on initial load */
+(function () {
+  const hash = location.hash.replace('#', '');
   if (TAB_IDS.includes(hash)) switchTab(hash);
 })();
 
-/* ── ABSTRACT TOGGLE ── */
+/* abstract toggles */
 function toggleAbstract(id, btn) {
   const el     = document.getElementById(id);
   const isOpen = el.classList.toggle('expanded');
