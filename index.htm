@@ -27,32 +27,38 @@
 
 /* ─── RESET ──────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
-body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.7; min-height: 100vh; }
+html { font-size: 16px; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow: hidden; /* no page scroll — tabs handle their own scroll */
+}
 a { color: inherit; text-decoration: none; }
 
-/* ─── GRAIN ──────────────────────── */
+/* ─── GRAIN OVERLAY ──────────────── */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 999;
+  z-index: 9999;
   opacity: 0.022;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
 
-/* ─── LAYOUT ─────────────────────── */
+/* ─── SHELL — sidebar + right column ── */
 .shell {
   display: grid;
   grid-template-columns: 280px 1fr;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* ─── SIDEBAR ────────────────────── */
 aside {
-  position: sticky;
-  top: 0;
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -60,33 +66,21 @@ aside {
   color: #e8e4de;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgba(0,0,0,0.25);
+  border-right: 1px solid rgba(0,0,0,0.28);
+  flex-shrink: 0;
 }
 aside::-webkit-scrollbar { width: 3px; }
 aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
 
-/* ── PHOTO — full bleed, gradient fade ── */
-.photo-hero {
-  position: relative;
-  width: 100%;
-  flex-shrink: 0;
-}
-.photo-hero img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
+/* photo */
+.photo-hero { position: relative; width: 100%; flex-shrink: 0; }
+.photo-hero img { width: 100%; height: auto; display: block; }
 .photo-hero::after {
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 55%;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(30,28,25,0.55) 50%,
-    rgba(30,28,25,1) 100%
-  );
+  background: linear-gradient(to bottom, transparent 0%, rgba(30,28,25,0.6) 50%, rgba(30,28,25,1) 100%);
   pointer-events: none;
 }
 .photo-hero-name {
@@ -113,49 +107,85 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   line-height: 1.5;
 }
 
-/* ── SIDEBAR BODY (below photo) ── */
+/* sidebar body */
 .sidebar-body {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: 20px 24px 32px;
-  background: var(--panel);
 }
 
 /* logos */
-.logos {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-  padding-top: 4px;
-}
+.logos { display: flex; gap: 8px; margin-bottom: 24px; padding-top: 4px; }
 .logo-wrap {
   width: 40px; height: 40px;
   border-radius: 5px;
-  overflow: hidden;
   background: rgba(255,255,255,0.07);
   border: 1px solid rgba(255,255,255,0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   transition: background 0.2s;
+  overflow: hidden;
 }
 .logo-wrap:hover { background: rgba(255,255,255,0.14); }
 .logo-wrap:focus-visible { outline: 2px solid rgba(143,175,154,0.7); outline-offset: 2px; }
 .logo-wrap img { width: 32px; height: 32px; object-fit: contain; }
 
-/* nav */
+/* ── SIDEBAR TAB NAV ── */
 .sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 1px;
   margin-bottom: 28px;
 }
+.sidebar-nav button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  border-radius: 3px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(232,228,222,0.6);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: all 0.15s;
+  letter-spacing: 0.2px;
+}
+.sidebar-nav button:hover {
+  background: rgba(255,255,255,0.06);
+  color: #f5f0ea;
+}
+.sidebar-nav button:focus-visible {
+  outline: 2px solid rgba(143,175,154,0.7);
+  outline-offset: 1px;
+  color: #f5f0ea;
+}
+.sidebar-nav button .arr {
+  font-size: 14px;
+  opacity: 0.35;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.sidebar-nav button:hover .arr { transform: translateX(3px); opacity: 0.75; }
+/* active tab state */
+.sidebar-nav button[aria-selected="true"] {
+  background: rgba(255,255,255,0.09);
+  color: #f5f0ea;
+}
+.sidebar-nav button[aria-selected="true"] .arr {
+  opacity: 0.85;
+  color: var(--sage-mid);
+  transform: translateX(2px);
+}
+/* CV link stays as a regular <a> */
 .sidebar-nav a {
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 8px 10px;
+  padding: 9px 10px;
   border-radius: 3px;
   font-size: 12.5px;
   font-weight: 500;
@@ -163,23 +193,12 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
   transition: all 0.15s;
   letter-spacing: 0.2px;
 }
-.sidebar-nav a:hover {
-  background: rgba(255,255,255,0.06);
-  color: #f5f0ea;
-}
-.sidebar-nav a:focus-visible {
-  outline: 2px solid rgba(143,175,154,0.7);
-  outline-offset: 1px;
-  color: #f5f0ea;
-}
-.sidebar-nav a .arr {
-  font-size: 14px;
-  opacity: 0.4;
-  transition: transform 0.15s, opacity 0.15s;
-}
-.sidebar-nav a:hover .arr { transform: translateX(3px); opacity: 0.8; }
+.sidebar-nav a:hover { background: rgba(255,255,255,0.06); color: #f5f0ea; }
+.sidebar-nav a:focus-visible { outline: 2px solid rgba(143,175,154,0.7); outline-offset: 1px; }
+.sidebar-nav a .arr { font-size: 14px; opacity: 0.35; transition: transform 0.15s, opacity 0.15s; }
+.sidebar-nav a:hover .arr { transform: translateX(3px); opacity: 0.75; }
 
-/* contact — address removed from sidebar, email + socials only */
+/* contact block */
 .contact-block {
   margin-top: auto;
   padding-top: 20px;
@@ -193,91 +212,135 @@ aside::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
 }
 .contact-block .email span { color: rgba(232,228,222,0.3); }
 
-/* socials */
 .socials { display: flex; gap: 8px; }
 .social-btn {
   width: 30px; height: 30px;
   border-radius: 3px;
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.09);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   transition: all 0.15s;
 }
-.social-btn:hover {
-  background: rgba(255,255,255,0.11);
-  border-color: rgba(255,255,255,0.18);
-  transform: translateY(-1px);
-}
-.social-btn:focus-visible {
-  outline: 2px solid rgba(143,175,154,0.7);
-  outline-offset: 2px;
-}
-.social-btn img {
-  width: 14px; height: 14px;
-  object-fit: contain;
-  filter: brightness(0) invert(1);
-  opacity: 0.5;
-  transition: opacity 0.15s;
-}
+.social-btn:hover { background: rgba(255,255,255,0.11); border-color: rgba(255,255,255,0.18); transform: translateY(-1px); }
+.social-btn:focus-visible { outline: 2px solid rgba(143,175,154,0.7); outline-offset: 2px; }
+.social-btn img { width: 14px; height: 14px; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.5; transition: opacity 0.15s; }
 .social-btn:hover img { opacity: 0.85; }
 
-/* ─── MAIN ───────────────────────── */
-main {
-  padding: 64px 72px 96px;
-  max-width: 860px;
-}
-
-/* ─── BIO ────────────────────────── */
-.bio-section {
-  padding-bottom: 56px;
-  margin-bottom: 64px;
-  border-bottom: 1px solid var(--border);
-}
-.section-kicker {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--sage);
-  margin-bottom: 20px;
+/* ─── RIGHT COLUMN — tab panels ──── */
+.tab-area {
   display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.section-kicker::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-  max-width: 48px;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* positioning tagline — editorial anchor above bio */
+/* top tab bar */
+.tab-bar {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+  padding: 0 48px;
+  padding-top: 20px;
+}
+.tab-bar button {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--ink-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 20px 12px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px; /* sit on the border-bottom */
+  white-space: nowrap;
+}
+.tab-bar button:hover { color: var(--ink); }
+.tab-bar button:focus-visible { outline: 2px solid var(--sage); outline-offset: -2px; border-radius: 2px 2px 0 0; }
+.tab-bar button[aria-selected="true"] {
+  color: var(--sage);
+  border-bottom-color: var(--sage);
+  font-weight: 600;
+}
+
+/* count bubble on tabs */
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  line-height: 1;
+  padding: 2px 5px;
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink-muted);
+  border: 1px solid var(--border);
+  margin-left: 7px;
+  vertical-align: middle;
+  transition: background 0.15s, color 0.15s;
+}
+.tab-bar button[aria-selected="true"] .tab-count {
+  background: var(--sage-lt);
+  color: var(--sage);
+  border-color: #c8d9cd;
+}
+
+/* panels container — scrollable */
+.panels {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+.tab-panel {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  padding: 52px 64px 80px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.tab-panel.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+.tab-panel::-webkit-scrollbar { width: 5px; }
+.tab-panel::-webkit-scrollbar-thumb { background: var(--border-dk); border-radius: 4px; }
+
+/* ─── BIO / ABOUT PANEL ─────────── */
 .bio-positioning {
   font-family: var(--sans);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--sage);
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
-
 .bio-text {
   font-family: var(--serif);
   font-size: 19px;
-  line-height: 1.78;
+  line-height: 1.8;
   color: var(--ink-soft);
-  max-width: 680px;
+  max-width: 660px;
 }
+.bio-text + .bio-text { margin-top: 18px; }
 .bio-text strong { color: var(--ink); font-weight: 500; }
+
 .research-areas {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 28px;
+  max-width: 660px;
 }
 .area-pill {
   font-size: 11.5px;
@@ -288,6 +351,29 @@ main {
   color: var(--sage);
   border: 1px solid #c8d9cd;
   letter-spacing: 0.3px;
+}
+
+/* CV inline section within About tab */
+.cv-section {
+  margin-top: 44px;
+  padding-top: 36px;
+  border-top: 1px solid var(--border);
+  max-width: 660px;
+}
+.cv-section-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 18px;
+}
+.cv-desc {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin-bottom: 22px;
 }
 .cv-btn {
   display: inline-flex;
@@ -301,33 +387,35 @@ main {
   font-weight: 500;
   letter-spacing: 0.5px;
   transition: all 0.18s;
-  margin-top: 32px;
   border: 1px solid rgba(30,28,25,0.8);
 }
-.cv-btn:hover {
-  background: var(--panel-mid);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(30,28,25,0.18);
-}
-.cv-btn:focus-visible {
-  outline: 2px solid var(--sage);
-  outline-offset: 3px;
-}
+.cv-btn:hover { background: var(--panel-mid); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(30,28,25,0.18); }
+.cv-btn:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
 
-/* ─── SECTION HEADERS ────────────── */
-.content-section { margin-bottom: 72px; }
-.content-section:last-child { margin-bottom: 0; }
+/* contact row inside About */
+.contact-row {
+  margin-top: 28px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-muted);
+  line-height: 2;
+}
+.contact-row a { color: var(--sage); }
+.contact-row a:hover { text-decoration: underline; }
+
+/* ─── SECTION HEADERS (papers/teaching) ── */
 .section-title {
   font-family: var(--serif);
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 500;
   color: var(--ink);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   display: flex;
   align-items: baseline;
-  gap: 16px;
+  gap: 14px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
+  max-width: 760px;
 }
 .section-title .title-tag {
   font-family: var(--mono);
@@ -340,7 +428,7 @@ main {
 }
 
 /* ─── PAPER CARDS ────────────────── */
-.papers { display: flex; flex-direction: column; gap: 1px; }
+.papers { display: flex; flex-direction: column; gap: 1px; max-width: 760px; margin-bottom: 52px; }
 .paper-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -349,7 +437,6 @@ main {
   position: relative;
   overflow: hidden;
 }
-/* always-visible left border — darkens on hover */
 .paper-card::before {
   content: '';
   position: absolute;
@@ -358,16 +445,11 @@ main {
   background: var(--sage-mid);
   transition: background 0.2s, width 0.2s;
 }
-.paper-card:hover {
-  background: #fff;
-  border-color: var(--border-dk);
-  box-shadow: 0 2px 16px rgba(28,26,23,0.06);
-  transform: translateX(2px);
-}
+.paper-card:hover { background: #fff; border-color: var(--border-dk); box-shadow: 0 2px 16px rgba(28,26,23,0.06); transform: translateX(2px); }
 .paper-card:hover::before { background: var(--sage); width: 4px; }
 .paper-title {
   font-family: var(--serif);
-  font-size: 18px;
+  font-size: 17.5px;
   font-weight: 500;
   color: var(--ink);
   line-height: 1.4;
@@ -377,14 +459,7 @@ main {
 .paper-card:hover .paper-title { color: var(--sage); }
 .paper-title a { color: inherit; }
 .paper-title a:focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; border-radius: 1px; }
-.paper-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-/* under review badge — uses sage instead of gold */
+.paper-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
 .paper-status {
   font-family: var(--mono);
   font-size: 10px;
@@ -396,11 +471,7 @@ main {
   padding: 2px 8px;
   border-radius: 2px;
 }
-.paper-coauth {
-  font-size: 12.5px;
-  color: var(--ink-muted);
-  font-style: italic;
-}
+.paper-coauth { font-size: 12.5px; color: var(--ink-muted); font-style: italic; }
 .paper-coauth::before { content: 'with '; }
 .paper-abstract {
   font-size: 13.5px;
@@ -411,7 +482,7 @@ main {
   max-height: 3.5em;
   transition: max-height 0.4s ease;
 }
-.paper-abstract.expanded { max-height: 600px; }
+.paper-abstract.expanded { max-height: 700px; }
 .paper-abstract::after {
   content: '';
   position: absolute;
@@ -432,7 +503,7 @@ main {
   cursor: pointer;
   border: none;
   background: none;
-  padding: 0;
+  padding: 4px 0;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -457,7 +528,7 @@ main {
 }
 
 /* ─── TEACHING ───────────────────── */
-.teaching-list { display: flex; flex-direction: column; gap: 1px; }
+.teaching-list { display: flex; flex-direction: column; gap: 1px; max-width: 760px; }
 .teaching-item {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -501,49 +572,46 @@ main {
 .syllabus-link:hover { background: var(--sage-lt); border-color: #c8d9cd; }
 .syllabus-link:focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
 
-/* ─── ANIMATIONS ─────────────────── */
-.fade-up {
-  opacity: 0;
-  transform: translateY(18px);
-  animation: fadeUp 0.6s ease forwards;
-  animation-play-state: paused;
-}
-@keyframes fadeUp { to { opacity: 1; transform: none; } }
-.d1 { animation-delay: 0.05s; }
-.d2 { animation-delay: 0.12s; }
-.d3 { animation-delay: 0.19s; }
+/* ─── FADE-IN ON TAB SWITCH ──────── */
+@keyframes panelIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.tab-panel.active { animation: panelIn 0.22s ease forwards; }
 
-/* honour reduced motion preference */
+/* ─── REDUCED MOTION ─────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .fade-up {
-    opacity: 1;
-    transform: none;
-    animation: none;
-  }
+  .tab-panel { transition: none; }
+  .tab-panel.active { animation: none; }
   .toggle-icon { transition: none; }
-  .paper-card { transition: background 0.15s; }
+  .paper-card { transition: background 0.1s; }
   .paper-card:hover { transform: none; }
   .social-btn:hover { transform: none; }
   .cv-btn:hover { transform: none; }
 }
 
-/* ─── RESPONSIVE ─────────────────── */
-@media (max-width: 900px) {
-  .shell { grid-template-columns: 1fr; }
-  aside {
-    position: relative;
-    height: auto;
+/* ─── RESPONSIVE — mobile stack ──── */
+@media (max-width: 860px) {
+  body { overflow: auto; }
+  .shell { grid-template-columns: 1fr; height: auto; overflow: visible; }
+  aside { height: auto; position: relative; }
+  .photo-hero img { max-height: 65vw; object-fit: cover; object-position: top center; }
+  .tab-area { height: auto; overflow: visible; }
+  .panels { overflow: visible; position: static; height: auto; }
+  .tab-panel {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+    display: none;
+    padding: 32px 24px 56px;
   }
-  .photo-hero img { max-height: 70vw; object-fit: cover; object-position: top center; }
-  .sidebar-body { padding: 16px 20px 24px; }
-  main { padding: 40px 24px 64px; }
-  .bio-text { font-size: 17px; }
+  .tab-panel.active { display: block; animation: none; }
+  .tab-bar { padding: 0 20px; padding-top: 16px; overflow-x: auto; }
+  .tab-bar button { padding: 9px 14px 11px; font-size: 12px; }
 }
-@media (max-width: 560px) {
-  main { padding: 28px 16px 48px; }
-  .paper-card { padding: 18px 18px; }
-  .photo-hero img { max-height: 80vw; }
+@media (max-width: 480px) {
+  .tab-panel { padding: 24px 16px 48px; }
+  .paper-card { padding: 18px 16px; }
   .paper-meta { flex-direction: column; align-items: flex-start; }
+  .section-title { font-size: 18px; }
 }
 </style>
 </head>
@@ -553,8 +621,6 @@ main {
 
   <!-- ─── SIDEBAR ─── -->
   <aside>
-
-    <!-- Photo — full bleed top, fades into panel -->
     <div class="photo-hero">
       <img src="Albert_pic.png" alt="Albert Duodu">
       <div class="photo-hero-name">
@@ -563,10 +629,8 @@ main {
       </div>
     </div>
 
-    <!-- Everything below the photo -->
     <div class="sidebar-body">
 
-      <!-- Institution logos -->
       <div class="logos">
         <a href="https://www.aalto.fi/en/department-of-economics/" class="logo-wrap" title="Aalto University">
           <img src="iheid_1.png" alt="Aalto University">
@@ -576,29 +640,35 @@ main {
         </a>
       </div>
 
-      <!-- Navigation -->
-      <nav class="sidebar-nav" aria-label="Site navigation">
-        <a href="#about"><span class="arr" aria-hidden="true">›</span> About</a>
-        <a href="CV_Duodu_Albert.pdf"><span class="arr" aria-hidden="true">›</span> Curriculum Vitae</a>
-        <a href="#trade-env"><span class="arr" aria-hidden="true">›</span> Trade &amp; Environment</a>
-        <a href="#development"><span class="arr" aria-hidden="true">›</span> Development</a>
-        <a href="#teaching"><span class="arr" aria-hidden="true">›</span> Teaching</a>
+      <!-- Tab trigger buttons (sidebar mirrors the top tab bar) -->
+      <nav class="sidebar-nav" aria-label="Site sections">
+        <button onclick="switchTab('about')" id="side-about" aria-selected="true" role="tab">
+          <span class="arr" aria-hidden="true">›</span> About &amp; CV
+        </button>
+        <button onclick="switchTab('trade')" id="side-trade" aria-selected="false" role="tab">
+          <span class="arr" aria-hidden="true">›</span> Trade &amp; Environment
+        </button>
+        <button onclick="switchTab('dev')" id="side-dev" aria-selected="false" role="tab">
+          <span class="arr" aria-hidden="true">›</span> Development
+        </button>
+        <button onclick="switchTab('teaching')" id="side-teaching" aria-selected="false" role="tab">
+          <span class="arr" aria-hidden="true">›</span> Teaching
+        </button>
       </nav>
 
-      <!-- Contact — address moved out; email + socials only -->
       <div class="contact-block">
         <div class="email">albert.duodu <span>[at]</span> aalto <span>dot</span> fi</div>
         <div class="socials">
-          <a href="https://github.com/albertduodu" class="social-btn" title="GitHub" aria-label="GitHub profile">
+          <a href="https://github.com/albertduodu" class="social-btn" aria-label="GitHub profile">
             <img src="github.png" alt="">
           </a>
-          <a href="https://x.com/albertd_econ?lang=en" class="social-btn" title="X / Twitter" aria-label="X / Twitter profile">
+          <a href="https://x.com/albertd_econ?lang=en" class="social-btn" aria-label="X / Twitter profile">
             <img src="x.png" alt="">
           </a>
-          <a href="https://scholar.google.com/citations?user=EQT7zdYAAAAJ&hl=en" class="social-btn" title="Google Scholar" aria-label="Google Scholar profile">
+          <a href="https://scholar.google.com/citations?user=EQT7zdYAAAAJ&hl=en" class="social-btn" aria-label="Google Scholar profile">
             <img src="google-scholar-icon.png" alt="">
           </a>
-          <a href="https://www.linkedin.com/in/albert-duodu/" class="social-btn" title="LinkedIn" aria-label="LinkedIn profile">
+          <a href="https://www.linkedin.com/in/albert-duodu/" class="social-btn" aria-label="LinkedIn profile">
             <img src="linkedin-logo.png" alt="">
           </a>
         </div>
@@ -607,209 +677,256 @@ main {
     </div>
   </aside>
 
-  <!-- ─── MAIN ─── -->
-  <main>
+  <!-- ─── RIGHT COLUMN ─── -->
+  <div class="tab-area">
 
-    <!-- BIO -->
-    <section class="bio-section fade-up" id="about">
-      <div class="section-kicker">About</div>
-      <p class="bio-positioning">Trade &middot; Environment &middot; Development</p>
-      <p class="bio-text">
-        I am a <strong>Postdoctoral Researcher</strong> at Aalto University and the Helsinki Graduate School of Economics. I obtained my PhD in Economics from Lund University in 2024.
-      </p>
-      <p class="bio-text" style="margin-top: 18px;">
-        My research focuses on <strong>international trade</strong>, <strong>environmental economics</strong>, and <strong>development</strong>. I study how global trade dynamics and climate policies affect firm behavior, supply chains, and long-run sustainability — including the effects of offshoring, import competition, carbon taxes, border adjustments, and energy price shocks on production decisions, labor demand, and emissions. I also contribute to development economics, with work on electricity access, blackouts, household adaptation, and institutional trust in Africa.
-      </p>
-      <div class="research-areas">
-        <span class="area-pill">International Trade</span>
-        <span class="area-pill">Environmental Economics</span>
-        <span class="area-pill">Carbon Policy</span>
-        <span class="area-pill">Development Economics</span>
-        <span class="area-pill">Firm Behavior</span>
-        <span class="area-pill">Climate &amp; Supply Chains</span>
-        <span class="area-pill">Africa</span>
-      </div>
-      <a href="CV_Duodu_Albert.pdf" class="cv-btn">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Download CV
-      </a>
-    </section>
+    <!-- Top tab bar -->
+    <div class="tab-bar" role="tablist" aria-label="Content sections">
+      <button role="tab" id="tab-about"    aria-selected="true"  aria-controls="panel-about"    onclick="switchTab('about')">
+        About &amp; CV
+      </button>
+      <button role="tab" id="tab-trade"    aria-selected="false" aria-controls="panel-trade"    onclick="switchTab('trade')">
+        Trade &amp; Environment <span class="tab-count">4</span>
+      </button>
+      <button role="tab" id="tab-dev"      aria-selected="false" aria-controls="panel-dev"      onclick="switchTab('dev')">
+        Development <span class="tab-count">4</span>
+      </button>
+      <button role="tab" id="tab-teaching" aria-selected="false" aria-controls="panel-teaching" onclick="switchTab('teaching')">
+        Teaching <span class="tab-count">6</span>
+      </button>
+    </div>
 
-    <!-- TRADE & ENVIRONMENT -->
-    <section class="content-section fade-up d1" id="trade-env">
-      <div class="section-title">
-        Working Papers — Trade &amp; Environment
-        <span class="title-tag">4 papers</span>
-      </div>
-      <div class="papers">
+    <!-- ── PANELS ── -->
+    <div class="panels">
 
-        <div class="paper-card">
-          <div class="paper-title"><a href="Albert_JMP.pdf">Carbon Offshoring and Manufacturing Cleanup</a></div>
-          <div class="paper-meta"><span class="paper-status">Under Review</span></div>
-          <div class="paper-abstract" id="abs1">
-            Production in manufacturing firms in high income countries is generally becoming cleaner. Some of this trend has been shown to be due to adoption of new technologies, but carbon offshoring — i.e. when dirty production at home is replaced with imports of carbon-intensive products from abroad — may be an additional factor. If so, this is concerning, since it risks undermining climate policies by simply moving emissions to countries with laxer regulations. Leveraging rich Swedish firm-product level data between 2005–2014, and employing a combination of shift-share instrumental variables and a difference-in-difference estimation approach, I find a compelling paradox: a 10% increase in the import of emission-intensive goods can result in firms' production processes becoming 5% cleaner but increases transport emissions by 2%. This suggests that carbon offshoring does not only shift emissions elsewhere but also generates new ones via transportation. Additionally, I show that the type of offshoring, such as foreign direct investment (FDI), has a much larger emissions-reducing effect than offshoring in the form of imports of inputs not produced in-firm.
-          </div>
-          <button class="abstract-toggle" onclick="toggleAbstract('abs1', this)" aria-expanded="false" aria-controls="abs1">
-            <span class="toggle-icon" aria-hidden="true">▾</span> Abstract
-          </button>
+      <!-- ABOUT & CV -->
+      <section class="tab-panel active" id="panel-about" role="tabpanel" aria-labelledby="tab-about" tabindex="0">
+        <p class="bio-positioning">Trade &middot; Environment &middot; Development</p>
+        <p class="bio-text">
+          I am a <strong>Postdoctoral Researcher</strong> at Aalto University and the Helsinki Graduate School of Economics. I obtained my PhD in Economics from Lund University in 2024.
+        </p>
+        <p class="bio-text">
+          My research focuses on <strong>international trade</strong>, <strong>environmental economics</strong>, and <strong>development</strong>. I study how global trade dynamics and climate policies affect firm behavior, supply chains, and long-run sustainability — including the effects of offshoring, import competition, carbon taxes, border adjustments, and energy price shocks on production decisions, labor demand, and emissions. I also contribute to development economics, with work on electricity access, blackouts, household adaptation, and institutional trust in Africa.
+        </p>
+        <div class="research-areas">
+          <span class="area-pill">International Trade</span>
+          <span class="area-pill">Environmental Economics</span>
+          <span class="area-pill">Carbon Policy</span>
+          <span class="area-pill">Development Economics</span>
+          <span class="area-pill">Firm Behavior</span>
+          <span class="area-pill">Climate &amp; Supply Chains</span>
+          <span class="area-pill">Africa</span>
         </div>
 
-        <div class="paper-card">
-          <div class="paper-title"><a href="IC_emissions.pdf">Greener Under Pressure? The Local Geography of Import Competition and Emissions in Swedish Manufacturing</a></div>
-          <div class="paper-meta">
-            <span class="paper-status">Under Review</span>
-            <span class="paper-coauth">Zoheir El-Sahli</span>
-          </div>
-          <div class="paper-abstract" id="abs2">
-            We examine how local import competition — measured across different spatial dimensions within Sweden — affects the CO₂ emission intensity of manufacturing firms. Leveraging detailed geographic data on the location of all Swedish manufacturing firms, we provide evidence that increased local import competition leads to lower emissions at the firm level, with the effect diminishing as the distance between producers and importers increases. Our findings indicate that relying on national-level measures of import competition may significantly underestimate the true environmental impact of trade shocks. We identify two primary mechanisms: (i) a pro-competitive efficiency-enhancing effect, where firms experience gains in total factor productivity, increasing value-added, lower marginal costs, and higher markups; and (ii) a product-mix effect, where firms reallocate production away from emission-intensive goods toward cleaner alternatives. Additionally, we find some evidence of firms relying on carbon offshoring as a response to import competition, as well as investment in pollution abatement, suggesting firms adopt a mix of strategies to deal with increasing import competition.
-          </div>
-          <button class="abstract-toggle" onclick="toggleAbstract('abs2', this)" aria-expanded="false" aria-controls="abs2">
-            <span class="toggle-icon" aria-hidden="true">▾</span> Abstract
-          </button>
-        </div>
-
-        <div class="paper-card">
-          <div class="paper-title"><a href="Albert_energy_price_shocks.pdf">Environment and the Economy: Firm-Level Responses to Energy Price Shocks</a></div>
-          <div class="paper-meta"></div>
-          <div class="paper-abstract" id="abs3">
-            Although raising the carbon price is an effective tool for decreasing reliance on carbon-intensive production sources, it has also raised substantial concerns among policymakers that higher energy costs will render manufacturing firms less competitive and potentially lead to increased consumer prices. Using detailed firm-level data from 2006 to 2014 and a novel combination of shift-share instruments and dynamic difference-in-differences estimation, I identify the causal impact of energy prices on energy consumption, CO₂ emissions, productivity, employment, and cost pass-through. I find that a 10% increase in energy prices leads to an 8.6% reduction in energy use and a 5.9% decline in emissions, highlighting the effectiveness of energy taxation in promoting environmental goals. However, higher prices also reduce firm-level productivity by 2% and employment by 3%, especially among high-skilled workers. I also find evidence of partial cost pass-through to consumers, with a 10% marginal cost increase resulting in a 2% rise in output prices. Overall, the results provide new micro-level evidence that the economic incidence of energy pricing is heterogeneous, and the trade-off between environmental and economic goals is far from straightforward.
-          </div>
-          <button class="abstract-toggle" onclick="toggleAbstract('abs3', this)" aria-expanded="false" aria-controls="abs3">
-            <span class="toggle-icon" aria-hidden="true">▾</span> Abstract
-          </button>
-        </div>
-
-        <div class="paper-card wip">
-          <div class="paper-title">Who Bears the Carbon Border? Optimal Differentiation and Spatial Reallocation under the EU CBAM</div>
-          <div class="paper-meta">
-            <span class="wip-badge">In Progress</span>
-            <span class="paper-coauth">Matti Liski</span>
+        <!-- CV sub-section -->
+        <div class="cv-section">
+          <div class="cv-section-label">Curriculum Vitae</div>
+          <p class="cv-desc">
+            Full academic CV covering research, teaching, education, and affiliations.
+          </p>
+          <a href="CV_Duodu_Albert.pdf" class="cv-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Download CV
+          </a>
+          <div class="contact-row">
+            Department of Economics · Aalto University · Ekonominaukio 1 · 02150 Espoo, Finland<br>
+            <a href="mailto:albert.duodu@aalto.fi">albert.duodu@aalto.fi</a>
           </div>
         </div>
+      </section>
 
-      </div>
-    </section>
+      <!-- TRADE & ENVIRONMENT -->
+      <section class="tab-panel" id="panel-trade" role="tabpanel" aria-labelledby="tab-trade" tabindex="0">
 
-    <!-- DEVELOPMENT -->
-    <section class="content-section fade-up d2" id="development">
-      <div class="section-title">
-        Working Papers — Development Economics
-        <span class="title-tag">4 papers</span>
-      </div>
-      <div class="papers">
-
-        <div class="paper-card wip">
-          <div class="paper-title">Light Out, Tax Gone? The Fiscal and Institutional Consequences of Electricity Shortages</div>
-          <div class="paper-meta"><span class="wip-badge">In Progress</span></div>
+        <div class="section-title">
+          Working Papers — Trade &amp; Environment
+          <span class="title-tag">4 papers</span>
         </div>
+        <div class="papers">
 
-        <div class="paper-card wip">
-          <div class="paper-title">From Side Hustles to Structural Change: Gig Platforms and Labor Market Dynamics in Africa</div>
-          <div class="paper-meta">
-            <span class="wip-badge">In Progress</span>
-            <span class="paper-coauth">Emmanuel Quarshie, Kingsley Laar, Emmanuel Ansah Otabil &amp; James Baduor</span>
+          <div class="paper-card">
+            <div class="paper-title"><a href="Albert_JMP.pdf">Carbon Offshoring and Manufacturing Cleanup</a></div>
+            <div class="paper-meta"><span class="paper-status">Under Review</span></div>
+            <div class="paper-abstract" id="abs1">
+              Production in manufacturing firms in high income countries is generally becoming cleaner. Some of this trend has been shown to be due to adoption of new technologies, but carbon offshoring — i.e. when dirty production at home is replaced with imports of carbon-intensive products from abroad — may be an additional factor. If so, this is concerning, since it risks undermining climate policies by simply moving emissions to countries with laxer regulations. Leveraging rich Swedish firm-product level data between 2005–2014, and employing a combination of shift-share instrumental variables and a difference-in-difference estimation approach, I find a compelling paradox: a 10% increase in the import of emission-intensive goods can result in firms' production processes becoming 5% cleaner but increases transport emissions by 2%. This suggests that carbon offshoring does not only shift emissions elsewhere but also generates new ones via transportation. Additionally, I show that the type of offshoring, such as foreign direct investment (FDI), has a much larger emissions-reducing effect than offshoring in the form of imports of inputs not produced in-firm.
+            </div>
+            <button class="abstract-toggle" onclick="toggleAbstract('abs1',this)" aria-expanded="false" aria-controls="abs1">
+              <span class="toggle-icon" aria-hidden="true">▾</span> Abstract
+            </button>
           </div>
-        </div>
 
-        <div class="paper-card wip">
-          <div class="paper-title">Illegal Mining, Weather, and Firm Adaptation: Evidence from Ghana's Galamsey Zones</div>
-          <div class="paper-meta">
-            <span class="wip-badge">In Progress</span>
-            <span class="paper-coauth">Michael Danquah &amp; Emmanuel Quarshie</span>
+          <div class="paper-card">
+            <div class="paper-title"><a href="IC_emissions.pdf">Greener Under Pressure? The Local Geography of Import Competition and Emissions in Swedish Manufacturing</a></div>
+            <div class="paper-meta">
+              <span class="paper-status">Under Review</span>
+              <span class="paper-coauth">Zoheir El-Sahli</span>
+            </div>
+            <div class="paper-abstract" id="abs2">
+              We examine how local import competition — measured across different spatial dimensions within Sweden — affects the CO₂ emission intensity of manufacturing firms. Leveraging detailed geographic data on the location of all Swedish manufacturing firms, we provide evidence that increased local import competition leads to lower emissions at the firm level, with the effect diminishing as the distance between producers and importers increases. Our findings indicate that relying on national-level measures of import competition may significantly underestimate the true environmental impact of trade shocks. We identify two primary mechanisms: (i) a pro-competitive efficiency-enhancing effect, where firms experience gains in total factor productivity, increasing value-added, lower marginal costs, and higher markups; and (ii) a product-mix effect, where firms reallocate production away from emission-intensive goods toward cleaner alternatives. Additionally, we find some evidence of firms relying on carbon offshoring as a response to import competition, as well as investment in pollution abatement, suggesting firms adopt a mix of strategies to deal with increasing import competition.
+            </div>
+            <button class="abstract-toggle" onclick="toggleAbstract('abs2',this)" aria-expanded="false" aria-controls="abs2">
+              <span class="toggle-icon" aria-hidden="true">▾</span> Abstract
+            </button>
           </div>
-        </div>
 
-        <div class="paper-card wip">
-          <div class="paper-title">Blackouts, Consumption Smoothing, and Adaptation Mechanisms in African Households</div>
-          <div class="paper-meta"><span class="wip-badge">In Progress</span></div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- TEACHING -->
-    <section class="content-section fade-up d3" id="teaching">
-      <div class="section-title">
-        Teaching
-        <span class="title-tag">6 courses</span>
-      </div>
-      <div class="teaching-list">
-
-        <div class="teaching-item">
-          <div>
-            <div class="t-name">Economics of Global Challenges <a href="syllabus.pdf" class="syllabus-link">Syllabus ↗</a></div>
-            <div class="t-inst">Aalto University · Spring 2025/2026 </div>
+          <div class="paper-card">
+            <div class="paper-title"><a href="Albert_energy_price_shocks.pdf">Environment and the Economy: Firm-Level Responses to Energy Price Shocks</a></div>
+            <div class="paper-meta"></div>
+            <div class="paper-abstract" id="abs3">
+              Although raising the carbon price is an effective tool for decreasing reliance on carbon-intensive production sources, it has also raised substantial concerns among policymakers that higher energy costs will render manufacturing firms less competitive and potentially lead to increased consumer prices. Using detailed firm-level data from 2006 to 2014 and a novel combination of shift-share instruments and dynamic difference-in-differences estimation, I identify the causal impact of energy prices on energy consumption, CO₂ emissions, productivity, employment, and cost pass-through. I find that a 10% increase in energy prices leads to an 8.6% reduction in energy use and a 5.9% decline in emissions, highlighting the effectiveness of energy taxation in promoting environmental goals. However, higher prices also reduce firm-level productivity by 2% and employment by 3%, especially among high-skilled workers. I also find evidence of partial cost pass-through to consumers, with a 10% marginal cost increase resulting in a 2% rise in output prices. Overall, the results provide new micro-level evidence that the economic incidence of energy pricing is heterogeneous, and the trade-off between environmental and economic goals is far from straightforward.
+            </div>
+            <button class="abstract-toggle" onclick="toggleAbstract('abs3',this)" aria-expanded="false" aria-controls="abs3">
+              <span class="toggle-icon" aria-hidden="true">▾</span> Abstract
+            </button>
           </div>
-          <span class="t-tag current">Current</span>
+
+          <div class="paper-card wip">
+            <div class="paper-title">Who Bears the Carbon Border? Optimal Differentiation and Spatial Reallocation under the EU CBAM</div>
+            <div class="paper-meta">
+              <span class="wip-badge">In Progress</span>
+              <span class="paper-coauth">Matti Liski</span>
+            </div>
+          </div>
+
         </div>
+      </section>
 
-        <div class="teaching-item past">
-          <div><div class="t-name">Advanced Trade Theory</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
-          <span class="t-tag past-tag">Past</span>
+      <!-- DEVELOPMENT -->
+      <section class="tab-panel" id="panel-dev" role="tabpanel" aria-labelledby="tab-dev" tabindex="0">
+
+        <div class="section-title">
+          Working Papers — Development Economics
+          <span class="title-tag">4 papers</span>
         </div>
+        <div class="papers">
 
-        <div class="teaching-item past">
-          <div><div class="t-name">International Trade Theory</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
-          <span class="t-tag past-tag">Past</span>
+          <div class="paper-card wip">
+            <div class="paper-title">Light Out, Tax Gone? The Fiscal and Institutional Consequences of Electricity Shortages</div>
+            <div class="paper-meta"><span class="wip-badge">In Progress</span></div>
+          </div>
+
+          <div class="paper-card wip">
+            <div class="paper-title">From Side Hustles to Structural Change: Gig Platforms and Labor Market Dynamics in Africa</div>
+            <div class="paper-meta">
+              <span class="wip-badge">In Progress</span>
+              <span class="paper-coauth">Emmanuel Quarshie, Kingsley Laar, Emmanuel Ansah Otabil &amp; James Baduor</span>
+            </div>
+          </div>
+
+          <div class="paper-card wip">
+            <div class="paper-title">Illegal Mining, Weather, and Firm Adaptation: Evidence from Ghana's Galamsey Zones</div>
+            <div class="paper-meta">
+              <span class="wip-badge">In Progress</span>
+              <span class="paper-coauth">Michael Danquah &amp; Emmanuel Quarshie</span>
+            </div>
+          </div>
+
+          <div class="paper-card wip">
+            <div class="paper-title">Blackouts, Consumption Smoothing, and Adaptation Mechanisms in African Households</div>
+            <div class="paper-meta"><span class="wip-badge">In Progress</span></div>
+          </div>
+
         </div>
+      </section>
 
-        <div class="teaching-item past">
-          <div><div class="t-name">International Economics</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
-          <span class="t-tag past-tag">Past</span>
+      <!-- TEACHING -->
+      <section class="tab-panel" id="panel-teaching" role="tabpanel" aria-labelledby="tab-teaching" tabindex="0">
+
+        <div class="section-title">
+          Teaching
+          <span class="title-tag">6 courses</span>
         </div>
+        <div class="teaching-list">
 
-        <div class="teaching-item past">
-          <div><div class="t-name">Econometrics</div><div class="t-inst">University of Ghana · 2015 / 2017</div></div>
-          <span class="t-tag past-tag">Past</span>
+          <div class="teaching-item">
+            <div>
+              <div class="t-name">Economics of Global Challenges <a href="syllabus.pdf" class="syllabus-link">Syllabus ↗</a></div>
+              <div class="t-inst">Aalto University · Spring 2025/2026</div>
+            </div>
+            <span class="t-tag current">Current</span>
+          </div>
+
+          <div class="teaching-item past">
+            <div><div class="t-name">Advanced Trade Theory</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
+            <span class="t-tag past-tag">Past</span>
+          </div>
+
+          <div class="teaching-item past">
+            <div><div class="t-name">International Trade Theory</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
+            <span class="t-tag past-tag">Past</span>
+          </div>
+
+          <div class="teaching-item past">
+            <div><div class="t-name">International Economics</div><div class="t-inst">Lund University · 2021 / 2024</div></div>
+            <span class="t-tag past-tag">Past</span>
+          </div>
+
+          <div class="teaching-item past">
+            <div><div class="t-name">Econometrics</div><div class="t-inst">University of Ghana · 2015 / 2017</div></div>
+            <span class="t-tag past-tag">Past</span>
+          </div>
+
+          <div class="teaching-item past">
+            <div><div class="t-name">International Economics</div><div class="t-inst">University of Ghana · 2015 / 2017</div></div>
+            <span class="t-tag past-tag">Past</span>
+          </div>
+
         </div>
+      </section>
 
-        <div class="teaching-item past">
-          <div><div class="t-name">International Economics</div><div class="t-inst">University of Ghana · 2015 / 2017</div></div>
-          <span class="t-tag past-tag">Past</span>
-        </div>
+    </div><!-- /panels -->
+  </div><!-- /tab-area -->
 
-      </div>
-    </section>
-
-  </main>
-</div>
+</div><!-- /shell -->
 
 <script>
+/* ── TAB SWITCHING ── */
+const TAB_IDS = ['about', 'trade', 'dev', 'teaching'];
+
+function switchTab(id) {
+  TAB_IDS.forEach(t => {
+    // top bar buttons
+    const topBtn  = document.getElementById('tab-' + t);
+    const sideBtn = document.getElementById('side-' + t);
+    const panel   = document.getElementById('panel-' + t);
+    const active  = (t === id);
+
+    topBtn.setAttribute('aria-selected',  active ? 'true' : 'false');
+    sideBtn.setAttribute('aria-selected', active ? 'true' : 'false');
+    panel.classList.toggle('active', active);
+
+    // scroll panel back to top on activation
+    if (active) panel.scrollTop = 0;
+  });
+
+  // push state so browser back/forward works & deep-link is possible
+  history.replaceState(null, '', '#' + id);
+}
+
+/* keyboard nav on tab bar */
+document.querySelector('.tab-bar').addEventListener('keydown', e => {
+  const tabs = TAB_IDS.map(t => document.getElementById('tab-' + t));
+  const cur  = tabs.findIndex(b => b.getAttribute('aria-selected') === 'true');
+  if (e.key === 'ArrowRight') { const next = (cur + 1) % tabs.length; switchTab(TAB_IDS[next]); tabs[next].focus(); }
+  if (e.key === 'ArrowLeft')  { const prev = (cur - 1 + tabs.length) % tabs.length; switchTab(TAB_IDS[prev]); tabs[prev].focus(); }
+  if (e.key === 'Home') { switchTab(TAB_IDS[0]); tabs[0].focus(); }
+  if (e.key === 'End')  { switchTab(TAB_IDS[TAB_IDS.length-1]); tabs[TAB_IDS.length-1].focus(); }
+});
+
+/* deep-link on load */
+(function() {
+  const hash = location.hash.replace('#','');
+  if (TAB_IDS.includes(hash)) switchTab(hash);
+})();
+
+/* ── ABSTRACT TOGGLE ── */
 function toggleAbstract(id, btn) {
-  const el = document.getElementById(id);
+  const el     = document.getElementById(id);
   const isOpen = el.classList.toggle('expanded');
   btn.classList.toggle('open', isOpen);
   btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   btn.querySelector('.toggle-icon').textContent = isOpen ? '▴' : '▾';
 }
-
-const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.style.animationPlayState = 'running'; io.unobserve(e.target); } });
-}, { threshold: 0.06 });
-document.querySelectorAll('.fade-up').forEach(el => {
-  if (prefersReduced) {
-    el.style.opacity = 1;
-    el.style.transform = 'none';
-  } else {
-    el.style.animationPlayState = 'paused';
-    io.observe(el);
-  }
-});
-
-const secs = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.sidebar-nav a');
-window.addEventListener('scroll', () => {
-  let cur = '';
-  secs.forEach(s => { if (window.scrollY >= s.offsetTop - 140) cur = s.id; });
-  navLinks.forEach(a => {
-    const active = a.getAttribute('href') === '#' + cur;
-    a.style.background = active ? 'rgba(255,255,255,0.07)' : '';
-    a.style.color = active ? '#f5f0ea' : '';
-    a.setAttribute('aria-current', active ? 'true' : 'false');
-  });
-}, { passive: true });
 </script>
 </body>
 </html>
