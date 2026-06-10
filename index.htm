@@ -345,7 +345,7 @@
   function toggle(id, btn) {
     var el = document.getElementById(id);
     var open = el.classList.toggle('open');
-    btn.textContent = open ? 'Hide abstract &#9652;' : 'Show abstract &#9662;';
+    btn.innerHTML = open ? 'Hide abstract &#9652;' : 'Show abstract &#9662;';
   }
   (function () {
     var hash = location.hash.replace('#', '');
