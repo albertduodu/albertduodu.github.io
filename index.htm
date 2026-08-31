@@ -14,6 +14,9 @@
     --ink-muted: #777;
     --rule: #d9d9d9;
     --accent: #7a1f1f;
+  --status: #1f5f5b;
+  --status-soft: #555;
+  --control: #6b6b6b;
     --serif: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     --sans: 'Inter', system-ui, -apple-system, sans-serif;
   }
@@ -86,6 +89,7 @@
     font-family: var(--sans); font-size: 13px; font-weight: 600;
     font-style: normal; color: var(--accent); letter-spacing: 1px;
     text-transform: uppercase; margin: 28px 0 12px;
+    border-left: 3px solid var(--accent); padding-left: 10px;
   }
   p, .body-text { font-size: 17.5px; line-height: 1.65; color: var(--ink); margin-bottom: 16px; }
   .body-text strong { font-weight: 600; }
@@ -112,7 +116,8 @@
   }
   .paper .pmeta { font-family: var(--sans); font-size: 13px; color: var(--ink-muted); margin-bottom: 8px; }
   .paper .pmeta .coauthor { font-style: italic; }
-  .paper .pmeta .status { color: var(--accent); font-weight: 500; margin-right: 10px; }
+  .paper .pmeta .status { color: var(--status); font-weight: 500; margin-right: 10px; }
+  .paper .pmeta .status.wp { color: var(--status-soft); font-weight: 500; }
   .paper .pmeta .draft-soon {
     font-family: var(--sans); font-size: 11px; font-weight: 500;
     color: var(--ink-muted); letter-spacing: 0.3px; font-style: italic;
@@ -127,11 +132,12 @@
   }
   .paper .abstract.open { display: block; }
   .paper .toggle {
-    font-family: var(--sans); font-size: 12px; color: var(--accent);
+    font-family: var(--sans); font-size: 12px; color: var(--control);
+    transition: color .15s ease;
     background: none; border: none; cursor: pointer; padding: 0;
     margin-top: 4px; letter-spacing: 0.4px;
   }
-  .paper .toggle:hover { text-decoration: underline; }
+  .paper .toggle:hover { color: var(--accent); text-decoration: underline; }
   .teach-list { list-style: none; }
   .teach-item {
     display: grid; grid-template-columns: 1fr auto; gap: 16px;
@@ -188,7 +194,7 @@
       <li><a href="#teaching" id="tab-teaching" onclick="show('teaching');return false;">Teaching</a></li>
       <li><a href="Albert_Duodu_CV.pdf">CV</a></li>
     </ul>
-  </nav
+  </nav>
   <section id="about" class="active">
     <h2 class="section-title">About</h2>
     <p class="body-text">
@@ -244,7 +250,7 @@
     <div class="paper">
       <div class="ptitle">When the Lights Go Out: Service Failure and Political Attribution in Africa</div>
       <div class="pmeta">
-        <span class="status">Working Paper</span><span class="draft-soon">Draft Soon</span>
+        <span class="status wp">Working Paper</span><span class="draft-soon">Draft Soon</span>
       </div>
       <div class="abstract" id="abs4">
         How do citizens respond when the state repeatedly fails at a visible task? Using geocoded data on 201,286 respondents across 42 African countries and Ghana&#8217;s 2012&#8211;2016 <em>dumsor</em> electricity crisis, we show that sustained local outages lower presidential approval while simultaneously raising contentious participation&#8212;contacting officials, organising, and protesting. This divergence rules out generalised disaffection and points instead to a targeted political response: citizens punish the incumbent and act, rather than withdraw. Exploiting the <em>dumsor</em> crisis in a difference-in-differences design, we find that exposure sharply erodes beliefs about state competence, with a clear dose-response in outage intensity. Chronic failure to deliver basic services thus reshapes how citizens evaluate and engage the state, with direct consequences for political accountability.
@@ -254,7 +260,7 @@
     <div class="paper">
       <div class="ptitle">Artisanal Mining and the Hollowing of the Formal Sector: Evidence from Ghana&#8217;s Galamsey Zones</div>
       <div class="pmeta">
-        <span class="status">Working Paper</span><span class="draft-soon">Draft Soon</span>
+        <span class="status wp">Working Paper</span><span class="draft-soon">Draft Soon</span>
         <span class="coauthor">with <a href="https://sites.google.com/view/mdanquah/home">Michael Danquah</a></span>
       </div>
       <div class="abstract" id="abs5">
