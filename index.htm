@@ -151,6 +151,11 @@
     letter-spacing: 1px; color: var(--ink-muted);
   }
   .teach-tag.current { color: var(--accent); font-weight: 600; }
+  .res-intro { font-size: 16px; color: var(--ink-soft); margin-bottom: 8px; }
+  .res-list { list-style: none; margin-bottom: 8px; }
+  .res-list li { font-size: 16px; line-height: 1.55; color: var(--ink-soft); padding: 7px 0; border-bottom: 1px dotted var(--rule); }
+  .res-list li:last-child { border-bottom: none; }
+  .res-list a { font-weight: 500; }
   footer.site-footer {
     margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--rule);
     font-family: var(--sans); font-size: 12px; color: var(--ink-muted);
@@ -192,6 +197,7 @@
       <li><a href="#about" id="tab-about" class="active" onclick="show('about');return false;">About</a></li>
       <li><a href="#research" id="tab-research" onclick="show('research');return false;">Research</a></li>
       <li><a href="#teaching" id="tab-teaching" onclick="show('teaching');return false;">Teaching</a></li>
+      <li><a href="#resources" id="tab-resources" onclick="show('resources');return false;">Resources</a></li>
       <li><a href="Albert_Duodu_CV.pdf">CV</a></li>
     </ul>
   </nav>
@@ -352,12 +358,90 @@
       </li>
     </ul>
   </section>
+  <section id="resources">
+    <h2 class="section-title">Resources</h2>
+    <p class="res-intro">Links I find useful for empirical work in environmental, development and trade economics. Several are drawn from the resource pages of <a href="https://timothykohler.github.io/usefulresources/">Tim K&ouml;hler</a> and <a href="https://austindenteh.com/resources.html">Augustine Denteh</a>.</p>
+
+    <h3 class="subsection">Useful Resources</h3>
+    <h4 class="subsubsection">Difference-in-Differences</h4>
+    <ul class="res-list">
+      <li><a href="https://asjadnaqvi.github.io/DiD/">Asjad Naqvi</a>, <a href="https://www.jonathandroth.com/did-resources/">Jonathan Roth</a> and <a href="https://psantanna.com/did-resources/">Pedro Sant&#8217;Anna</a> &#8212; repositories of staggered and heterogeneity-robust DiD estimators, literature and software.</li>
+      <li><a href="https://github.com/austindenteh/staggered-did-workshop">Staggered DiD Workshop</a> &#8212; Augustine Denteh&#8217;s workshop materials on DiD with staggered treatment timing.</li>
+    </ul>
+    <h4 class="subsubsection">Causal Inference Texts</h4>
+    <ul class="res-list">
+      <li><a href="https://mixtape.scunning.com/">Causal Inference: The Mixtape</a> &#8212; Scott Cunningham&#8217;s free online book.</li>
+      <li><a href="https://theeffectbook.net/">The Effect</a> &#8212; Nick Huntington-Klein&#8217;s free online introduction to research design and causality.</li>
+    </ul>
+    <h4 class="subsubsection">Coding, Data and Reproducibility</h4>
+    <ul class="res-list">
+      <li><a href="https://medium.com/the-stata-guide">The Stata Guide</a> &#8212; Asjad Naqvi&#8217;s guide to data management, programming, visualisation and LaTeX/GitHub integration in Stata.</li>
+      <li><a href="https://friosavila.github.io/">Fernando Rios-Avila</a> &#8212; Stata programming, visualisation and DiD packages.</li>
+      <li><a href="https://github.com/uo-ec607/lectures">Data Science for Economists</a> and <a href="https://grantmcdermott.com/software/">software tools</a> &#8212; Grant McDermott&#8217;s lectures and packages.</li>
+      <li><a href="https://github.com/austindenteh/econ-data-starters">Econ Data Starters</a> &#8212; Augustine Denteh&#8217;s starter code and documentation for public economics datasets in Stata and R.</li>
+      <li><a href="https://leap.unibocconi.eu/resources/courses/git-for-research-in-economics">Git for Research in Economics</a> &#8212; Giacomo Battiston and Jared Gars.</li>
+      <li><a href="https://paulgp.substack.com/p/setting-up-github-copilot-and-vscode">GitHub Copilot in VS Code</a> &#8212; Paul Goldsmith-Pinkham&#8217;s setup guide for LaTeX, Stata and R.</li>
+      <li><a href="https://github.com/Ghana-Data-Science-Summit-IndabaX-Ghana/IndabaX-2026/tree/main/Synthetic%20Data%20Generation%20for%20Economic%20Policymaking">Synthetic Data for Economic Policymaking</a> &#8212; Augustine Denteh&#8217;s IndabaX Ghana 2026 tutorial.</li>
+    </ul>
+    <h4 class="subsubsection">The Profession</h4>
+    <ul class="res-list">
+      <li><a href="https://findeconexpert.com/">EconExpert</a> &#8212; find economists by research topic, method, paper or policy question.</li>
+      <li><a href="https://blogs.worldbank.org/en/impactevaluations/the-state-of-development-journals-2024--quality--acceptance-rate">State of Development Journals</a> &#8212; David McKenzie&#8217;s annual data on development economics journals.</li>
+    </ul>
+
+    <h3 class="subsection">Data Directories</h3>
+    <h4 class="subsubsection">Replication Archives and General</h4>
+    <ul class="res-list">
+      <li><a href="https://www.openicpsr.org/openicpsr/aea">AEA Data and Code Repository</a> &#8212; replication packages for AEA journals.</li>
+      <li><a href="https://dataverse.harvard.edu/">Harvard Dataverse</a> &#8212; research and replication data across the social sciences.</li>
+      <li><a href="https://www.nber.org/research/data">NBER Research Data</a> &#8212; datasets hosted or curated by the NBER.</li>
+      <li><a href="https://fred.stlouisfed.org/">FRED</a> &#8212; macroeconomic and financial time series.</li>
+    </ul>
+    <h4 class="subsubsection">Global Development and Inequality</h4>
+    <ul class="res-list">
+      <li><a href="https://data.worldbank.org/">World Bank Open Data</a> and <a href="https://microdata.worldbank.org/">Microdata Library</a> &#8212; indicators and household, firm and enterprise surveys.</li>
+      <li><a href="https://www.worldbank.org/en/programs/lsms">LSMS</a> &#8212; Living Standards Measurement Study household surveys.</li>
+      <li><a href="https://dhsprogram.com/data/">Demographic and Health Surveys</a> &#8212; geocoded household surveys for over 90 countries.</li>
+      <li><a href="https://international.ipums.org/">IPUMS International</a> &#8212; harmonised census microdata.</li>
+      <li><a href="https://www.rug.nl/ggdc/productivity/pwt/">Penn World Table</a> &#8212; output, inputs and productivity across countries.</li>
+      <li><a href="https://wid.world/">World Inequality Database</a> and <a href="https://www.wider.unu.edu/database/world-income-inequality-database-wiid">WIID</a> &#8212; income and wealth inequality.</li>
+    </ul>
+    <h4 class="subsubsection">Africa</h4>
+    <ul class="res-list">
+      <li><a href="https://www.afrobarometer.org/data/">Afrobarometer</a> &#8212; public attitude surveys on governance, services and the economy.</li>
+      <li><a href="https://sa-tied.wider.unu.edu/">SA-TIED</a> &#8212; South African tax administrative data for research.</li>
+      <li><a href="https://www.datafirst.uct.ac.za/dataportal/index.php/catalog/central/">DataFirst</a> &#8212; individual, household and firm microdata, mainly South Africa.</li>
+      <li><a href="https://www.econdata.co.za/">EconData</a> &#8212; South African macroeconomic data.</li>
+      <li><a href="https://statsghana.gov.gh/">Ghana Statistical Service</a> &#8212; censuses, GLSS and the Integrated Business Establishment Survey.</li>
+      <li><a href="https://acleddata.com/">ACLED</a> &#8212; geocoded conflict and protest events.</li>
+    </ul>
+    <h4 class="subsubsection">Nordic Administrative Data</h4>
+    <ul class="res-list">
+      <li><a href="https://www.scb.se/en/">Statistics Sweden (SCB)</a> &#8212; register microdata for research via MONA.</li>
+      <li><a href="https://stat.fi/en">Statistics Finland</a> &#8212; register microdata for research via FIONA.</li>
+    </ul>
+    <h4 class="subsubsection">Trade</h4>
+    <ul class="res-list">
+      <li><a href="https://comtradeplus.un.org/">UN Comtrade</a> &#8212; bilateral trade flows by product.</li>
+      <li><a href="https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37">CEPII BACI</a> &#8212; reconciled bilateral trade at the HS6 level.</li>
+      <li><a href="https://wits.worldbank.org/">WITS</a> &#8212; trade and tariff data.</li>
+    </ul>
+    <h4 class="subsubsection">Energy, Environment and Climate</h4>
+    <ul class="res-list">
+      <li><a href="https://edgar.jrc.ec.europa.eu/">EDGAR</a> &#8212; global greenhouse gas and air pollutant emissions.</li>
+      <li><a href="https://www.euets.info/">EUETS.info</a> &#8212; installation-level EU ETS emissions and allowances.</li>
+      <li><a href="https://carbonpricingdashboard.worldbank.org/">Carbon Pricing Dashboard</a> &#8212; carbon taxes and emissions trading systems worldwide.</li>
+      <li><a href="https://www.iea.org/data-and-statistics">IEA Data</a> &#8212; energy balances, prices and use.</li>
+      <li><a href="https://ec.europa.eu/eurostat/data/database">Eurostat</a> &#8212; European energy, environmental and economic statistics.</li>
+      <li><a href="https://eogdata.mines.edu/products/vnl/">VIIRS Nighttime Lights</a> &#8212; satellite night lights from the Earth Observation Group.</li>
+    </ul>
+  </section>
   <footer class="site-footer">
     &copy; Albert Duodu &middot; Last updated 2026
   </footer>
 </div>
 <script>
-  const SECTIONS = ['about', 'research', 'teaching'];
+  const SECTIONS = ['about', 'research', 'teaching', 'resources'];
   function show(id) {
     SECTIONS.forEach(function(s) {
       var sec = document.getElementById(s);
