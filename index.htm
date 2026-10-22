@@ -226,7 +226,7 @@
     content: ''; position: absolute; top: 5px; left: 50%;
     width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: var(--bg);
   }
-  .welcome-tag.hide { animation: none; opacity: 0; transform: translateY(-120%); }
+  .welcome-tag.hide { animation: none; opacity: 0; transform: translateY(-120%); pointer-events: none; }
   @keyframes wtDrop { from { transform: translateY(-110%); } to { transform: translateY(0); } }
   @keyframes wtSwing { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
 
@@ -548,6 +548,7 @@
       sec.classList.toggle('active', active);
       tab.classList.toggle('active', active);
     });
+    if (id === 'about') showWelcome(); else hideWelcome();
     history.replaceState(null, '', '#' + id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -560,16 +561,27 @@
     var hash = location.hash.replace('#', '');
     if (SECTIONS.includes(hash)) show(hash);
   })();
-  (function () {
-    var w = document.getElementById('welcomeTag');
-    if (!w) return;
-    var seen = false;
-    try { seen = sessionStorage.getItem('welcomeSeen') === '1'; sessionStorage.setItem('welcomeSeen', '1'); } catch (e) {}
-    if (seen) { w.remove(); return; }
-    function hide() { w.classList.add('hide'); setTimeout(function () { w.remove(); }, 700); }
-    w.addEventListener('click', hide);
-    setTimeout(hide, 7000);
-  })();
+  var welcomeEl = document.getElementById('welcomeTag');
+  var welcomeTimer;
+  function hideWelcome() {
+    if (!welcomeEl) return;
+    clearTimeout(welcomeTimer);
+    welcomeEl.classList.add('hide');
+  }
+  function showWelcome() {
+    if (!welcomeEl) return;
+    clearTimeout(welcomeTimer);
+    welcomeEl.classList.remove('hide');
+    welcomeEl.style.animation = 'none';
+    void welcomeEl.offsetWidth;
+    welcomeEl.style.animation = '';
+    welcomeTimer = setTimeout(hideWelcome, 7000);
+  }
+  if (welcomeEl) {
+    welcomeEl.addEventListener('click', hideWelcome);
+    if (document.getElementById('about').classList.contains('active')) showWelcome();
+    else hideWelcome();
+  }
 </script>
 </body>
 </html>
