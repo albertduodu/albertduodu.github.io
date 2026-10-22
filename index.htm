@@ -162,6 +162,14 @@
     text-transform: uppercase; letter-spacing: 1px;
     color: var(--accent); border: 1px solid var(--accent); border-radius: 2px;
   }
+  .jm-badge { display: inline-flex; align-items: center; gap: 8px; }
+  .live-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #1e9e5a; flex: none; }
+  .live-dot::after {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background: #1e9e5a; animation: livePulse 1.8s ease-out infinite;
+  }
+  @keyframes livePulse { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(2.8); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .live-dot::after { animation: none; } }
   .cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 22px; }
   .cta-row a.cta {
     font-family: var(--sans); font-size: 13px; font-weight: 500;
@@ -229,7 +237,7 @@
         <span class="sep">&middot;</span>
         <a href="https://www.linkedin.com/in/albert-duodu/">LinkedIn</a>
       </div>
-      <div class="jm-badge">On the 2026&#8211;27 Job Market</div>
+      <div class="jm-badge"><span class="live-dot" aria-hidden="true"></span>On the 2026&#8211;27 Job Market</div>
     </div>
   </header>
   <nav class="tabs" aria-label="Site sections">
