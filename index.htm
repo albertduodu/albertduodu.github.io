@@ -156,6 +156,45 @@
   .res-list li { font-size: 16px; line-height: 1.55; color: var(--ink-soft); padding: 7px 0; border-bottom: 1px dotted var(--rule); }
   .res-list li:last-child { border-bottom: none; }
   .res-list a { font-weight: 500; }
+  .jm-badge {
+    display: inline-block; margin-top: 14px; padding: 4px 10px;
+    font-family: var(--sans); font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--accent); border: 1px solid var(--accent); border-radius: 2px;
+  }
+  .cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 22px; }
+  .cta-row a.cta {
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    padding: 8px 16px; border: 1px solid var(--accent); border-radius: 2px;
+    color: var(--accent); background: transparent;
+    transition: background .15s ease, color .15s ease;
+  }
+  .cta-row a.cta:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .cta-row a.cta.primary { background: var(--accent); color: #fff; }
+  .cta-row a.cta.primary:hover { background: #5f1717; border-color: #5f1717; }
+  .welcome-tag {
+    position: fixed; top: 0; right: 12%; z-index: 50;
+    display: flex; flex-direction: column; align-items: center;
+    transform-origin: top center; cursor: pointer;
+    animation: wtDrop .9s cubic-bezier(.3,1.4,.5,1) both, wtSwing 1.4s ease-in-out .9s 4 alternate;
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .welcome-tag .wt-string { width: 1px; height: 40px; background: var(--ink-muted); }
+  .welcome-tag .wt-card {
+    position: relative; padding: 14px 16px 9px;
+    font-family: var(--serif); font-size: 15px; font-weight: 600; color: #fff;
+    background: var(--accent); border-radius: 3px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  }
+  .welcome-tag .wt-card::before {
+    content: ''; position: absolute; top: 5px; left: 50%;
+    width: 6px; height: 6px; margin-left: -3px; border-radius: 50%; background: var(--bg);
+  }
+  .welcome-tag.hide { animation: none; opacity: 0; transform: translateY(-120%); }
+  @keyframes wtDrop { from { transform: translateY(-110%); } to { transform: translateY(0); } }
+  @keyframes wtSwing { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
+  @media (max-width: 640px) { .welcome-tag { right: 16px; } .welcome-tag .wt-string { height: 22px; } }
+  @media (prefers-reduced-motion: reduce) { .welcome-tag { animation: none; } }
   footer.site-footer {
     margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--rule);
     font-family: var(--sans); font-size: 12px; color: var(--ink-muted);
@@ -190,6 +229,7 @@
         <span class="sep">&middot;</span>
         <a href="https://www.linkedin.com/in/albert-duodu/">LinkedIn</a>
       </div>
+      <div class="jm-badge">On the 2026&#8211;27 Job Market</div>
     </div>
   </header>
   <nav class="tabs" aria-label="Site sections">
@@ -209,6 +249,10 @@
     <p class="body-text">
       My research asks how economic shocks reshape firms, workers and the state, and who bears the costs. I study energy prices, trade and offshoring in Swedish manufacturing using administrative firm and employer&#8211;employee data. In sub-Saharan Africa, I study electricity shortages and natural-resource booms using geocoded surveys, firm censuses and satellite data. Across both settings, I use quasi-experimental designs to identify causal effects.
     </p>
+    <div class="cta-row">
+      <a class="cta primary" href="Albert_JMP.pdf">Job Market Paper</a>
+      <a class="cta" href="Albert_Duodu_CV.pdf">Download CV</a>
+    </div>
     <div class="interests">
       <span class="label">Fields:</span>
       Environmental Economics &middot; Development Economics &middot; International Trade &middot; Political Economy
@@ -462,6 +506,22 @@
   (function () {
     var hash = location.hash.replace('#', '');
     if (SECTIONS.includes(hash)) show(hash);
+  })();
+</script>
+<div class="welcome-tag" id="welcomeTag" aria-hidden="true" title="Click to dismiss">
+  <span class="wt-string"></span>
+  <div class="wt-card">Welcome!</div>
+</div>
+<script>
+  (function () {
+    var w = document.getElementById('welcomeTag');
+    if (!w) return;
+    var seen = false;
+    try { seen = sessionStorage.getItem('welcomeSeen') === '1'; sessionStorage.setItem('welcomeSeen', '1'); } catch (e) {}
+    if (seen) { w.remove(); return; }
+    function hide() { w.classList.add('hide'); setTimeout(function () { w.remove(); }, 700); }
+    w.addEventListener('click', hide);
+    setTimeout(hide, 7000);
   })();
 </script>
 </body>
