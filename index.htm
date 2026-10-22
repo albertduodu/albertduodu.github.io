@@ -1,27 +1,31 @@
 <!DOCTYPE html>
-<!-- Updated: 2026-10-13 -->
+<!-- Updated: 2026-10-22 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Albert Duodu</title>
+<meta name="description" content="Albert Duodu, applied economist at Aalto University and the Helsinki Graduate School of Economics. Environmental, international trade and development economics.">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #ffffff;
+    --bg-soft: #faf8f5;
     --ink: #1a1a1a;
     --ink-soft: #444;
     --ink-muted: #777;
-    --rule: #d9d9d9;
+    --rule: #e2ded8;
     --accent: #7a1f1f;
-  --status: #1f5f5b;
-  --status-soft: #555;
-  --control: #6b6b6b;
+    --accent-dark: #5f1717;
+    --status: #1f5f5b;
+    --status-soft: #555;
+    --control: #6b6b6b;
+    --live: #1e9e5a;
     --serif: 'Crimson Pro', Georgia, 'Times New Roman', serif;
     --sans: 'Inter', system-ui, -apple-system, sans-serif;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { font-size: 17px; }
+  html { font-size: 17px; scroll-padding-top: 80px; }
   body {
     font-family: var(--serif);
     background: var(--bg);
@@ -29,166 +33,189 @@
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
-  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .15s ease; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .15s ease, color .15s ease; }
   a:hover { border-bottom-color: var(--accent); }
-  .container { max-width: 880px; margin: 0 auto; padding: 64px 32px 96px; }
-  header.site-header {
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(255,255,255,.94);
+    backdrop-filter: saturate(160%) blur(8px);
+    -webkit-backdrop-filter: saturate(160%) blur(8px);
     border-bottom: 1px solid var(--rule);
-    padding-bottom: 28px;
-    margin-bottom: 40px;
-    display: grid;
-    grid-template-columns: 140px 1fr;
-    gap: 32px;
-    align-items: start;
   }
-  .portrait {
-    width: 140px; height: 170px;
-    object-fit: cover;
-    border: 1px solid var(--rule);
-    background: #f4f1ec;
+  .topbar-inner {
+    max-width: 960px; margin: 0 auto; padding: 0 32px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    min-height: 62px;
   }
-  .header-text h1 {
-    font-family: var(--serif);
-    font-size: 36px; font-weight: 600;
-    letter-spacing: -0.3px; line-height: 1.1;
-    margin-bottom: 8px;
+  .brand {
+    font-family: var(--serif); font-size: 21px; font-weight: 600;
+    color: var(--ink); letter-spacing: -0.2px; white-space: nowrap;
   }
-  .header-text .title {
-    font-family: var(--sans); font-size: 14px; font-weight: 500;
-    color: var(--ink-soft); margin-bottom: 4px;
-  }
-  .header-text .affil {
-    font-family: var(--sans); font-size: 13.5px;
-    color: var(--ink-muted); margin-bottom: 14px; line-height: 1.55;
-  }
-  .header-text .contact { font-family: var(--sans); font-size: 13px; color: var(--ink-soft); }
-  .header-text .contact a { color: var(--accent); }
-  .header-text .contact .sep { color: var(--ink-muted); margin: 0 8px; }
-  nav.tabs { font-family: var(--sans); font-size: 13.5px; margin-bottom: 36px; border-bottom: 1px solid var(--rule); }
-  nav.tabs ul { list-style: none; display: flex; gap: 28px; flex-wrap: wrap; }
+  .brand:hover { border-bottom-color: transparent; color: var(--accent); }
+  nav.tabs ul { list-style: none; display: flex; gap: 26px; }
   nav.tabs a {
-    color: var(--ink-soft); text-transform: uppercase; letter-spacing: 1px;
-    font-weight: 500; font-size: 12px; padding: 0 0 12px;
-    display: inline-block; border-bottom: 2px solid transparent;
+    font-family: var(--sans); font-size: 13.5px; font-weight: 500;
+    color: var(--ink-soft); padding: 20px 0 18px; display: inline-block;
+    border-bottom: 2px solid transparent;
   }
-  nav.tabs a:hover { color: var(--accent); }
-  nav.tabs a.active { color: var(--ink); border-bottom-color: var(--ink); }
+  nav.tabs a:hover { color: var(--accent); border-bottom-color: transparent; }
+  nav.tabs a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 0 32px 80px; }
   section { display: none; }
-  section.active { display: block; }
-  h2.section-title {
-    font-family: var(--serif); font-size: 22px; font-weight: 600;
-    letter-spacing: -0.2px; margin-bottom: 18px;
-    padding-bottom: 8px; border-bottom: 1px solid var(--rule);
+  section.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Hero (About) ---------- */
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 56px;
+    align-items: start; padding: 64px 0 24px;
   }
-  h4.subsubsection {
-    font-family: var(--sans); font-size: 11.5px; font-weight: 600;
-    font-style: normal; color: var(--ink-soft); letter-spacing: 0.8px;
-    text-transform: uppercase; margin: 20px 0 10px;
+  .hero h1 {
+    font-family: var(--serif); font-size: 46px; font-weight: 600;
+    letter-spacing: -0.6px; line-height: 1.05; margin-bottom: 10px;
   }
-    h3.subsection {
-    font-family: var(--sans); font-size: 13px; font-weight: 600;
-    font-style: normal; color: var(--accent); letter-spacing: 1px;
-    text-transform: uppercase; margin: 28px 0 12px;
-    border-left: 3px solid var(--accent); padding-left: 10px;
+  .hero .role {
+    font-family: var(--sans); font-size: 14.5px; color: var(--ink-muted);
+    margin-bottom: 28px; line-height: 1.6;
   }
-  p, .body-text { font-size: 17.5px; line-height: 1.65; color: var(--ink); margin-bottom: 16px; }
+  .hero .role strong { font-weight: 500; color: var(--ink-soft); }
+  .body-text { font-size: 18.5px; line-height: 1.68; color: var(--ink); margin-bottom: 18px; }
   .body-text strong { font-weight: 600; }
   .body-text strong.hl { color: var(--accent); }
-  .interests {
-    font-family: var(--sans); font-size: 13.5px; color: var(--ink-soft);
-    margin: 12px 0 24px; line-height: 1.8;
+  .body-text.lead { font-size: 22px; line-height: 1.5; color: var(--ink); }
+  .hero-side { display: flex; flex-direction: column; align-items: center; gap: 16px; padding-top: 6px; }
+  .portrait {
+    width: 250px; height: 300px; object-fit: cover; display: block;
+    border-radius: 6px; background: #f4f1ec;
+    box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 12px 32px rgba(40,20,20,.14);
   }
-  .interests .label { font-weight: 600; color: var(--ink); margin-right: 6px; }
-  .cv-row {
-    font-family: var(--sans); font-size: 13.5px; color: var(--ink-soft);
-    margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--rule);
+  .jm-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border-radius: 999px;
+    font-family: var(--sans); font-size: 10.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: var(--accent); background: #fbf3f3; border: 1px solid #e6c9c9;
   }
-  .cv-row a { font-weight: 500; }
-  .paper { margin-bottom: 28px; }
+  .live-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--live); flex: none; }
+  .live-dot::after {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background: var(--live); animation: livePulse 1.8s ease-out infinite;
+  }
+  @keyframes livePulse { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(2.8); opacity: 0; } }
+  .contact-links {
+    font-family: var(--sans); font-size: 13px; text-align: center; line-height: 1.9;
+    color: var(--ink-muted);
+  }
+  .contact-links .sep { margin: 0 7px; color: #c9c3bb; }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 8px 0 0; }
+  .cta-row a.cta {
+    font-family: var(--sans); font-size: 13.5px; font-weight: 500;
+    padding: 10px 18px; border: 1px solid var(--accent); border-radius: 4px;
+    color: var(--accent); background: transparent;
+    transition: background .15s ease, color .15s ease, transform .15s ease;
+  }
+  .cta-row a.cta:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-1px); }
+  .cta-row a.cta.primary { background: var(--accent); color: #fff; }
+  .cta-row a.cta.primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+
+  /* ---------- Page heads ---------- */
+  .page-head { padding: 56px 0 8px; margin-bottom: 8px; }
+  .page-head h2 {
+    font-family: var(--serif); font-size: 36px; font-weight: 600;
+    letter-spacing: -0.4px; line-height: 1.1; margin-bottom: 8px;
+  }
+  .page-head p { font-family: var(--sans); font-size: 14.5px; color: var(--ink-muted); max-width: 640px; line-height: 1.6; }
+  h3.subsection {
+    font-family: var(--sans); font-size: 12px; font-weight: 600;
+    color: var(--accent); letter-spacing: 1.2px; text-transform: uppercase;
+    margin: 40px 0 18px; padding-bottom: 10px; border-bottom: 1px solid var(--rule);
+  }
+  h4.subsubsection {
+    font-family: var(--serif); font-size: 19px; font-weight: 600;
+    color: var(--ink); margin: 26px 0 6px;
+  }
+
+  /* ---------- Papers ---------- */
+  .paper { padding: 4px 0 22px; margin-bottom: 18px; border-bottom: 1px solid #efebe6; }
+  .paper:last-of-type { border-bottom: none; }
   .paper .ptitle {
-    font-family: var(--serif); font-size: 18px; font-weight: 600;
-    color: var(--ink); line-height: 1.35; margin-bottom: 4px;
+    font-family: var(--serif); font-size: 19.5px; font-weight: 600;
+    color: var(--ink); line-height: 1.32; margin-bottom: 6px;
   }
-  .paper .ptitle a {
-    color: var(--ink); border-bottom: none;
-  }
-  .paper .ptitle a:hover {
-    border-bottom: 1px solid var(--ink);
-  }
-  .paper .pmeta { font-family: var(--sans); font-size: 13px; color: var(--ink-muted); margin-bottom: 8px; }
+  .paper .ptitle a { color: var(--ink); border-bottom: none; }
+  .paper .ptitle a:hover { color: var(--accent); }
+  .paper .pmeta { font-family: var(--sans); font-size: 13px; color: var(--ink-muted); margin-bottom: 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
   .paper .pmeta .coauthor { font-style: italic; }
-  .paper .pmeta .status { color: var(--status); font-weight: 500; margin-right: 10px; }
-  .paper .pmeta .status.wp { color: var(--status-soft); font-weight: 500; }
-  .paper .pmeta .draft-soon {
-    font-family: var(--sans); font-size: 11px; font-weight: 500;
-    color: var(--ink-muted); letter-spacing: 0.3px; font-style: italic;
-    margin-right: 10px;
+  .paper .pmeta .status { color: var(--status); font-weight: 500; }
+  .paper .pmeta .status.wp { color: var(--status-soft); }
+  .paper .pmeta .jmp { color: var(--accent); font-weight: 600; }
+  .paper .pmeta .wip { color: var(--ink-muted); font-style: italic; }
+  .paper .pmeta a.plink {
+    font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase;
+    padding: 2px 8px; border: 1px solid #e6c9c9; border-radius: 3px; background: #fbf3f3;
   }
-  .paper .pmeta .jmp { color: var(--accent); font-weight: 600; margin-right: 10px; }
-  .paper .pmeta .wip { color: var(--ink-muted); font-style: italic; margin-right: 10px; }
+  .paper .pmeta a.plink:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
   .paper .abstract {
-    font-size: 15.5px; color: var(--ink-soft); line-height: 1.6;
-    display: none; margin-top: 8px; padding-left: 14px;
-    border-left: 2px solid var(--rule);
+    font-size: 16.5px; color: var(--ink-soft); line-height: 1.65;
+    display: none; margin-top: 10px; padding: 2px 0 2px 16px;
+    border-left: 2px solid #e6c9c9;
   }
   .paper .abstract.open { display: block; }
   .paper .toggle {
     font-family: var(--sans); font-size: 12px; color: var(--control);
-    transition: color .15s ease;
     background: none; border: none; cursor: pointer; padding: 0;
-    margin-top: 4px; letter-spacing: 0.4px;
+    margin-top: 4px; letter-spacing: 0.3px; transition: color .15s ease;
   }
-  .paper .toggle:hover { color: var(--accent); text-decoration: underline; }
+  .paper .toggle:hover { color: var(--accent); }
+  .paper.featured {
+    background: var(--bg-soft); border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+    border-radius: 4px; padding: 20px 24px 18px;
+  }
+
+  /* ---------- Teaching ---------- */
   .teach-list { list-style: none; }
   .teach-item {
     display: grid; grid-template-columns: 1fr auto; gap: 16px;
-    align-items: baseline; padding: 12px 0; border-bottom: 1px dotted var(--rule);
+    align-items: baseline; padding: 16px 0; border-bottom: 1px solid #efebe6;
   }
   .teach-item:last-child { border-bottom: none; }
-  .teach-name { font-family: var(--serif); font-size: 17px; font-weight: 500; }
-  .teach-inst { font-family: var(--sans); font-size: 12.5px; color: var(--ink-muted); margin-top: 2px; }
+  .teach-name { font-family: var(--serif); font-size: 19px; font-weight: 600; }
+  .teach-name a.syl { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; margin-left: 8px; }
+  .teach-inst { font-family: var(--sans); font-size: 13px; color: var(--ink-muted); margin-top: 3px; }
   .teach-tag {
-    font-family: var(--sans); font-size: 11px; text-transform: uppercase;
+    font-family: var(--sans); font-size: 10.5px; text-transform: uppercase;
     letter-spacing: 1px; color: var(--ink-muted);
   }
   .teach-tag.current { color: var(--accent); font-weight: 600; }
-  .res-intro { font-size: 16px; color: var(--ink-soft); margin-bottom: 8px; }
-  .res-list { list-style: none; margin-bottom: 8px; }
-  .res-list li { font-size: 16px; line-height: 1.55; color: var(--ink-soft); padding: 7px 0; border-bottom: 1px dotted var(--rule); }
+
+  /* ---------- Resources ---------- */
+  .res-list { list-style: none; margin-bottom: 4px; }
+  .res-list li { padding: 12px 0; border-bottom: 1px solid #efebe6; }
   .res-list li:last-child { border-bottom: none; }
-  .res-list a { font-weight: 500; }
-  .jm-badge {
-    display: inline-block; margin-top: 14px; padding: 4px 10px;
-    font-family: var(--sans); font-size: 11px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 1px;
-    color: var(--accent); border: 1px solid var(--accent); border-radius: 2px;
+  .res-list .rname { font-family: var(--serif); font-size: 18px; font-weight: 600; line-height: 1.35; }
+  .res-list .rname a { color: var(--ink); }
+  .res-list .rname a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .res-list .rname a::after { content: '\2197'; font-family: var(--sans); font-size: .62em; font-weight: 500; color: var(--accent); margin-left: 3px; vertical-align: .35em; }
+  .res-list .rdesc { font-family: var(--sans); font-size: 13.5px; color: var(--ink-muted); line-height: 1.55; margin-top: 2px; }
+
+  /* ---------- Footer ---------- */
+  footer.site-footer {
+    margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--rule);
+    font-family: var(--sans); font-size: 12.5px; color: var(--ink-muted); line-height: 1.7;
   }
-  .jm-badge { display: inline-flex; align-items: center; gap: 8px; }
-  .live-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #1e9e5a; flex: none; }
-  .live-dot::after {
-    content: ''; position: absolute; inset: 0; border-radius: 50%;
-    background: #1e9e5a; animation: livePulse 1.8s ease-out infinite;
-  }
-  @keyframes livePulse { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(2.8); opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { .live-dot::after { animation: none; } }
-  .cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 4px 0 22px; }
-  .cta-row a.cta {
-    font-family: var(--sans); font-size: 13px; font-weight: 500;
-    padding: 8px 16px; border: 1px solid var(--accent); border-radius: 2px;
-    color: var(--accent); background: transparent;
-    transition: background .15s ease, color .15s ease;
-  }
-  .cta-row a.cta:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .cta-row a.cta.primary { background: var(--accent); color: #fff; }
-  .cta-row a.cta.primary:hover { background: #5f1717; border-color: #5f1717; }
+
+  /* ---------- Welcome tag ---------- */
   .welcome-tag {
-    position: fixed; top: 0; right: 12%; z-index: 50;
+    position: fixed; top: 0; right: 24px; z-index: 50;
     display: flex; flex-direction: column; align-items: center;
     transform-origin: top center; cursor: pointer;
     animation: wtDrop .9s cubic-bezier(.3,1.4,.5,1) both, wtSwing 1.4s ease-in-out .9s 4 alternate;
     transition: opacity .6s ease, transform .6s ease;
   }
-  .welcome-tag .wt-string { width: 1px; height: 40px; background: var(--ink-muted); }
+  .welcome-tag .wt-string { width: 1px; height: 74px; background: var(--ink-muted); }
   .welcome-tag .wt-card {
     position: relative; padding: 14px 16px 9px;
     font-family: var(--serif); font-size: 15px; font-weight: 600; color: #fff;
@@ -202,86 +229,93 @@
   .welcome-tag.hide { animation: none; opacity: 0; transform: translateY(-120%); }
   @keyframes wtDrop { from { transform: translateY(-110%); } to { transform: translateY(0); } }
   @keyframes wtSwing { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
-  @media (max-width: 640px) { .welcome-tag { right: 16px; } .welcome-tag .wt-string { height: 22px; } }
-  @media (prefers-reduced-motion: reduce) { .welcome-tag { animation: none; } }
-  footer.site-footer {
-    margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--rule);
-    font-family: var(--sans); font-size: 12px; color: var(--ink-muted);
+
+  @media (prefers-reduced-motion: reduce) {
+    .live-dot::after, .welcome-tag, section.active { animation: none; }
   }
-  @media (max-width: 640px) {
-    .container { padding: 36px 20px 64px; }
-    header.site-header { grid-template-columns: 1fr; gap: 18px; }
-    .portrait { width: 110px; height: 134px; }
-    .header-text h1 { font-size: 28px; }
-    nav.tabs ul { gap: 18px; }
-    .teach-item { grid-template-columns: 1fr; }
+
+  /* ---------- Small screens ---------- */
+  @media (max-width: 760px) {
+    .topbar-inner { flex-direction: column; align-items: flex-start; gap: 0; padding: 12px 20px 0; }
+    nav.tabs { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    nav.tabs ul { gap: 2px 18px; flex-wrap: wrap; }
+    nav.tabs a { padding: 10px 0 10px; white-space: nowrap; font-size: 13px; }
+    .container { padding: 0 20px 64px; }
+    .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 32px; }
+    .hero-side { order: -1; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 14px 18px; }
+    .hero-side { flex-wrap: nowrap; }
+    .portrait { width: 104px; height: 126px; flex: none; }
+    .hero-side .side-text { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; min-width: 0; }
+    .jm-badge { font-size: 9.5px; letter-spacing: .6px; padding: 5px 10px; }
+    .contact-links { text-align: left; }
+    .hero h1 { font-size: 36px; }
+    .body-text.lead { font-size: 20px; }
+    .page-head { padding-top: 36px; }
+    .page-head h2 { font-size: 30px; }
+    .teach-item { grid-template-columns: 1fr; gap: 4px; }
+    .paper.featured { padding: 16px 16px 14px; }
+    .welcome-tag { right: 16px; }
+    .welcome-tag .wt-string { height: 30px; }
   }
 </style>
 </head>
 <body>
-<div class="container">
-  <header class="site-header">
-    <img class="portrait" src="Albert_pic.png" alt="Albert Duodu">
-    <div class="header-text">
-      <h1>Albert Duodu</h1>
-      <div class="title">Postdoctoral Researcher in Economics</div>
-      <div class="affil">
-        Department of Economics, Aalto University<br>
-        Helsinki Graduate School of Economics
-      </div>
-      <div class="contact">
-        <a href="mailto:albert.duodu@aalto.fi">albert.duodu@aalto.fi</a>
-        <span class="sep">&middot;</span>
-        <a href="https://scholar.google.com/citations?user=EQT7zdYAAAAJ&hl=en">Google Scholar</a>
-        <span class="sep">&middot;</span>
-        <a href="https://github.com/albertduodu">GitHub</a>
-        <span class="sep">&middot;</span>
-        <a href="https://www.linkedin.com/in/albert-duodu/">LinkedIn</a>
-      </div>
-      <div class="jm-badge"><span class="live-dot" aria-hidden="true"></span>On the 2026&#8211;27 Job Market</div>
-    </div>
-  </header>
-  <nav class="tabs" aria-label="Site sections">
-    <ul>
-      <li><a href="#about" id="tab-about" class="active" onclick="show('about');return false;">About</a></li>
-      <li><a href="#research" id="tab-research" onclick="show('research');return false;">Research</a></li>
-      <li><a href="#teaching" id="tab-teaching" onclick="show('teaching');return false;">Teaching</a></li>
-      <li><a href="#resources" id="tab-resources" onclick="show('resources');return false;">Resources</a></li>
-      <li><a href="Albert_Duodu_CV.pdf">CV</a></li>
-    </ul>
-  </nav>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#about" onclick="show('about');return false;">Albert Duodu</a>
+    <nav class="tabs" aria-label="Site sections">
+      <ul>
+        <li><a href="#about" id="tab-about" class="active" onclick="show('about');return false;">About</a></li>
+        <li><a href="#research" id="tab-research" onclick="show('research');return false;">Research</a></li>
+        <li><a href="#teaching" id="tab-teaching" onclick="show('teaching');return false;">Teaching</a></li>
+        <li><a href="#resources" id="tab-resources" onclick="show('resources');return false;">Resources</a></li>
+        <li><a href="Albert_Duodu_CV.pdf">CV</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main class="container">
   <section id="about" class="active">
-    <h2 class="section-title">About</h2>
-    <p class="body-text">
-      I am an applied economist and a Postdoctoral Researcher at the Department of Economics, Aalto University, and the Helsinki Graduate School of Economics. I work at the intersection of <strong class="hl">environmental</strong>, <strong class="hl">international trade</strong> and <strong class="hl">development economics</strong>, with a growing interest in <strong class="hl">political economy</strong>. I received my PhD in Economics from Lund University in 2024.
-    </p>
-    <p class="body-text">
-      My research asks how economic shocks reshape firms, workers and the state, and who bears the costs. I study energy prices, trade and offshoring in Swedish manufacturing using administrative firm and employer&#8211;employee data. In sub-Saharan Africa, I study electricity shortages and natural-resource booms using geocoded surveys, firm censuses and satellite data. Across both settings, I use quasi-experimental designs to identify causal effects.
-    </p>
-    <div class="cta-row">
-      <a class="cta primary" href="Albert_JMP.pdf">Job Market Paper</a>
-      <a class="cta" href="Albert_Duodu_CV.pdf">Download CV</a>
-    </div>
-    <div class="interests">
-      <span class="label">Fields:</span>
-      Environmental Economics &middot; Development Economics &middot; International Trade &middot; Political Economy
-    </div>
-    <div class="cv-row">
-      Department of Economics, Aalto University &middot; Ekonominaukio 1, 02150 Espoo, Finland &middot; <a href="Albert_Duodu_CV.pdf">Curriculum Vitae (PDF)</a>
+    <div class="hero">
+      <div class="hero-main">
+        <h1>Albert Duodu</h1>
+        <div class="role"><strong>Postdoctoral Researcher in Economics</strong><br>Aalto University &middot; Helsinki Graduate School of Economics</div>
+        <p class="body-text lead">I study how economic shocks (energy prices, trade, natural-resource booms and electricity shortages) reshape firms, workers and the state, and who ends up bearing the costs.</p>
+        <p class="body-text">My <a href="Albert_JMP.pdf">job market paper</a> shows that Swedish manufacturers look cleaner partly because they import carbon-intensive goods instead, while the freight that carries those imports goes uncounted.</p>
+        <p class="body-text">I work at the intersection of <strong class="hl">environmental</strong>, <strong class="hl">international trade</strong> and <strong class="hl">development economics</strong>, with a growing interest in <strong class="hl">political economy</strong>. In Sweden, I use administrative firm and employer&#8211;employee data; in sub-Saharan Africa, geocoded surveys, firm censuses and satellite data. I received my PhD in Economics from Lund University in 2024.</p>
+        <div class="cta-row">
+          <a class="cta primary" href="Albert_JMP.pdf">Job Market Paper</a>
+          <a class="cta" href="Albert_Duodu_CV.pdf">Download CV</a>
+        </div>
+      </div>
+      <aside class="hero-side">
+        <img class="portrait" src="Albert_pic.png" alt="Albert Duodu">
+        <div class="side-text">
+          <div class="jm-badge"><span class="live-dot" aria-hidden="true"></span>On the 2026&#8211;27 Job Market</div>
+          <div class="contact-links">
+            <a href="mailto:albert.duodu@aalto.fi">albert.duodu@aalto.fi</a><br>
+            <a href="https://scholar.google.com/citations?user=EQT7zdYAAAAJ&hl=en">Google Scholar</a><span class="sep">&middot;</span><a href="https://github.com/albertduodu">GitHub</a><span class="sep">&middot;</span><a href="https://www.linkedin.com/in/albert-duodu/">LinkedIn</a>
+          </div>
+        </div>
+      </aside>
     </div>
   </section>
+
   <section id="research">
-    <h2 class="section-title">Research</h2>
+    <header class="page-head">
+      <h2>Research</h2>
+      <p>My job market paper, papers under review, working papers and projects in progress. PDFs are linked where available.</p>
+    </header>
     <h3 class="subsection">Job Market Paper</h3>
-    <div class="paper">
+    <div class="paper featured">
       <div class="ptitle"><a href="Albert_JMP.pdf">Cleaner Firms, Dirtier Trade: Carbon Offshoring and the Limits of Production-Based Accounting</a></div>
       <div class="pmeta">
-        <span class="jmp">Job Market Paper</span> <a href="Albert_JMP.pdf">[PDF]</a>
+        <span class="jmp">Job Market Paper</span> <a class="plink" href="Albert_JMP.pdf">PDF</a>
       </div>
-      <div class="abstract" id="abs1">
+      <div class="abstract open" id="abs1">
         Manufacturing in rich countries is getting cleaner&#8212;on paper. Recent firm-level studies find little evidence that offshoring to pollution havens drives this clean-up. Linking plant-level fuel use for Swedish manufacturers (2006&#8211;2014) to imports weighted by their embodied carbon, I instrument firms&#8217; carbon imports with a shift-share of foreign export-supply shocks. A 10 percent rise in carbon imports lowers production-based CO&#8322; intensity by 6.7 percent. The decline comes from scale, not cleaner technique. The pollution-haven margin, sourcing the same products from dirtier origins, is weak on average, as earlier studies find, but significant among firms that bought many distinct products before the shock, the only ones with room to reallocate. Yet the carbon does not disappear: firms&#8217; own transport emissions and the international freight carrying their imports both rise, and the national inventory attributes neither to Swedish manufacturing. The imported goods embody 64 percent more carbon than producing them in Sweden would. At most 2 percent of imported carbon enters through a country where the importing firm owns a plant, so leakage policy aimed at multinationals misses almost all of it, and the EU&#8217;s carbon border adjustment, which excludes freight, misses the transport leg. Where emissions are counted can matter as much as whether they fall.
       </div>
-      <button class="toggle" onclick="toggle('abs1', this)">Show abstract &#9662;</button>
+      <button class="toggle" onclick="toggle('abs1', this)">Hide abstract &#9652;</button>
     </div>
     <h3 class="subsection">Under Review</h3>
     <div class="paper">
@@ -298,7 +332,7 @@
       <div class="ptitle"><a href="IC_Albert_Zouheir.pdf">Greener Under Pressure: The Local Geography of Import Competition and Emissions in Swedish Manufacturing</a></div>
       <div class="pmeta">
         <span class="status">Under Review</span>
-        <span class="coauthor">with Zouheir El-Sahli</span> <a href="IC_Albert_Zouheir.pdf">[PDF]</a>
+        <span class="coauthor">with Zouheir El-Sahli</span> <a class="plink" href="IC_Albert_Zouheir.pdf">PDF</a>
       </div>
       <div class="abstract" id="abs2">
         We examine how local import competition &#8211; measured across different spatial dimensions within Sweden &#8211; affects the CO&#8322; emission intensity of manufacturing firms. Using detailed geographic data on Swedish manufacturers, we show that increased local import competition leads to lower firm-level emissions, with the effect diminishing as the distance between producers and importers grows. We identify two mechanisms: (i) a pro-competitive efficiency effect, with gains in TFP, higher value added, lower marginal costs, and higher markups; and (ii) a product-mix effect, with reallocation away from emission-intensive goods. We also document evidence of carbon offshoring and investment in pollution abatement as additional firm responses.
@@ -308,7 +342,7 @@
     <div class="paper">
       <div class="ptitle"><a href="Albert_energy_price_shocks.pdf">Environment and the Economy: Firm-Level Responses to Energy Price Shocks</a></div>
       <div class="pmeta">
-        <span class="status">Under Review</span> <a href="Albert_energy_price_shocks.pdf">[PDF]</a>
+        <span class="status">Under Review</span> <a class="plink" href="Albert_energy_price_shocks.pdf">PDF</a>
       </div>
       <div class="abstract" id="abs3">
         Carbon pricing is a cornerstone of climate policy, yet its firm-level incidence remains poorly understood. Combining matched employer&#8211;employee and firm-level data from Sweden (2006&#8211;2014) with a shift-share IV and a dynamic difference-in-differences design that exploits variation in exposure to energy tax reforms, I show that higher energy prices generate substantial reductions in energy use and CO&#8322; emissions. These environmental gains come with economically meaningful adjustments: declines in productivity and employment, and incomplete cost pass-through. The incidence is highly heterogeneous &#8211; low-productivity firms and high-skilled workers bear disproportionate costs, while more productive firms absorb shocks more easily.
@@ -330,7 +364,7 @@
       <div class="ptitle"><a href="Galamsey_workingpaper.pdf">Artisanal Mining and the Hollowing of the Formal Sector: Evidence from Ghana&#8217;s Galamsey Zones</a></div>
       <div class="pmeta">
         <span class="status wp">Working Paper</span>
-        <span class="coauthor">with <a href="https://sites.google.com/view/mdanquah/home">Michael Danquah</a></span> <a href="Galamsey_workingpaper.pdf">[PDF]</a>
+        <span class="coauthor">with <a href="https://sites.google.com/view/mdanquah/home">Michael Danquah</a></span> <a class="plink" href="Galamsey_workingpaper.pdf">PDF</a>
       </div>
       <div class="abstract" id="abs5">
         Informal resource booms can reshape local economies in ways that formal-sector statistics miss. We study Ghana&#8217;s artisanal gold boom (galamsey), which employs roughly a million people. We measure each district&#8217;s exposure using the interaction between its share of land on gold-bearing Birimian bedrock and the world gold price. Gold-suitable districts have about 19 percent fewer formal establishments than other districts in the same region, a cross-sectional gap concentrated in agriculture-linked sectors. Household surveys show a distinct change in male employment: between 2003 and 2014, as the gold price more than tripled, the male employment rate in fully gold-suitable districts rose by about 6 percentage points relative to other districts, mostly in agricultural and manual occupations. We find no differential trend in the 1990s. The establishment gap is larger in wetter districts and absent in drought-prone ones, a pattern consistent with agriculture being an important source of labour for mining. Night-lights in exposed districts fell by about 9 percent after the 2017 crackdown on illegal mining, although the estimate is imprecise. Taken together, the findings describe gold-belt districts with fewer formal establishments but a relative rise in male employment, a combination that establishment counts alone would not reveal.
@@ -365,11 +399,14 @@
   </section>
 
   <section id="teaching">
-    <h2 class="section-title">Teaching</h2>
+    <header class="page-head">
+      <h2>Teaching</h2>
+      <p>Courses I teach and have taught at Aalto University, Lund University and the University of Ghana.</p>
+    </header>
     <ul class="teach-list">
       <li class="teach-item">
         <div>
-          <div class="teach-name">Economics of Global Challenges <a href="syllabus.pdf" style="font-family:var(--sans);font-size:12px;margin-left:6px;">[syllabus]</a></div>
+          <div class="teach-name">Economics of Global Challenges <a class="syl" href="syllabus.pdf">Syllabus</a></div>
           <div class="teach-inst">Aalto University &middot; Spring 2026</div>
         </div>
         <span class="teach-tag current">Current</span>
@@ -411,92 +448,99 @@
       </li>
     </ul>
   </section>
+
   <section id="resources">
-    <h2 class="section-title">Resources</h2>
-    <p class="res-intro">Links I find useful for empirical work in environmental, development and trade economics.</p>
+    <header class="page-head">
+      <h2>Resources</h2>
+      <p>Tools, guides and data I use and recommend, for PhD students and researchers working on applied questions in environmental, trade and development economics.</p>
+    </header>
 
     <h3 class="subsection">Useful Resources</h3>
     <h4 class="subsubsection">Difference-in-Differences</h4>
     <ul class="res-list">
-      <li><a href="https://asjadnaqvi.github.io/DiD/">Asjad Naqvi</a>, <a href="https://www.jonathandroth.com/did-resources/">Jonathan Roth</a> and <a href="https://psantanna.com/did-resources/">Pedro Sant&#8217;Anna</a> &#8212; repositories of staggered and heterogeneity-robust DiD estimators, literature and software.</li>
-      <li><a href="https://github.com/austindenteh/staggered-did-workshop">Staggered DiD Workshop</a> &#8212; Augustine Denteh&#8217;s workshop materials on DiD with staggered treatment timing.</li>
+      <li><div class="rname"><a href="https://asjadnaqvi.github.io/DiD/">Asjad Naqvi</a>, <a href="https://www.jonathandroth.com/did-resources/">Jonathan Roth</a> and <a href="https://psantanna.com/did-resources/">Pedro Sant&#8217;Anna</a></div><div class="rdesc">Repositories of staggered and heterogeneity-robust DiD estimators, literature and software.</div></li>
+      <li><div class="rname"><a href="https://github.com/austindenteh/staggered-did-workshop">Staggered DiD Workshop</a></div><div class="rdesc">Augustine Denteh&#8217;s workshop materials on DiD with staggered treatment timing.</div></li>
     </ul>
     <h4 class="subsubsection">Causal Inference Texts</h4>
     <ul class="res-list">
-      <li><a href="https://mixtape.scunning.com/">Causal Inference: The Mixtape</a> &#8212; Scott Cunningham&#8217;s free online book.</li>
-      <li><a href="https://theeffectbook.net/">The Effect</a> &#8212; Nick Huntington-Klein&#8217;s free online introduction to research design and causality.</li>
+      <li><div class="rname"><a href="https://mixtape.scunning.com/">Causal Inference: The Mixtape</a></div><div class="rdesc">Scott Cunningham&#8217;s free online book.</div></li>
+      <li><div class="rname"><a href="https://theeffectbook.net/">The Effect</a></div><div class="rdesc">Nick Huntington-Klein&#8217;s free online introduction to research design and causality.</div></li>
     </ul>
     <h4 class="subsubsection">Coding, Data and Reproducibility</h4>
     <ul class="res-list">
-      <li><a href="https://medium.com/the-stata-guide">The Stata Guide</a> &#8212; Asjad Naqvi&#8217;s guide to data management, programming, visualisation and LaTeX/GitHub integration in Stata.</li>
-      <li><a href="https://friosavila.github.io/">Fernando Rios-Avila</a> &#8212; Stata programming, visualisation and DiD packages.</li>
-      <li><a href="https://github.com/uo-ec607/lectures">Data Science for Economists</a> and <a href="https://grantmcdermott.com/software/">software tools</a> &#8212; Grant McDermott&#8217;s lectures and packages.</li>
-      <li><a href="https://github.com/austindenteh/econ-data-starters">Econ Data Starters</a> &#8212; Augustine Denteh&#8217;s starter code and documentation for public economics datasets in Stata and R.</li>
-      <li><a href="https://leap.unibocconi.eu/resources/courses/git-for-research-in-economics">Git for Research in Economics</a> &#8212; Giacomo Battiston and Jared Gars.</li>
-      <li><a href="https://paulgp.substack.com/p/setting-up-github-copilot-and-vscode">GitHub Copilot in VS Code</a> &#8212; Paul Goldsmith-Pinkham&#8217;s setup guide for LaTeX, Stata and R.</li>
-      <li><a href="https://github.com/Ghana-Data-Science-Summit-IndabaX-Ghana/IndabaX-2026/tree/main/Synthetic%20Data%20Generation%20for%20Economic%20Policymaking">Synthetic Data for Economic Policymaking</a> &#8212; Augustine Denteh&#8217;s IndabaX Ghana 2026 tutorial.</li>
+      <li><div class="rname"><a href="https://medium.com/the-stata-guide">The Stata Guide</a></div><div class="rdesc">Asjad Naqvi&#8217;s guide to data management, programming, visualisation and LaTeX/GitHub integration in Stata.</div></li>
+      <li><div class="rname"><a href="https://friosavila.github.io/">Fernando Rios-Avila</a></div><div class="rdesc">Stata programming, visualisation and DiD packages.</div></li>
+      <li><div class="rname"><a href="https://github.com/uo-ec607/lectures">Data Science for Economists</a> and <a href="https://grantmcdermott.com/software/">software tools</a></div><div class="rdesc">Grant McDermott&#8217;s lectures and packages.</div></li>
+      <li><div class="rname"><a href="https://github.com/austindenteh/econ-data-starters">Econ Data Starters</a></div><div class="rdesc">Augustine Denteh&#8217;s starter code and documentation for public economics datasets in Stata and R.</div></li>
+      <li><div class="rname"><a href="https://leap.unibocconi.eu/resources/courses/git-for-research-in-economics">Git for Research in Economics</a></div><div class="rdesc">Giacomo Battiston and Jared Gars.</div></li>
+      <li><div class="rname"><a href="https://paulgp.substack.com/p/setting-up-github-copilot-and-vscode">GitHub Copilot in VS Code</a></div><div class="rdesc">Paul Goldsmith-Pinkham&#8217;s setup guide for LaTeX, Stata and R.</div></li>
+      <li><div class="rname"><a href="https://github.com/Ghana-Data-Science-Summit-IndabaX-Ghana/IndabaX-2026/tree/main/Synthetic%20Data%20Generation%20for%20Economic%20Policymaking">Synthetic Data for Economic Policymaking</a></div><div class="rdesc">Augustine Denteh&#8217;s IndabaX Ghana 2026 tutorial.</div></li>
     </ul>
     <h4 class="subsubsection">The Profession</h4>
     <ul class="res-list">
-      <li><a href="https://findeconexpert.com/">EconExpert</a> &#8212; find economists by research topic, method, paper or policy question.</li>
-      <li><a href="https://blogs.worldbank.org/en/impactevaluations/the-state-of-development-journals-2024--quality--acceptance-rate">State of Development Journals</a> &#8212; David McKenzie&#8217;s annual data on development economics journals.</li>
+      <li><div class="rname"><a href="https://findeconexpert.com/">EconExpert</a></div><div class="rdesc">Find economists by research topic, method, paper or policy question.</div></li>
+      <li><div class="rname"><a href="https://blogs.worldbank.org/en/impactevaluations/the-state-of-development-journals-2024--quality--acceptance-rate">State of Development Journals</a></div><div class="rdesc">David McKenzie&#8217;s annual data on development economics journals.</div></li>
     </ul>
 
     <h3 class="subsection">Data Directories</h3>
     <h4 class="subsubsection">Replication Archives and General</h4>
     <ul class="res-list">
-      <li><a href="https://www.openicpsr.org/openicpsr/aea">AEA Data and Code Repository</a> &#8212; replication packages for AEA journals.</li>
-      <li><a href="https://dataverse.harvard.edu/">Harvard Dataverse</a> &#8212; research and replication data across the social sciences.</li>
-      <li><a href="https://www.nber.org/research/data">NBER Research Data</a> &#8212; datasets hosted or curated by the NBER.</li>
-      <li><a href="https://fred.stlouisfed.org/">FRED</a> &#8212; macroeconomic and financial time series.</li>
+      <li><div class="rname"><a href="https://www.openicpsr.org/openicpsr/aea">AEA Data and Code Repository</a></div><div class="rdesc">Replication packages for AEA journals.</div></li>
+      <li><div class="rname"><a href="https://dataverse.harvard.edu/">Harvard Dataverse</a></div><div class="rdesc">Research and replication data across the social sciences.</div></li>
+      <li><div class="rname"><a href="https://www.nber.org/research/data">NBER Research Data</a></div><div class="rdesc">Datasets hosted or curated by the NBER.</div></li>
+      <li><div class="rname"><a href="https://fred.stlouisfed.org/">FRED</a></div><div class="rdesc">Macroeconomic and financial time series.</div></li>
     </ul>
     <h4 class="subsubsection">Global Development and Inequality</h4>
     <ul class="res-list">
-      <li><a href="https://data.worldbank.org/">World Bank Open Data</a> and <a href="https://microdata.worldbank.org/">Microdata Library</a> &#8212; indicators and household, firm and enterprise surveys.</li>
-      <li><a href="https://www.worldbank.org/en/programs/lsms">LSMS</a> &#8212; Living Standards Measurement Study household surveys.</li>
-      <li><a href="https://dhsprogram.com/data/">Demographic and Health Surveys</a> &#8212; geocoded household surveys for over 90 countries.</li>
-      <li><a href="https://international.ipums.org/">IPUMS International</a> &#8212; harmonised census microdata.</li>
-      <li><a href="https://www.rug.nl/ggdc/productivity/pwt/">Penn World Table</a> &#8212; output, inputs and productivity across countries.</li>
-      <li><a href="https://wid.world/">World Inequality Database</a> and <a href="https://www.wider.unu.edu/database/world-income-inequality-database-wiid">WIID</a> &#8212; income and wealth inequality.</li>
+      <li><div class="rname"><a href="https://data.worldbank.org/">World Bank Open Data</a> and <a href="https://microdata.worldbank.org/">Microdata Library</a></div><div class="rdesc">Indicators and household, firm and enterprise surveys.</div></li>
+      <li><div class="rname"><a href="https://www.worldbank.org/en/programs/lsms">LSMS</a></div><div class="rdesc">Living Standards Measurement Study household surveys.</div></li>
+      <li><div class="rname"><a href="https://dhsprogram.com/data/">Demographic and Health Surveys</a></div><div class="rdesc">Geocoded household surveys for over 90 countries.</div></li>
+      <li><div class="rname"><a href="https://international.ipums.org/">IPUMS International</a></div><div class="rdesc">Harmonised census microdata.</div></li>
+      <li><div class="rname"><a href="https://www.rug.nl/ggdc/productivity/pwt/">Penn World Table</a></div><div class="rdesc">Output, inputs and productivity across countries.</div></li>
+      <li><div class="rname"><a href="https://wid.world/">World Inequality Database</a> and <a href="https://www.wider.unu.edu/database/world-income-inequality-database-wiid">WIID</a></div><div class="rdesc">Income and wealth inequality.</div></li>
     </ul>
     <h4 class="subsubsection">Africa</h4>
     <ul class="res-list">
-      <li><a href="https://www.afrobarometer.org/data/">Afrobarometer</a> &#8212; public attitude surveys on governance, services and the economy.</li>
-      <li><a href="https://sa-tied.wider.unu.edu/">SA-TIED</a> &#8212; South African tax administrative data for research.</li>
-      <li><a href="https://www.datafirst.uct.ac.za/dataportal/index.php/catalog/central/">DataFirst</a> &#8212; individual, household and firm microdata, mainly South Africa.</li>
-      <li><a href="https://www.econdata.co.za/">EconData</a> &#8212; South African macroeconomic data.</li>
-      <li><a href="https://statsghana.gov.gh/">Ghana Statistical Service</a> &#8212; censuses, GLSS and the Integrated Business Establishment Survey.</li>
-      <li><a href="https://acleddata.com/">ACLED</a> &#8212; geocoded conflict and protest events.</li>
+      <li><div class="rname"><a href="https://www.afrobarometer.org/data/">Afrobarometer</a></div><div class="rdesc">Public attitude surveys on governance, services and the economy.</div></li>
+      <li><div class="rname"><a href="https://sa-tied.wider.unu.edu/">SA-TIED</a></div><div class="rdesc">South African tax administrative data for research.</div></li>
+      <li><div class="rname"><a href="https://www.datafirst.uct.ac.za/dataportal/index.php/catalog/central/">DataFirst</a></div><div class="rdesc">Individual, household and firm microdata, mainly South Africa.</div></li>
+      <li><div class="rname"><a href="https://www.econdata.co.za/">EconData</a></div><div class="rdesc">South African macroeconomic data.</div></li>
+      <li><div class="rname"><a href="https://statsghana.gov.gh/">Ghana Statistical Service</a></div><div class="rdesc">Censuses, GLSS and the Integrated Business Establishment Survey.</div></li>
+      <li><div class="rname"><a href="https://acleddata.com/">ACLED</a></div><div class="rdesc">Geocoded conflict and protest events.</div></li>
     </ul>
     <h4 class="subsubsection">Nordic Administrative Data</h4>
     <ul class="res-list">
-      <li><a href="https://www.scb.se/en/">Statistics Sweden (SCB)</a> &#8212; register microdata for research via MONA.</li>
-      <li><a href="https://stat.fi/en">Statistics Finland</a> &#8212; register microdata for research via FIONA.</li>
+      <li><div class="rname"><a href="https://www.scb.se/en/">Statistics Sweden (SCB)</a></div><div class="rdesc">Register microdata for research via MONA.</div></li>
+      <li><div class="rname"><a href="https://stat.fi/en">Statistics Finland</a></div><div class="rdesc">Register microdata for research via FIONA.</div></li>
     </ul>
     <h4 class="subsubsection">Trade</h4>
     <ul class="res-list">
-      <li><a href="https://comtradeplus.un.org/">UN Comtrade</a> &#8212; bilateral trade flows by product.</li>
-      <li><a href="https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37">CEPII BACI</a> &#8212; reconciled bilateral trade at the HS6 level.</li>
-      <li><a href="https://wits.worldbank.org/">WITS</a> &#8212; trade and tariff data.</li>
+      <li><div class="rname"><a href="https://comtradeplus.un.org/">UN Comtrade</a></div><div class="rdesc">Bilateral trade flows by product.</div></li>
+      <li><div class="rname"><a href="https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37">CEPII BACI</a></div><div class="rdesc">Reconciled bilateral trade at the HS6 level.</div></li>
+      <li><div class="rname"><a href="https://wits.worldbank.org/">WITS</a></div><div class="rdesc">Trade and tariff data.</div></li>
     </ul>
     <h4 class="subsubsection">Energy, Environment and Climate</h4>
     <ul class="res-list">
-      <li><a href="https://edgar.jrc.ec.europa.eu/">EDGAR</a> &#8212; global greenhouse gas and air pollutant emissions.</li>
-      <li><a href="https://www.euets.info/">EUETS.info</a> &#8212; installation-level EU ETS emissions and allowances.</li>
-      <li><a href="https://carbonpricingdashboard.worldbank.org/">Carbon Pricing Dashboard</a> &#8212; carbon taxes and emissions trading systems worldwide.</li>
-      <li><a href="https://www.iea.org/data-and-statistics">IEA Data</a> &#8212; energy balances, prices and use.</li>
-      <li><a href="https://ec.europa.eu/eurostat/data/database">Eurostat</a> &#8212; European energy, environmental and economic statistics.</li>
-      <li><a href="https://eogdata.mines.edu/products/vnl/">VIIRS Nighttime Lights</a> &#8212; satellite night lights from the Earth Observation Group.</li>
+      <li><div class="rname"><a href="https://edgar.jrc.ec.europa.eu/">EDGAR</a></div><div class="rdesc">Global greenhouse gas and air pollutant emissions.</div></li>
+      <li><div class="rname"><a href="https://www.euets.info/">EUETS.info</a></div><div class="rdesc">Installation-level EU ETS emissions and allowances.</div></li>
+      <li><div class="rname"><a href="https://carbonpricingdashboard.worldbank.org/">Carbon Pricing Dashboard</a></div><div class="rdesc">Carbon taxes and emissions trading systems worldwide.</div></li>
+      <li><div class="rname"><a href="https://www.iea.org/data-and-statistics">IEA Data</a></div><div class="rdesc">Energy balances, prices and use.</div></li>
+      <li><div class="rname"><a href="https://ec.europa.eu/eurostat/data/database">Eurostat</a></div><div class="rdesc">European energy, environmental and economic statistics.</div></li>
+      <li><div class="rname"><a href="https://eogdata.mines.edu/products/vnl/">VIIRS Nighttime Lights</a></div><div class="rdesc">Satellite night lights from the Earth Observation Group.</div></li>
     </ul>
   </section>
   <footer class="site-footer">
-    &copy; Albert Duodu &middot; Last updated 2026
+    &copy; 2026 Albert Duodu &middot; Department of Economics, Aalto University, Ekonominaukio 1, 02150 Espoo, Finland &middot; Last updated October 2026
   </footer>
+</main>
+<div class="welcome-tag" id="welcomeTag" aria-hidden="true" title="Click to dismiss">
+  <span class="wt-string"></span>
+  <div class="wt-card">Welcome!</div>
 </div>
 <script>
   const SECTIONS = ['about', 'research', 'teaching', 'resources'];
   function show(id) {
-    SECTIONS.forEach(function(s) {
+    SECTIONS.forEach(function (s) {
       var sec = document.getElementById(s);
       var tab = document.getElementById('tab-' + s);
       if (!sec || !tab) return;
@@ -516,12 +560,6 @@
     var hash = location.hash.replace('#', '');
     if (SECTIONS.includes(hash)) show(hash);
   })();
-</script>
-<div class="welcome-tag" id="welcomeTag" aria-hidden="true" title="Click to dismiss">
-  <span class="wt-string"></span>
-  <div class="wt-card">Welcome!</div>
-</div>
-<script>
   (function () {
     var w = document.getElementById('welcomeTag');
     if (!w) return;
