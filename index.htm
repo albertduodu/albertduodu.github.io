@@ -151,7 +151,6 @@
   .paper .pmeta .coauthor { font-style: italic; }
   .paper .pmeta .status { color: var(--status); font-weight: 500; }
   .paper .pmeta .status.wp { color: var(--status-soft); }
-  .paper .pmeta .jmp { color: var(--accent); font-weight: 600; }
   .paper .pmeta .wip { color: var(--ink-muted); font-style: italic; }
   .paper .pmeta a.plink {
     font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase;
@@ -170,10 +169,8 @@
     margin-top: 4px; letter-spacing: 0.3px; transition: color .15s ease;
   }
   .paper .toggle:hover { color: var(--accent); }
-  .paper.featured {
-    background: var(--bg-soft); border: 1px solid var(--rule); border-left: 3px solid var(--accent);
-    border-radius: 4px; padding: 20px 24px 18px;
-  }
+  .paper.featured .ptitle { font-size: 22px; }
+  .paper.featured .abstract { border-left: none; padding-left: 0; }
 
   /* ---------- Teaching ---------- */
   .teach-list { list-style: none; }
@@ -253,7 +250,6 @@
     .page-head { padding-top: 36px; }
     .page-head h2 { font-size: 30px; }
     .teach-item { grid-template-columns: 1fr; gap: 4px; }
-    .paper.featured { padding: 16px 16px 14px; }
     .welcome-tag { right: 16px; }
     .welcome-tag .wt-string { height: 30px; }
   }
@@ -310,7 +306,7 @@
     <div class="paper featured">
       <div class="ptitle"><a href="Albert_JMP.pdf">Cleaner Firms, Dirtier Trade: Carbon Offshoring and the Limits of Production-Based Accounting</a></div>
       <div class="pmeta">
-        <span class="jmp">Job Market Paper</span> <a class="plink" href="Albert_JMP.pdf">PDF</a>
+        <a class="plink" href="Albert_JMP.pdf">PDF</a>
       </div>
       <div class="abstract open" id="abs1">
         Manufacturing in rich countries is getting cleaner&#8212;on paper. Recent firm-level studies find little evidence that offshoring to pollution havens drives this clean-up. Linking plant-level fuel use for Swedish manufacturers (2006&#8211;2014) to imports weighted by their embodied carbon, I instrument firms&#8217; carbon imports with a shift-share of foreign export-supply shocks. A 10 percent rise in carbon imports lowers production-based CO&#8322; intensity by 6.7 percent. The decline comes from scale, not cleaner technique. The pollution-haven margin, sourcing the same products from dirtier origins, is weak on average, as earlier studies find, but significant among firms that bought many distinct products before the shock, the only ones with room to reallocate. Yet the carbon does not disappear: firms&#8217; own transport emissions and the international freight carrying their imports both rise, and the national inventory attributes neither to Swedish manufacturing. The imported goods embody 64 percent more carbon than producing them in Sweden would. At most 2 percent of imported carbon enters through a country where the importing firm owns a plant, so leakage policy aimed at multinationals misses almost all of it, and the EU&#8217;s carbon border adjustment, which excludes freight, misses the transport leg. Where emissions are counted can matter as much as whether they fall.
