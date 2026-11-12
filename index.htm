@@ -273,8 +273,14 @@
   .page-head p, .paper .pmeta, .teach-inst, .res-list .rdesc { font-size: 15.5px; }
   .paper .toggle { font-size: 14px; }
   .teach-name a.syl, .teach-tag { font-size: 13px; letter-spacing: .3px; }
+  .res-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 56px; align-items: start; }
+  .res-grid h4.subsubsection { margin: 18px 0 6px; font-size: 18px; }
+  .res-grid .res-list li { padding: 5px 0; border-bottom: none; }
+  .res-grid .res-list .rname { font-size: 17px; font-weight: 500; }
+  .res-grid .res-list .rdesc { font-size: 14.5px; line-height: 1.4; margin-top: 0; }
   .welcome-tag { display: none; }
   @media (max-width: 760px) {
+    .res-grid { grid-template-columns: 1fr; gap: 0; }
     nav.tabs a { font-size: 15px; }
     .jm-badge { font-size: 13.5px; }
     .body-text.lead { font-size: 21px; }
@@ -482,17 +488,23 @@
       <p>Tools, guides and data I use and recommend, for PhD students and researchers working on applied questions in environmental, trade and development economics.</p>
     </header>
 
-    <h3 class="subsection">Useful Resources</h3>
+    <h3 class="subsection">Methods, Code and the Profession</h3>
+    <div class="res-grid">
+    <div class="res-group">
     <h4 class="subsubsection">Difference-in-Differences</h4>
     <ul class="res-list">
       <li><div class="rname"><a href="https://asjadnaqvi.github.io/DiD/">Asjad Naqvi</a>, <a href="https://www.jonathandroth.com/did-resources/">Jonathan Roth</a> and <a href="https://psantanna.com/did-resources/">Pedro Sant&#8217;Anna</a></div><div class="rdesc">Repositories of staggered and heterogeneity-robust DiD estimators, literature and software.</div></li>
       <li><div class="rname"><a href="https://github.com/austindenteh/staggered-did-workshop">Staggered DiD Workshop</a></div><div class="rdesc">Augustine Denteh&#8217;s workshop materials on DiD with staggered treatment timing.</div></li>
     </ul>
+    </div>
+    <div class="res-group">
     <h4 class="subsubsection">Causal Inference Texts</h4>
     <ul class="res-list">
       <li><div class="rname"><a href="https://mixtape.scunning.com/">Causal Inference: The Mixtape</a></div><div class="rdesc">Scott Cunningham&#8217;s free online book.</div></li>
       <li><div class="rname"><a href="https://theeffectbook.net/">The Effect</a></div><div class="rdesc">Nick Huntington-Klein&#8217;s free online introduction to research design and causality.</div></li>
     </ul>
+    </div>
+    <div class="res-group">
     <h4 class="subsubsection">Coding, Data and Reproducibility</h4>
     <ul class="res-list">
       <li><div class="rname"><a href="https://medium.com/the-stata-guide">The Stata Guide</a></div><div class="rdesc">Asjad Naqvi&#8217;s guide to data management, programming, visualisation and LaTeX/GitHub integration in Stata.</div></li>
@@ -503,13 +515,19 @@
       <li><div class="rname"><a href="https://paulgp.substack.com/p/setting-up-github-copilot-and-vscode">GitHub Copilot in VS Code</a></div><div class="rdesc">Paul Goldsmith-Pinkham&#8217;s setup guide for LaTeX, Stata and R.</div></li>
       <li><div class="rname"><a href="https://github.com/Ghana-Data-Science-Summit-IndabaX-Ghana/IndabaX-2026/tree/main/Synthetic%20Data%20Generation%20for%20Economic%20Policymaking">Synthetic Data for Economic Policymaking</a></div><div class="rdesc">Augustine Denteh&#8217;s IndabaX Ghana 2026 tutorial.</div></li>
     </ul>
+    </div>
+    <div class="res-group">
     <h4 class="subsubsection">The Profession</h4>
     <ul class="res-list">
       <li><div class="rname"><a href="https://findeconexpert.com/">EconExpert</a></div><div class="rdesc">Find economists by research topic, method, paper or policy question.</div></li>
       <li><div class="rname"><a href="https://blogs.worldbank.org/en/impactevaluations/the-state-of-development-journals-2024--quality--acceptance-rate">State of Development Journals</a></div><div class="rdesc">David McKenzie&#8217;s annual data on development economics journals.</div></li>
     </ul>
+    </div>
+    </div>
 
-    <h3 class="subsection">Data Directories</h3>
+    <h3 class="subsection">Data</h3>
+    <div class="res-grid">
+    <div class="res-group">
     <h4 class="subsubsection">Replication Archives and General</h4>
     <ul class="res-list">
       <li><div class="rname"><a href="https://www.openicpsr.org/openicpsr/aea">AEA Data and Code Repository</a></div><div class="rdesc">Replication packages for AEA journals.</div></li>
@@ -517,6 +535,8 @@
       <li><div class="rname"><a href="https://www.nber.org/research/data">NBER Research Data</a></div><div class="rdesc">Datasets hosted or curated by the NBER.</div></li>
       <li><div class="rname"><a href="https://fred.stlouisfed.org/">FRED</a></div><div class="rdesc">Macroeconomic and financial time series.</div></li>
     </ul>
+    </div>
+    <div class="res-group">
     <h4 class="subsubsection">Global Development and Inequality</h4>
     <ul class="res-list">
       <li><div class="rname"><a href="https://data.worldbank.org/">World Bank Open Data</a> and <a href="https://microdata.worldbank.org/">Microdata Library</a></div><div class="rdesc">Indicators and household, firm and enterprise surveys.</div></li>
@@ -526,6 +546,23 @@
       <li><div class="rname"><a href="https://www.rug.nl/ggdc/productivity/pwt/">Penn World Table</a></div><div class="rdesc">Output, inputs and productivity across countries.</div></li>
       <li><div class="rname"><a href="https://wid.world/">World Inequality Database</a> and <a href="https://www.wider.unu.edu/database/world-income-inequality-database-wiid">WIID</a></div><div class="rdesc">Income and wealth inequality.</div></li>
     </ul>
+    </div>
+    <div class="res-group">
+    <h4 class="subsubsection">Nordic Administrative Data</h4>
+    <ul class="res-list">
+      <li><div class="rname"><a href="https://www.scb.se/en/">Statistics Sweden (SCB)</a></div><div class="rdesc">Register microdata for research via MONA.</div></li>
+      <li><div class="rname"><a href="https://stat.fi/en">Statistics Finland</a></div><div class="rdesc">Register microdata for research via FIONA.</div></li>
+    </ul>
+    </div>
+    <div class="res-group">
+    <h4 class="subsubsection">Trade</h4>
+    <ul class="res-list">
+      <li><div class="rname"><a href="https://comtradeplus.un.org/">UN Comtrade</a></div><div class="rdesc">Bilateral trade flows by product.</div></li>
+      <li><div class="rname"><a href="https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37">CEPII BACI</a></div><div class="rdesc">Reconciled bilateral trade at the HS6 level.</div></li>
+      <li><div class="rname"><a href="https://wits.worldbank.org/">WITS</a></div><div class="rdesc">Trade and tariff data.</div></li>
+    </ul>
+    </div>
+    <div class="res-group">
     <h4 class="subsubsection">Africa</h4>
     <ul class="res-list">
       <li><div class="rname"><a href="https://www.afrobarometer.org/data/">Afrobarometer</a></div><div class="rdesc">Public attitude surveys on governance, services and the economy.</div></li>
@@ -535,17 +572,8 @@
       <li><div class="rname"><a href="https://statsghana.gov.gh/">Ghana Statistical Service</a></div><div class="rdesc">Censuses, GLSS and the Integrated Business Establishment Survey.</div></li>
       <li><div class="rname"><a href="https://acleddata.com/">ACLED</a></div><div class="rdesc">Geocoded conflict and protest events.</div></li>
     </ul>
-    <h4 class="subsubsection">Nordic Administrative Data</h4>
-    <ul class="res-list">
-      <li><div class="rname"><a href="https://www.scb.se/en/">Statistics Sweden (SCB)</a></div><div class="rdesc">Register microdata for research via MONA.</div></li>
-      <li><div class="rname"><a href="https://stat.fi/en">Statistics Finland</a></div><div class="rdesc">Register microdata for research via FIONA.</div></li>
-    </ul>
-    <h4 class="subsubsection">Trade</h4>
-    <ul class="res-list">
-      <li><div class="rname"><a href="https://comtradeplus.un.org/">UN Comtrade</a></div><div class="rdesc">Bilateral trade flows by product.</div></li>
-      <li><div class="rname"><a href="https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37">CEPII BACI</a></div><div class="rdesc">Reconciled bilateral trade at the HS6 level.</div></li>
-      <li><div class="rname"><a href="https://wits.worldbank.org/">WITS</a></div><div class="rdesc">Trade and tariff data.</div></li>
-    </ul>
+    </div>
+    <div class="res-group">
     <h4 class="subsubsection">Energy, Environment and Climate</h4>
     <ul class="res-list">
       <li><div class="rname"><a href="https://edgar.jrc.ec.europa.eu/">EDGAR</a></div><div class="rdesc">Global greenhouse gas and air pollutant emissions.</div></li>
@@ -555,6 +583,8 @@
       <li><div class="rname"><a href="https://ec.europa.eu/eurostat/data/database">Eurostat</a></div><div class="rdesc">European energy, environmental and economic statistics.</div></li>
       <li><div class="rname"><a href="https://eogdata.mines.edu/products/vnl/">VIIRS Nighttime Lights</a></div><div class="rdesc">Satellite night lights from the Earth Observation Group.</div></li>
     </ul>
+    </div>
+    </div>
   </section>
   <footer class="site-footer">
     &copy; 2026 Albert Duodu &middot; Department of Economics, Aalto University, Ekonominaukio 1, 02150 Espoo, Finland &middot; Last updated November 2026
